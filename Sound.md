@@ -16,10 +16,8 @@
 | PUI Audio AMM-3742 | -42 | |
 | PUI Audio AMM-2742 | -42 | |
 
-
 Knowles KAS-33100-003 Evaluation Kit uses Cirrus Logic Stereo Codec. Interfaces with USB to PC and not to microcontroller though.
 Can also use SparkFun Analog MEMS Microphone Breakout - ICS-40180 for amplification but still need ADC for digitial conversion. 
-
 
 ## I2S Microphones (MEMS)
 | Model                 | Sensitivity dB FS | SNR dbA | Equivalent Noise dBA | Dyanmic Range dB |
