@@ -8,10 +8,11 @@
 | PUI Audio AOM-5054 (just mic)       | -54 |    | 
 
 ## Regular MEMS Microphones (need amplifier and ADC)
+
 | Model | Sensitivity dB | SNR dB |
 | ----- | ----------- | --- |
-| Knowles MQM-32325 | -58 | | | |
-| Knowles MM25-33663 | -57 | | | |
+| Knowles MQM-32325 | -58 | |
+| Knowles MM25-33663 | -57 | |
 
 
 Knowles KAS-33100-003 Evaluation Kit uses Cirrus Logic Stereo Codec. Interfaces with USB to PC and not to microcontroller though.
