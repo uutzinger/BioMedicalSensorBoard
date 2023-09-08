@@ -13,6 +13,8 @@
 | ----- | ----------- | --- |
 | Knowles MQM-32325 | -58 | |
 | Knowles MM25-33663 | -57 | |
+| PUI Audio AMM-3742 | -42 | |
+| PUI Audio AMM-2742 | -42 | |
 
 
 Knowles KAS-33100-003 Evaluation Kit uses Cirrus Logic Stereo Codec. Interfaces with USB to PC and not to microcontroller though.
@@ -26,6 +28,4 @@ Can also use SparkFun Analog MEMS Microphone Breakout - ICS-40180 for amplificat
 | TDK/InvenSense ICS-43434 | -26 | 65 | 29 | 91 |
 | TDK/InvenSense INMP 441 | -26 | 61 |
 | Analog Devices ADMP441 obsolete| -26 | 65 | | |
-| PUI Audio AMM-3742 | -42 | | | |
-| PUI Audio AMM-2742 | -42 | | | |
 | STMicroelectronics MP34DT05-A | -26 | 64 | | |
