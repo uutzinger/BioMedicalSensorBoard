@@ -8,6 +8,8 @@
 
 ## Sound boards
 - [audioinjector](https://www.audioinjector.net/)
+
+check what chip and hardware they are using, this was made for Raspberry Pi, its likely analog microphone input to I2S which would work also for microcontrollers.
   
 ## Regular Microphones (need amplifier and ADC)
 
@@ -20,7 +22,7 @@
 
 | Model | Sensitivity dB | SNR dB |
 | ----- | ----------- | --- |
-| Knowles MQM-32325 | -58 | |
+| Knowles MQM-32325 | -58 | seems to be hearing aide quality |
 | Knowles MM25-33663 | -57 | |
 | PUI Audio AMM-3742 | -42 | |
 | PUI Audio AMM-2742 | -42 | |
