@@ -22,7 +22,7 @@
 - WiFi 2.4GHz 54Mbit/s
 - 22GPIO
 - Low quality A/D
-- 11.50
+- $6.50
   
 ### ESP32-S3
 - Xtensa dual-core 32-bit 
@@ -31,7 +31,7 @@
 - WiFi 2.4GHz 54Mbit/s
 - 45 GPIO
 - Low quality A/D
-- $6.50
+- 11.50
   
 ### ESP32-C6
 - WiFi 6
@@ -79,3 +79,9 @@
 - STEMMA Q connector for i2c devices
 - Tiny
 - $12.50
+
+## Arduino
+
+### Arduino Nano ESP32 (S3)
+- USB-C
+- $20
