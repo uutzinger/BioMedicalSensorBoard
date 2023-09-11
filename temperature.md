@@ -3,9 +3,9 @@
 ## Thermistor
 ### Amphenol
 - [General](https://www.amphenol-sensors.com/en/product-spotlights/3468-temperature-sensing-for-medical-devices)
-- MA100BF103AN or MA100GG103AN [A](https://www.mouser.com/datasheet/2/18/Amphenol_04022020_AAS_920_321E-1826352.pdf)
+- [MA100BF103AN or MA100GG103AN](https://www.mouser.com/datasheet/2/18/Amphenol_04022020_AAS_920_321E-1826352.pdf)
 ### Smith Medical
-- Probes](https://www.smiths-medical.com/en-us/products/temperature-management/temperature-probes)
+- [Probes](https://www.smiths-medical.com/en-us/products/temperature-management/temperature-probes)
 ### Variohm
 - [Probes](https://www.variohm.com/products/temperature-sensors/medical-temperature-probes)
 
