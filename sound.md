@@ -6,6 +6,9 @@
   
 ## Sound chips
 
+## Sound boards
+- [audioinjector](https://www.audioinjector.net/)
+  
 ## Regular Microphones (need amplifier and ADC)
 
 | Model | Sensitivity dB | SNR dB |
