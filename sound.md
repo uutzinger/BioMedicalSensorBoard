@@ -9,7 +9,7 @@
   
 ## Sound boards
 - [Teensy audio board](https://www.pjrc.com/store/teensy3_audio.html)
-- [Audiopants ESP32 based on TeensybAudio](https://noties.space/headphones-help)
+- [Audiopants ESP32 based on Teensy Audio](https://noties.space/headphones-help)
 
 - [audioinjector](https://www.audioinjector.net/)
 
