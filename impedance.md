@@ -8,6 +8,7 @@ First OpAmp is a buffer. Second is a current to voltage converter, thrid OpAmp i
 
 ## Analog Devices
 - [AD5933 12-bit impedance converter](https://www.analog.com/en/products/ad5933.html)
+- [User Guide with reference schematics](https://www.analog.com/media/en/technical-documentation/user-guides/UG-364.pdf)
 
 ## Maxim
 - [Max 30001G](https://www.maximintegrated.com/en/products/analog/data-converters/analog-front-end-ics/MAX30001G.html)
