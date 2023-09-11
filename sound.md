@@ -3,7 +3,7 @@
 ## Digital Stethoscope
 - [Texas Instruments](https://www.ti.com/solution/digital-stethoscope)
 - [IEEE Paper](https://ieeexplore.ieee.org/document/8994674)
-- 
+  
 ## Sound chips
 
 ## Regular Microphones (need amplifier and ADC)
