@@ -4,6 +4,7 @@
 - [Instructables](https://www.instructables.com/Determining-Body-Composition-using-Arduino)
 
 Instructable solution was implemented and worked. OPAmps were changed to work with 3.3V.
+First OpAmp is a buffer. Second is a current to voltage converter, thrid OpAmp is differntial amplifier and 4th OpAmp is buffer.
 
 ## Analog Devices
 - [AD5933 12-bit impedance converter](https://www.analog.com/en/products/ad5933.html)
