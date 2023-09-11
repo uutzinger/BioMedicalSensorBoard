@@ -44,7 +44,7 @@
 ## Teensy based
 - ARM Cortex-M7 at 600 MHz
 - I2C, SPI, I2S, Ethernet
-- Percision A/D
+- Precision A/D
 - Fastest Microcontroller, about 7 x ESP32
 
 ### Teensy 4.0
