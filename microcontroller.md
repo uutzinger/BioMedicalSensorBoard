@@ -78,6 +78,7 @@
 - USB type C
 - STEMMA Q connector for i2c devices
 - Tiny
+- will not work with I2S
 - $12.50
 
 ## Arduino
