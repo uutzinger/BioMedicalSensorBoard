@@ -3,6 +3,8 @@
 - [IEEE](https://ieeexplore.ieee.org/document/9529213)
 - [Instructables](https://www.instructables.com/Determining-Body-Composition-using-Arduino)
 
+Instructable solution was implemented and worked. OPAmps were changed to work with 3.3V.
+
 ## Analog Devices
 - [AD5933 12-bit impedance converter](https://www.analog.com/en/products/ad5933.html)
 
