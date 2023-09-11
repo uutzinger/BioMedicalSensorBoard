@@ -5,8 +5,12 @@
 - [IEEE Paper](https://ieeexplore.ieee.org/document/8994674)
   
 ## Sound chips
-
+- [SGTL5000](https://www.nxp.com/products/audio-and-radio/audio-converters/ultra-low-power-audio-codec:SGTL5000)
+  
 ## Sound boards
+- [Teensy audio board](https://www.pjrc.com/store/teensy3_audio.html)
+- [Audiopants ESP32 based on TeensybAudio](https://noties.space/headphones-help)
+
 - [audioinjector](https://www.audioinjector.net/)
 
 check what chip and hardware they are using, this was made for Raspberry Pi, its likely analog microphone input to I2S which would work also for microcontrollers.
