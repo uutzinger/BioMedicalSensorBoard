@@ -10,11 +10,14 @@
 ## Sound boards
 - [Teensy audio board](https://www.pjrc.com/store/teensy3_audio.html)
 - [Audiopants ESP32 based on Teensy Audio](https://noties.space/headphones-help)
-
 - [audioinjector](https://www.audioinjector.net/)
-
 check what chip and hardware they are using, this was made for Raspberry Pi, its likely analog microphone input to I2S which would work also for microcontrollers.
-  
+
+## Microphone Amplifier
+[Sparkfun](https://learn.sparkfun.com/tutorials/sound-detector-hookup-guide?_gl=1*1kkdu25*_ga*MzMyODI5MDguMTY5NDE5MzI3NQ..*_ga_T369JS7J9N*MTY5NDQ4ODY0MC4zLjEuMTY5NDQ4ODc2NS40NC4wLjA.&_ga=2.97641820.250989333.1694488641-33282908.1694193275)
+[LMV321](http://cdn.sparkfun.com/datasheets/Sensors/Sound/LMV324.pdf?_gl=1*101dz5s*_ga*MzMyODI5MDguMTY5NDE5MzI3NQ..*_ga_T369JS7J9N*MTY5NDQ4ODY0MC4zLjEuMTY5NDQ4ODY2MC40MC4wLjA.)
+
+[Adafruit MAX9814](https://www.adafruit.com/product/1713)
 ## Regular Microphones (need amplifier and ADC)
 
 | Model | Sensitivity dB | SNR dB |
