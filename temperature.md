@@ -9,6 +9,12 @@
 ### Variohm
 - [Probes](https://www.variohm.com/products/temperature-sensors/medical-temperature-probes)
 
+## Breakout boards
+- [Protocentral MAX30205](https://protocentral.com/product/protocentral-max30205-body-temperature-sensor-breakout-board/)
+
+## Integrated
+- [Max30205](https://www.analog.com/media/en/technical-documentation/data-sheets/max30205.pdf)
+
 ## Full bridge circuit
 ### Analog Devices
 - [LTC2473](https://www.analog.com/en/products/ltc2473.html)
