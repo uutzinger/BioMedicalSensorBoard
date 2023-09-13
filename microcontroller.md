@@ -1,14 +1,14 @@
 # Microcontroller
 
 ## EPS 8266 based
-- 2014
+- released 2014
 - L106 32-bit RISC microprocessor core based on the Tensilica
-- 32kBytes
+- 32kBytes RAM
 - IEEE 802.11 b/g/n Wi-Fi
 - I2C, I2S
 - $3.50
 
-## ESP32 based
+## ESP32 based 
 - Xtensa dual-core (or single-core) 32-bit LX6 microprocesso
 - Wi-Fi: 802.11 b/g/n
 - Bluetooth: v4.2 BR/EDR and BLE (shares the radio with Wi-Fi)
@@ -41,7 +41,7 @@
 - Not yet supported by Arduino IDE
 - $10
   
-## Teensy based
+## Teensy 4.x based
 - ARM Cortex-M7 at 600 MHz
 - I2C, SPI, I2S, Ethernet
 - Precision A/D
