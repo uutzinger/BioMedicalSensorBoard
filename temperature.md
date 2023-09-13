@@ -12,7 +12,7 @@
 ## Breakout boards
 - [Protocentral MAX30205](https://protocentral.com/product/protocentral-max30205-body-temperature-sensor-breakout-board/)
 
-## Integrated
+## ICS with integrated thermistor 
 - [Max30205](https://www.analog.com/media/en/technical-documentation/data-sheets/max30205.pdf)
 
 ## Full bridge circuit
