@@ -11,7 +11,7 @@
 Biomedical engineering undergradute students need to practice measuring signals from living systems.
 Measurement equipment is needed for classroom laboratories that can safely record common physiological signals.
 For a wide adoption, such equipment should be cost effective and repairable in-house. 
-Therefore it should take adavange of existing components that are open source and distributed though domestic channels.
+Therefore it should take adavange of existing components that are open source and distributed through domestic channels.
 While there are commercial systems available, there is no unified approach that takes advantage of existing hardware and software and is capable of expansion.
 This project strives to create a paltform that can be easily expanded, uses open source software and open hardware designs to create measruement modules for lecture and laboratory modules.
 Since students using these sytems will learn the measurent principles and how to analyze the data they record, it is likely these systems will also be used in research projects.
