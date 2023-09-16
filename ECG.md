@@ -20,5 +20,5 @@
 
 ## Texas Instruments ICS
 - [General](https://www.ti.com/solution/electrocardiogram-ecg)
-- [ADS1293](https://www.ti.com/general/docs/suppproductinfo.tsp?distId=10&gotoUrl=https%3A%2F%2Fwww.ti.com%2Flit%2Fgpn%2Fads1293)
-- [ADS1292R](https://www.ti.com/product/ADS1292R)
+- [ADS1293 3 Channels with RL](https://www.ti.com/general/docs/suppproductinfo.tsp?distId=10&gotoUrl=https%3A%2F%2Fwww.ti.com%2Flit%2Fgpn%2Fads1293)
+- [ADS1292R 2 ECG Channles, 1 Respiration, RL](https://www.ti.com/product/ADS1292R)
