@@ -38,6 +38,7 @@ An expandable, low-costs, open-design system is needed that measures physiologic
 
 Currently the following boards have been designed:
 
-- Thermistor board using two LTC2473 for precision differential analog to digital conversion at up to 800 samples per second, equipmed with QWIIC connectors to connect them to a microcontroller
+- Thermistor board using two LTC2473 for precision differential analog to digital conversion at up to 800 samples per second, equipmed with QWIIC connectors to connect them to a microcontroller.
+- The same board can also be used to measure strain gauges.
 
 ![alt text](./Thermistor_Board/LTC2473CDR1_top.png)
