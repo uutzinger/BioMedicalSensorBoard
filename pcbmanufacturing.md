@@ -11,7 +11,7 @@
 - [JLPCP](https://jlcpcb.com/)
 - [JLPCB Part List](https://jlcpcb.com/parts)
 
-## Steps in Eagle Cad for Computer Aided Manufacturing
+## Steps in Eagle CAD for Computer Aided Manufacturing
 
 1) Make sure your board has no errors (Tools->Errors)
 2) Check on Manufacturing Tab how your board looks like
