@@ -1,6 +1,6 @@
 # Biomedical Sensor Board
 
-## Chapters
+## Sensors
 
 - [ECG](ECG.md) Electro Cardiogram Solutions
 - [Impedance](impedance.md) Bio Impedence Solutions
@@ -9,4 +9,8 @@
 - [Pressure](pressure.md) Pressure Sensors Solutions
 - [SPO2](spo2.md) Pulse Oximeter Solutions
 - [Micro Controller](microcontroller.md) Micro Controller Solutions
-- [PCB manufacturing](pcbmanufacturing.md) Create your own populated PCBs
+- [PCB manufacturing](pcbmanufacturing.md) Create your own populated PCB
+
+## Boards
+
+- Thermistor Board LTC2473 dual channel with QWIIC connectors standalone
