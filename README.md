@@ -1,5 +1,9 @@
 # Biomedical Sensor Board
 
+![alt text](./Concept.png)
+
+We strive to create an educational measruement system that measures physiological signal. It shall be easily reproduced at an educational institution. It shall record, display and storage common physiological measurements in a class room setting.
+
 ## Sensors
 
 - [ECG](ECG.md) Electro Cardiogram Solutions
