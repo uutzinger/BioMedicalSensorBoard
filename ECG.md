@@ -1,7 +1,7 @@
 # ECG Sensor
 
 ## Breakout boards
-- [Sparkfun](https://github.com/sparkfun/AD8232_Heart_Rate_Monitor) $22
+- [Sparkfun AD8232 Single Lead Heart Rate Monitor](https://github.com/sparkfun/AD8232_Heart_Rate_Monitor) $22
 - [Protocentral ECG & Respiratory MAX3001](https://protocentral.com/product/protocentral-max30001) $60
 - [Protocentral ECG MAX30003](https://protocentral.com/product/protocentral-max30003-single-lead-ecg-breakout-board-v2/) $42
 - [Protocentral ECG 3 Channel ADS1293](https://protocentral.com/product/ads1292r-ecg-respiration-breakout-kit/) $48
