@@ -16,8 +16,8 @@ While there are commercial systems available [^1][^2], there is no unified appro
 This project strives to create a paltform that can be easily expanded, uses open source software and open hardware designs to create measruement modules for lecture and laboratory modules.
 Since students using these sytems will learn the measurent principles and how to analyze the data they record, it is likely these systems will also be used in research projects.
 
-[^1]: [Bioradio](https://staging.glneurotech.com/product-category/bioradio-all/)
-[^2]: [Protocentral](https://protocentral.com)
+- [^1]: [Bioradio](https://staging.glneurotech.com/product-category/bioradio-all/)
+- [^2]: [Protocentral](https://protocentral.com)
 
 ## Need Statement
 
