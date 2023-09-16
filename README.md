@@ -4,7 +4,7 @@
 
 - We strive to create an educational measruement system for physiological signal. 
 - It shall be easily reproducable at an educational institution.
-- It shall record, display and storage common physiological measurements safely in a class room setting.
+- It shall record, display and store common physiological measurements safely in a class room setting.
 
 ## Problem Description
 
