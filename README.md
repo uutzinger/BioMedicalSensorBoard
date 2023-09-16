@@ -30,7 +30,7 @@ An expandable, low-costs, open-design system is needed that measures physiologic
 - [Temperature](temperature.md) Temperature and Strain Gauges Solutions
 - [Sound](sound.md) Sound Recording Solutions
 - [Pressure](pressure.md) Pressure Sensors Solutions
-- [SpO_2](spo2.md) Pulse Oximeter Solutions
+- [SpO[sub>2</sub>](spo2.md) Pulse Oximeter Solutions
 - [Micro Controller](microcontroller.md) Micro Controller Solutions
 - [PCB manufacturing](pcbmanufacturing.md) Approach to create your own populated PCBs
 
