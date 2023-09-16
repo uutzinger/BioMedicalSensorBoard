@@ -15,7 +15,7 @@
 
 ## Analog Devices ICS
 - [General](https://www.analog.com/en/applications/markets/healthcare-pavilion-home/vital-signs-measurement/electrocardiogram-ecg-measurement.html )
-- [AD8232](https://www.analog.com/en/products/ad8232.html)
+- [AD8232, single channel, RL](https://www.analog.com/en/products/ad8232.html)
 - [IEEE Paper with AD8232](https://doi.org/10.1109/TIPTEKNO50054.2020.9299248)
 
 ## Texas Instruments ICS
