@@ -15,4 +15,4 @@
 
 - Thermistor Board LTC2473 dual channel with QWIIC connectors standalon
 
-![alt text](./Thermistor Board/LTC2473CDR1_top.png)
+![alt text](./Thermistor_Board/LTC2473CDR1_top.png)
