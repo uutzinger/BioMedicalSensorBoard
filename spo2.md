@@ -9,8 +9,9 @@
 
 ## Analog Devices
 - [General](https://www.analog.com/en/applications/markets/healthcare-pavilion-home/vital-signs-measurement/spo2.html)
--  ADPD105 or ADPD106
+-  ADPD105 or ADPD106 for clinical sensor
   
 ## Maxim
 - [MAX30101](https://www.maximintegrated.com/en/products/interface/signal-integrity/MAX30101.html)
+- fully integrated, does not allow connecting to clinical sensor
 
