@@ -40,3 +40,4 @@ Currently the following boards have been designed:
 - The same board can also be used to measure strain gauges.
 
 ![alt text](./Thermistor_Board/LTC2473CDR1_top.png)
+
