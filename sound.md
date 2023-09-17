@@ -10,6 +10,7 @@
 ## Sound boards
 - [Teensy audio board (SGTL5000)](https://www.pjrc.com/store/teensy3_audio.html)
 - [Audiopants ESP32 based on Teensy Audio (SGTL5000)](https://noties.space/headphones-help)
+- [Audiopants github](https://github.com/chipperdoodles/audiopants)
 - [audioinjector](https://www.audioinjector.net/)
 check what chip and hardware they are using, this was made for Raspberry Pi, its likely analog microphone input to I2S which would work also for microcontrollers.
 
