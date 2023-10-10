@@ -29,21 +29,22 @@
   
 ### ESP32-S3
 - released 2020
-- Xtensa dual-core 32-bit 
+- Xtensa dual-core 32-bit, 240MHz
 - 512kBytes
 - Bluetooth Low Energy 20dB (smaller is better)
 - WiFi 2.4GHz 54Mbit/s
 - 45 GPIO pins
 - Low quality A/D
-- 11.50
+- $11.50
   
 ### ESP32-C6
 - released in 2023
 - Not yet supported by Arduino IDE
+- RISC-V dual core 32-bit 160MHz
 - WiFi 6
 - Bluetooth LE 5
 - Zigbeee
-- 8Mbytes
+- 8 Mbytes
 - $10
   
 ## Teensy 4.x based
