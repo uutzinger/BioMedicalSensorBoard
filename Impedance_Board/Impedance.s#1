@@ -7105,7 +7105,7 @@ All pins connected</description>
 <text x="30.48" y="20.32" size="1.778" layer="91">R_FB</text>
 <text x="139.7" y="93.98" size="1.778" layer="91">Transimpedance
 Excite</text>
-<text x="139.7" y="124.46" size="1.778" layer="91">One Plug Impedance</text>
+<text x="139.7" y="124.46" size="1.778" layer="91">Regular</text>
 <text x="86.36" y="76.2" size="1.778" layer="91">Transimpedance
 Measure</text>
 <text x="2.54" y="7.62" size="1.778" layer="91">UG-364 Evaluation Board for AD5933
