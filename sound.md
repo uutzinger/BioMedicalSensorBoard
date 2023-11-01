@@ -15,15 +15,15 @@
 - [WM8960](https://community.nxp.com/pwmxy87654/attachments/pwmxy87654/imx-processors/52419/1/WM8960.pdf)
   
 ## Sound boards
-- [Teensy audio board (SGTL5000)](https://www.pjrc.com/store/teensy3_audio.html)
+- [Teensy audio board (SGTL5000)](https://www.pjrc.com/store/teensy3_audio.html) $14.40
 - [Audiopants ESP32 based on Teensy Audio (SGTL5000)](https://noties.space/headphones-help)
 - [Audiopants github](https://github.com/chipperdoodles/audiopants)
 - [audioinjector](https://www.audioinjector.net/)
 check what chip and hardware they are using, this was made for Raspberry Pi, its likely analog microphone input to I2S which would work also for microcontrollers.
-- [I2S ADC Audio I2S Capture Card Module](https://github.com/pschatzmann/arduino-audio-tools/wiki/External-ADC#i2s-adc-audio-i2s-capture-card-module)
-- [ES8388 Audio Codec Module](https://github.com/pschatzmann/arduino-audio-tools/wiki/Audio-Boards#es8388-audio-codec-module)
-- [VS1053 Audio Codec Modules](https://github.com/pschatzmann/arduino-audio-tools/wiki/Audio-Boards#vs1053-audio-codec-modules)
-- [PI WM8960 Hat](https://github.com/pschatzmann/arduino-audio-tools/wiki/Audio-Boards#pi-wm8960-hat)
+- [I2S ADC Audio I2S Capture Card Module](https://github.com/pschatzmann/arduino-audio-tools/wiki/External-ADC#i2s-adc-audio-i2s-capture-card-module) $12
+- [ES8388 Audio Codec Module](https://github.com/pschatzmann/arduino-audio-tools/wiki/Audio-Boards#es8388-audio-codec-module) $17
+- [VS1053 Audio Codec Modules](https://github.com/pschatzmann/arduino-audio-tools/wiki/Audio-Boards#vs1053-audio-codec-modules) $5
+- [PI WM8960 Hat](https://github.com/pschatzmann/arduino-audio-tools/wiki/Audio-Boards#pi-wm8960-hat) $16
    
 ## Microphone Amplifier breakout board
 [Sparkfun](https://learn.sparkfun.com/tutorials/sound-detector-hookup-guide?_gl=1*1kkdu25*_ga*MzMyODI5MDguMTY5NDE5MzI3NQ..*_ga_T369JS7J9N*MTY5NDQ4ODY0MC4zLjEuMTY5NDQ4ODc2NS40NC4wLjA.&_ga=2.97641820.250989333.1694488641-33282908.1694193275)
