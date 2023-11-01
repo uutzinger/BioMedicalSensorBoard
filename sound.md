@@ -4,7 +4,7 @@
 - [Texas Instruments Overview](https://www.ti.com/solution/digital-stethoscope)
 - [IEEE Paper with Arduino](https://ieeexplore.ieee.org/document/8994674)
 
-## Audio Library
+## Audio Library for Arduino and ESP
 - [arduino-audio-tools](https://github.com/pschatzmann/arduino-audio-tools)
 - [audiotools review](https://youtu.be/a936wNgtcRA?si=jpXgP3CTCKrXq8GU)
 
