@@ -5,7 +5,8 @@
 - L106 32-bit RISC microprocessor core based on the Tensilica
 - 32kBytes RAM
 - IEEE 802.11 b/g/n Wi-Fi
-- I2C, I2S
+- I2C, I2S, SPI
+- Low quality A/D
 - $3.50
 
 ## ESP32 based 
@@ -15,6 +16,8 @@
 - Wi-Fi: 802.11 b/g/n
 - Bluetooth: v4.2 BR/EDR and BLE (shares the radio with Wi-Fi)
 - I2C, SPI, I2S
+- A2DP (Bluetooth Classic)
+- Low quality A/D
 - $5.50
   
 ### ESP32-C3
@@ -25,6 +28,8 @@
 - WiFi 2.4GHz 54Mbit/s
 - 22 GPIO pins
 - Low quality A/D
+- Does not support A2DP (Bluetooth Classic)
+- I2S performance might be low
 - $6.50
   
 ### ESP32-S3
@@ -35,6 +40,10 @@
 - WiFi 2.4GHz 54Mbit/s
 - 45 GPIO pins
 - Low quality A/D
+- Does not supprt A2DP (Bluetooh Classic)
+- Likely will BLE Audio will not be usable
+- Does not yet support I2S
+- Arduino-Audio-Tools does not support AudioStream?
 - $11.50
   
 ### ESP32-C6
@@ -45,6 +54,8 @@
 - Bluetooth LE 5
 - Zigbeee
 - 8 Mbytes
+- Has I2S peripheral
+- BLE Audio not supported currently
 - $10
   
 ## Teensy 4.x based
@@ -67,8 +78,11 @@
 ## Boards
 
 ### SparkFun Thing Plus - ESP32 WROOM
-- USB type C or Lipoly battery
-- Built-in battery charging when powered over USB-C
+- USB type C  or micro
+- Single Core
+- 16Mytes SPI Flash
+- Lipoly battery connector
+- Built-in battery charging when powered over USB-C/micro
 - STEMMA Q connector for i2c devices
 - $24.95
 
