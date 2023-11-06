@@ -1,6 +1,8 @@
 # Microcontroller
+## ESP
+ESP32 peripheral support: https://docs.espressif.com/projects/arduino-esp32/en/latest/libraries.html
 
-## EPS 8266 based
+### ESP 8266
 - released in 2014
 - L106 32-bit RISC microprocessor core based on the Tensilica
 - 32kBytes RAM
@@ -9,7 +11,7 @@
 - Low quality A/D
 - $3.50
 
-## ESP32 based 
+### ESP32 
 - released in 2016
 - about 100 times faster than ESP8266
 - Xtensa dual-core (or single-core) 32-bit LX6 microprocesso
@@ -57,8 +59,9 @@
 - Has I2S peripheral
 - BLE Audio not supported currently
 - $10
-  
-## Teensy 4.x based
+
+## Teensy
+### Teensy 4.x based
 - ARM Cortex-M7 at 600 MHz
 - I2C, SPI, I2S, Ethernet
 - Precision A/D
