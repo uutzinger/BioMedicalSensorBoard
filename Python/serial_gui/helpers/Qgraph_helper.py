@@ -16,7 +16,7 @@ https://stackoverflow.com/questions/65332619/pyqtgraph-scrolling-plots-plot-in-c
 https://github.com/pbmanis/EKGMonitor
 """ 
 
-import re, logging, time
+import logging, time
 
 from PyQt5.QtCore import QObject, QTimer, QThread, pyqtSignal, pyqtSlot, QStandardPaths
 from PyQt5.QtWidgets import QFileDialog, QLineEdit, QSlider, QTabWidget, QGraphicsView, QVBoxLayout
@@ -31,7 +31,7 @@ import numpy as np
 ########################################################################################
 MAX_ROWS = 44100 # data history length
 MAX_COLUMNS = 4 # max number of signal traces
-SEPARATORS = "[,;.\s]" # use most common data separator characters
+UPDATE_INTERVAL = 100 # milliseconds, visualization does not improve with updates faster than 10 Hz
 
 ########################################################################################
 
@@ -64,6 +64,9 @@ class CircularBuffer():
             self._data[self._index:end_index] = data_array
                     
         self._index = end_index
+
+    def clear(self):
+        self._data = np.full((MAX_ROWS, MAX_COLUMNS+1), -np.inf)
     
     @property
     def data(self):
@@ -80,7 +83,7 @@ class QChartUI(QObject):
     """
     QT Chart Interface for QT
     
-    The chart displays up to signals in a plot.
+    The chart displays up to 4 signals in a plot.
     The data is received from the serial port and organized into columns of a numpy array.
     The plot can be zoomed in by selecting how far back in time to display it.
     The horizontal axis is the sample number.
@@ -158,12 +161,12 @@ class QChartUI(QObject):
         self.chartWidget.setYRange(-1., 1.)
 
         # Set up the horizontal slider
-        horizontalSlider = self.ui.findChild(QSlider, "horizontalSlider_Zoom")
-        horizontalSlider.setMinimum(16)
-        horizontalSlider.setMaximum(MAX_ROWS)
-        horizontalSlider.setValue(int(self.maxPoints))  
-        lineEdit = self.ui.findChild(QLineEdit, "lineEdit_Horizontal")
-        lineEdit.setText(str(self.maxPoints))
+        self.horizontalSlider = self.ui.findChild(QSlider, "horizontalSlider_Zoom")
+        self.horizontalSlider.setMinimum(16)
+        self.horizontalSlider.setMaximum(MAX_ROWS)
+        self.horizontalSlider.setValue(int(self.maxPoints))  
+        self.lineEdit = self.ui.findChild(QLineEdit, "lineEdit_Horizontal")
+        self.lineEdit.setText(str(self.maxPoints))
         
         self.logger = logging.getLogger("QChartUI_")           
 
@@ -203,7 +206,7 @@ class QChartUI(QObject):
             min_y = np.inf
             for i in range(MAX_COLUMNS):
                 if col_indx[i+1]:
-                    y = data[row_indx,i+1]
+                    y = data[row_indx,i+1]/1000.
                     self.data_line[i].setData(x, y)
                     max_y = max([np.nanmax(y[-self.maxPoints:]), max_y])
                     min_y = min([np.nanmin(y[-self.maxPoints:]), min_y])
@@ -282,29 +285,33 @@ class QChartUI(QObject):
         Start timer
         """
         if self.ui.pushButton_ChartStartStop.text() == "Start":
+            if self.serialUI.textLineTerminator == '':
+                self.logger.log(logging.ERROR, "[{}]: plotting of of raw data not yet supported".format(int(QThread.currentThreadId())))
+                return
             # start plotting
-            self.serialWorker.linesReceived.disconnect(self.serialUI.on_SerialReceivedLines) # turn off text display
-            self.serialWorker.linesReceived.connect(self.on_newLinesReceived) # turn on plotting
-            self.ChartTimer.start()            
-            if self.ui.pushButton_SerialStartStop.text() == "Start":
-                self.serialReceiverIsRunning = False
+            try:
+                self.serialWorker.linesReceived.disconnect(self.serialUI.on_SerialReceivedLines) # turn off text display
+                self.logger.log(logging.WARNING, "[{}]: disconnected lines received signal from serial text display.".format(int(QThread.currentThreadId())))
+            except:
+                pass
+            self.serialWorker.linesReceived.connect(self.on_newLinesReceived) # enable plot data feed
+            self.ChartTimer.start()
+            if self.serialUI.receiverIsRunning == False:
                 self.serialUI.startReceiverRequest.emit()
                 self.serialUI.startThroughputRequest.emit()
-                self.ui.pushButton_SerialStartStop.setText("Stop")
-            else:
-                self.serialReceiverIsRunning = True
             self.ui.pushButton_ChartStartStop.setText("Stop")
             self.logger.log(logging.INFO, "[{}]: start plotting".format(int(QThread.currentThreadId())))
         else:
             self.ChartTimer.stop()
-            if self.serialReceiverIsRunning == False:
+            if self.serialUI.receiverIsRunning == True:
                 self.serialUI.stopReceiverRequest.emit()
                 self.serialUI.stopThroughputRequest.emit()
                 self.ui.pushButton_ChartStartStop.setText("Start")
-            self.serialWorker.linesReceived.disconnect(self.on_newLinesReceived)
-            self.serialWorker.linesReceived.connect(self.serialUI.on_SerialReceivedLines) # turn on text display
+            try:
+                self.serialWorker.linesReceived.disconnect(self.on_newLinesReceived)
+            except:
+                self.logger.log(logging.WARNING, "[{}]: lines received signal was not connected the chart".format(int(QThread.currentThreadId())))
             self.logger.log(logging.INFO, "[{}]: stop plotting".format(int(QThread.currentThreadId())))
-            self.ui.pushButton_SerialStartStop.setText("Start")
 
     @pyqtSlot()
     def on_pushButton_Clear(self):
@@ -316,7 +323,7 @@ class QChartUI(QObject):
         Clear plot
         """
         # clear plot
-        self.data = np.full((MAX_ROWS, MAX_COLUMNS+1), -np.inf)
+        self.buffer.clear()
         self.updatePlot()  
         self.logger.log(logging.INFO, "[{}]: Clear plotted data.".format(int(QThread.currentThreadId())))
 
@@ -325,13 +332,9 @@ class QChartUI(QObject):
         """ 
         Save data into Text File 
         """
-        # self.ui.serialWorker.textReceived.disconnect(self.on_newLineReceived)
-        self.ui.serialWorker.linesReceived.disconnect(self.on_newLinesReceived)
         stdFileName = QStandardPaths.writableLocation(QStandardPaths.DocumentsLocation) + "/data.txt"
-        fname = QFileDialog.getSaveFileName(self, 'Save as', stdFileName, "Text files (*.txt)")
+        fname, _ = QFileDialog.getSaveFileName(self.ui, 'Save as', stdFileName, "Text files (*.txt)")
         np.savetxt(fname, self.data, delimiter=',')
-        # self.ui.serialWorker.textReceived.connect(self.on_newLineReceived)
-        self.ui.serialWorker.linesReceived.connect(self.on_newLinesReceived)
         self.logger.log(logging.INFO, "[{}]: Saved plotted data.".format(int(QThread.currentThreadId())))
 
     @pyqtSlot(int)
@@ -341,13 +344,17 @@ class QChartUI(QObject):
         This sets the maximum number of points back in history shown on the plot
         
         Update the line edit box when the slider is moved
-        Update how far back in history we plot 
+        This changes how far back in history we plot
         """
-        lineEdit = self.ui.findChild(QLineEdit, "lineEdit_Horizontal")
-        lineEdit.setText(str(int(value)))
+        value = clip_value(value, 16, MAX_ROWS)
+        self.lineEdit.setText(str(int(value)))
         self.maxPoints = int(value)
+        self.horizontalSlider.blockSignals(True)
+        self.horizontalSlider.setValue(int(value))           
+        self.horizontalSlider.blockSignals(False)
         self.logger.log(logging.DEBUG, "[{}]: horizontal zoom set to {}.".format(int(QThread.currentThreadId()), int(value)))
-
+        self.updatePlot()  
+            
     @pyqtSlot()
     def on_HorizontalLineEditChanged(self):
         """ 
@@ -359,11 +366,13 @@ class QChartUI(QObject):
         """
         sender = self.sender()
         value = int(sender.text())
-        if value >= 16 and value <= MAX_ROWS and self.ui is not None:
-            horizontalSlider = self.ui.findChild(QSlider, "horizontalSlider_Zoom")
-            horizontalSlider.setValue(int(value))           
-            self.maxPoints = int(value)
-            self.logger.log(logging.DEBUG, "[{}]: horizontal zoom line edit set to {}.".format(int(QThread.currentThreadId()), value))
+        value = clip_value(value, 16, MAX_ROWS)
+        self.horizontalSlider.blockSignals(True)
+        self.horizontalSlider.setValue(int(value))
+        self.horizontalSlider.blockSignals(False)
+        self.maxPoints = int(value)
+        self.logger.log(logging.DEBUG, "[{}]: horizontal zoom line edit set to {}.".format(int(QThread.currentThreadId()), value))
+        self.updatePlot()  
 
 #####################################################################################
 # Testing

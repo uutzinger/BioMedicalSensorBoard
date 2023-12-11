@@ -2,8 +2,10 @@
 # Serial Communication GUI
 # ========================
 # Provides serial interface to send and receive text to/from serial port similar to Arduino IDE.
-# Plot of numbers on up to 4 traces with zoom, save and clear
-# This framework was setup can visualize signals at high data rates.
+# Plots of data on up to 4 traces with zoom, save and clear.
+# This framework was setup to visualize signals at high data rates.
+# Because its implemented in python and QT it can be easily extended to incorporate serial
+# message encoding as well as drivers for serial devices. 
 # 
 # Urs Utzinger, 2022, 2023
 # University of Arizona
@@ -12,8 +14,11 @@
 # QT imports
 from PyQt5 import QtCore, QtWidgets, QtGui, uic
 from PyQt5.QtCore import QThread
-from PyQt5.QtWidgets import QMainWindow, QLineEdit, QSlider, QMessageBox
+from PyQt5.QtWidgets import QMainWindow, QLineEdit, QSlider, QMessageBox, QDialog, QVBoxLayout, QTextEdit
 from PyQt5.QtGui import QIcon
+
+# Markdown for documentation
+from markdown import markdown
 
 # System
 import logging
@@ -30,7 +35,7 @@ if hasattr(QtCore.Qt, 'AA_EnableHighDpiScaling'):
 
 if hasattr(QtCore.Qt, 'AA_UseHighDpiPixmaps'):
     QtWidgets.QApplication.setAttribute(QtCore.Qt.AA_UseHighDpiPixmaps, True)
-
+        
 ###########################################################################################
 # Main Window
 ###########################################################################################
@@ -76,11 +81,11 @@ class mainWindow(QMainWindow):
         self.serialThread = QThread()                                                                      # create QThread object
         self.serialThread.start()                                                                          # start thread which will start worker
 
-        # Create user interface hook for serial
-        self.serialUI     = QSerialUI(ui=self.ui)                                                          # create serial user interface object
-
         # Create serial worker
         self.serialWorker = QSerial()                                                                      # create serial worker object
+
+        # Create user interface hook for serial
+        self.serialUI     = QSerialUI(ui=self.ui, worker = self.serialWorker)                              # create serial user interface object
 
         # Connect worker / thread
         self.serialWorker.finished.connect(                 self.serialThread.quit                       ) # if worker emits finished quite worker thread
@@ -89,12 +94,13 @@ class mainWindow(QMainWindow):
 
         # Signals from Serial to Serial-UI
         # ---------------------------------
-        #self.serialWorker.textReceived.connect(             self.serialUI.on_SerialReceivedText         ) # connect text display to serial receiver signal
+        self.serialWorker.textReceived.connect(             self.serialUI.on_SerialReceivedText         ) # connect text display to serial receiver signal
         self.serialWorker.linesReceived.connect(            self.serialUI.on_SerialReceivedLines         ) # connect text display to serial receiver signal
         self.serialWorker.newPortListReady.connect(         self.serialUI.on_newPortListReady            ) # connect new port list to its ready signal
         self.serialWorker.newBaudListReady.connect(         self.serialUI.on_newBaudListReady            ) # connect new baud list to its ready signal
         self.serialWorker.serialStatusReady.connect(        self.serialUI.on_serialStatusReady           ) # connect display serial status to ready signal
         self.serialWorker.throughputReady.connect(          self.serialUI.on_throughputReceived          ) # connect display throughput status 
+        self.serialWorker.serialWorkerStateChanged.connect( self.serialUI.on_serialWorkerStateChanged    ) # mirror serial worker state to serial UI
 
         # Signals from Serial-UI to Serial
         # ---------------------------------
@@ -114,14 +120,14 @@ class mainWindow(QMainWindow):
         self.serialUI.finishWorkerRequest.connect(          self.serialWorker.on_stopWorkerRequest       ) # connect finish request
         self.serialUI.startThroughputRequest.connect(       self.serialWorker.on_startThroughputRequest  ) # start throughput
         self.serialUI.stopThroughputRequest.connect(        self.serialWorker.on_stopThroughputRequest   ) # stop throughput
+        self.serialUI.serialSendFileRequest.connect(        self.serialWorker.on_sendFileRequest         ) # send file to serial port
 
         # Prepare the Serial Worker and User Interface
         # --------------------------------------------
         self.serialWorker.moveToThread(                     self.serialThread                             ) # move worker to thread
         self.serialUI.scanPortsRequest.emit()                                                               # request to scan for serial ports
         self.serialUI.setupReceiverRequest.emit()                                                           # establishes QTimer in the QThread above
-        self.serialUI.on_comboBoxDropDown_LineTermination()                                                 # initialize line termination, use current text from comboBox
-        # do not initialize baudrate or serial port, user will need to select at startup
+        # do not initialize baudrate, serial port or line termination, user will need to select at startup
 
         # Signals from User Interface to Serial-UI
         # ----------------------------------------
@@ -136,7 +142,7 @@ class mainWindow(QMainWindow):
         # User clicked scan ports, start send, clear or save
         self.ui.pushButton_SerialScan.clicked.connect(      self.serialUI.on_pushButton_SerialScan        ) # Scan for ports
         self.ui.pushButton_SerialStartStop.clicked.connect( self.serialUI.on_pushButton_SerialStartStop   ) # Start/Stop serial receive
-        self.ui.pushButton_SerialSend.clicked.connect(      self.serialUI.on_serialMonitorSend            ) # Send text to serial port
+        self.ui.pushButton_SerialSend.clicked.connect(      self.serialUI.on_serialSendFile               ) # Send text from a file to serial port
         self.ui.lineEdit_SerialText.returnPressed.connect(  self.serialUI.on_serialMonitorSend            ) # Send text as soon as enter key is pressed
         self.ui.pushButton_SerialClearOutput.clicked.connect(
                                                             self.serialUI.on_pushButton_SerialClearOutput ) # Clear serial receive window
@@ -179,18 +185,56 @@ class mainWindow(QMainWindow):
         #----------------------------------------------------------------------------------------------------------------------
         # Connect the action_about action to the show_about_dialog slot
         self.ui.action_About.triggered.connect(self.show_about_dialog)
+        self.ui.action_Help.triggered.connect(self.show_help_dialog)
         
         #----------------------------------------------------------------------------------------------------------------------
         # Finish up
         #----------------------------------------------------------------------------------------------------------------------
         self.show() 
 
-
     def show_about_dialog(self):
         # Information to be displayed
         info_text = "Serial Terminal & Plotter\nVersion: 1.0\nAuthor: Urs Utzinger\n2022,2023"
         # Create and display the MessageBox
-        QMessageBox.about(self, "About Program", info_text)
+        QMessageBox.about(self, "About Program", info_text)       
+        self.show()
+ 
+    def show_help_dialog(self):
+        # Load Markdown content from readme file
+        with open("Readme.md", "r") as file:
+            markdown_content = file.read()
+        html_content = markdown(markdown_content)
+
+        # somehow h3 font size is not applied, not sure how to fix
+        html_with_style = f"""
+        <style>
+            body {{ font-size: 16px; }}
+            h1 {{ font-size: 24px; }}
+            h2 {{ font-size: 20px; }}
+            h3 {{ font-size: 18px; font-style: italic; }}
+            p {{ font-size: 16px; }}
+            li {{ font-size: 16px; }}
+        </style>
+        {html_content}
+        """
+
+        # Create a QDialog to display the content
+        dialog = QDialog(self)
+        dialog.setWindowTitle("Help")
+        layout = QVBoxLayout(dialog)
+
+        # Create a QTextEdit instance for displaying the HTML content
+        text_edit = QTextEdit()
+        text_edit.setHtml(html_with_style)
+        text_edit.setReadOnly(True)  # Make the text edit read-only
+        layout.addWidget(text_edit)
+
+        dialog_width  = 1024  # Example width
+        dialog_height = 800   # Example height
+        dialog.resize(dialog_width, dialog_height)
+
+        # Show the dialog
+        dialog.exec_()
         
 ###########################################################################################
 # Testing Main Window

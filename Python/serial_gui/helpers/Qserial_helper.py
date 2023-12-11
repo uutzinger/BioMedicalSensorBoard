@@ -50,23 +50,36 @@ from serial import Serial as sp
 from serial import EIGHTBITS, PARITY_NONE, STOPBITS_ONE
 from serial.tools import list_ports 
 
-import io, locale
+import io
 import time, logging
 from math import ceil
 from enum import Enum
-import debugpy # for debugging code in Qthread
+
+try:
+    import debugpy
+    DEBUGPY_ENABLED = True
+except ImportError:
+    DEBUGPY_ENABLED = False
+    
 
 from PyQt5.QtCore import QObject, QTimer, QThread, pyqtSignal, pyqtSlot, QStandardPaths
 from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QTextCursor
 
 from PyQt5.QtWidgets import QFileDialog
 
 # Constants
 ########################################################################################
 DEFAULT_BAUDRATE          = 115200
-MAX_TEXTBROWSER_LENGTH    = 128*1024 # display window character length is trimmed to this length
-MAX_LINE_LENGTH           = 1024 # number of characters after which an end of line characters is expected
-RECEIVER_FINISHCOUNT      = 10   # [times] If we encountered a timeout 10 times we slow down serial polling
+MAX_TEXTBROWSER_LENGTH    = 1024*1024   # display window character length is trimmed to this length
+                                        # lesser value results in better performance
+MAX_LINE_LENGTH           = 1024        # number of characters after which an end of line characters is expected
+RECEIVER_FINISHCOUNT      = 10          # [times] If we encountered a timeout 10 times we slow down serial polling
+NUM_LINES_COLLATE         = 10          # [lines] estimated number of lines to collate before emitting signal
+                                        #   this results in collating about NUM_LINES_COLLATE * 32 bytes in a list of lines
+                                        #   plotting and processing large amounts of data is more efficient for display and plotting 
+
+NEW_READLINE = True
 
 class SerialReceiverState(Enum):
     """ 
@@ -121,7 +134,7 @@ class QSerialUI(QObject):
         on_serialStatusReady(str, int, str, str, float) pickup QSerial status on port, baudrate, line termination, encoding, timeout
         on_newPortListReady(list, list)      pickup new list of serial ports
         on_newBaudListReady(tuple)           pickup new list of baudrates
-        on_SerialReceivedText(str)           pickup text from serial port
+        on_SerialReceivedText(bytearray)     pickup text from serial port
         on_SerialReceivedLines(list)         pickup lines of text from serial port
         on_throughputReceived(int, int)      pickup throughput data from QSerial
     """
@@ -145,8 +158,9 @@ class QSerialUI(QObject):
     serialStatusRequest          = pyqtSignal()                                            # request serial port and baudrate status
     finishWorkerRequest          = pyqtSignal()                                            # request worker to finish
     closePortRequest             = pyqtSignal()                                            # close the current serial Port
+    serialSendFileRequest        = pyqtSignal(str)                                         # request to open file and send over serial port
            
-    def __init__(self, parent=None, ui=None):
+    def __init__(self, parent=None, ui=None, worker=None):
 
         super(QSerialUI, self).__init__(parent)
 
@@ -163,13 +177,20 @@ class QSerialUI(QObject):
         self.lastNumSent           = 0                                                     # init throughput
         self.rx                    = 0                                                     # init throughput
         self.tx                    = 0                                                     # init throughput 
+        self.receiverIsRunning     = False                                                 # keep track of worker state
+        self.textLineTerminator    = ''                                                    # default line termination
+        self.encoding              = 'utf-8'                                               # default encoding
+        self.serialTimeout         = 0                                                     # default timeout    
         
         self.logger = logging.getLogger("QSerUI_")           
                    
         if ui is None:
             self.logger.log(logging.ERROR, "[{}]: need to have access to User Interface".format(int(QThread.currentThreadId())))
-
         self.ui = ui
+
+        if worker is None:
+            self.logger.log(logging.ERROR, "[{}]: need to have access to serial worker signals".format(int(QThread.currentThreadId())))
+        self.serialWorker =  worker
 
         # Text display window on serial text display
         self.textScrollbar = self.ui.plainTextEdit_SerialTextDisplay.verticalScrollBar()
@@ -193,8 +214,24 @@ class QSerialUI(QObject):
         """
         text = self.ui.lineEdit_SerialText.text()                                          # obtain text from send input window
         self.serialSendHistory.append(text)                                                # keep history of previously sent commands
+        if self.receiverIsRunning == False:
+            self.serialWorker.linesReceived.connect(self.on_SerialReceivedLines) # connect text display to serial receiver signal
+            self.serialWorker.textReceived.connect(self.on_SerialReceivedText) # connect text display to serial receiver signal            
+            self.startReceiverRequest.emit()
+            self.startThroughputRequest.emit()
+            self.ui.pushButton_SerialStartStop.setText("Stop")
         self.sendLineRequest.emit(text)
         self.ui.lineEdit_SerialText.clear()
+
+    @pyqtSlot()
+    def on_serialSendFile(self):
+        """
+        Transmitting file to serial TX line
+        """
+        stdFileName = QStandardPaths.writableLocation(QStandardPaths.DocumentsLocation) + "/QSerial.txt"
+        fname, _ = QFileDialog.getOpenFileName(self.ui, 'Open', stdFileName, "Text files (*.txt)")
+        if fname:
+            self.serialSendFileRequest.emit(fname)
 
     @pyqtSlot()
     def on_serialMonitorSendUpArrowPressed(self):
@@ -242,12 +279,17 @@ class QSerialUI(QObject):
         """
         Start serial receiver
         """
+
         if self.ui.pushButton_SerialStartStop.text() == "Start":
             self.ui.pushButton_SerialStartStop.setText("Stop")
+            self.serialWorker.linesReceived.connect(self.on_SerialReceivedLines) # connect text display to serial receiver signal
+            self.serialWorker.textReceived.connect(self.on_SerialReceivedText) # connect text display to serial receiver signal
             self.startReceiverRequest.emit()
             self.startThroughputRequest.emit()
         else:
             self.ui.pushButton_SerialStartStop.setText("Start")
+            self.serialWorker.linesReceived.disconnect(self.on_SerialReceivedLines) # connect text display to serial receiver signal
+            self.serialWorker.textReceived.disconnect(self.on_SerialReceivedText) # connect text display to serial receiver signal
             self.stopReceiverRequest.emit()
             self.stopThroughputRequest.emit()
 
@@ -349,10 +391,10 @@ class QSerialUI(QObject):
             self.textLineTerminator = '\r'
         elif _tmp == "newline return (\\n\\r)":
             self.textLineTerminator = '\n\r'
-        elif _tmp == "return newline (\\r\\n)":
-            self.textLineTerminator = '\r\n'
+        elif _tmp == "none":
+            self.textLineTerminator = ''
         else:
-            self.textLineTerminator = '\n'
+            self.textLineTerminator = '\r\n'
         self.changeLineTerminationRequest.emit(self.textLineTerminator)
         self.logger.log(logging.INFO, "[{}]: line termination {}".format(int(QThread.currentThreadId()), repr(self.textLineTerminator)))
 
@@ -366,6 +408,10 @@ class QSerialUI(QObject):
         """
         self.serialPort = port
         self.serialBaudRate = baud
+        self.textLineTerminator = newline
+        self.encoding = encoding
+        self.serialTimeout = timeout
+        
         # adjust the combobox current item to match the current port
         try:
             if self.serialPort == "":
@@ -390,23 +436,17 @@ class QSerialUI(QObject):
         elif newline == '\n\r': _tmp = "newline return (\\n\\r)"
         else:                   _tmp = "return newline (\\r\\n)"
         try:
-            # item_count = self.ui.comboBoxDropDown_LineTermination.count()
-            # items_text = []
-            # for index in range(item_count):
-            #     text = self.ui.comboBoxDropDown_LineTermination.itemText(index)
-            #     items_text.append(text)
-            # # Now items_text contains the text of all items in the comboBox
-            # print(items_text)
             index = self.ui.comboBoxDropDown_LineTermination.findText(_tmp)
             self.ui.comboBoxDropDown_LineTermination.setCurrentIndex(index)
             self.logger.log(logging.DEBUG, "[{}]: line termination {}.".format(int(QThread.currentThreadId()),_tmp))
         except:
             self.logger.log(logging.ERROR, "[{}]: line termination not available.".format(int(QThread.currentThreadId())))
         
-        # handle timeout and encoding (not implemented as its adjusted or fixed in the code)
-        # not implemented as currently not selectable in the UI
-        # encoding is fixed to utf-8
-        # timeout is computed from baud rate and longest expected line of text
+        # handle timeout and encoding
+        #  not implemented as currently not selectable in the UI
+        #  encoding is fixed to utf-8
+        #  timeout can be computed from baud rate and longest expected line of text
+        #  however is set to zero resulting in non blocking reads
 
     @pyqtSlot(list, list)
     def on_newPortListReady(self, ports: list, portNames: list):
@@ -456,15 +496,23 @@ class QSerialUI(QObject):
             self.ui.comboBoxDropDown_BaudRates.setCurrentIndex(lenBaudRates)        
         self.ui.comboBoxDropDown_BaudRates.blockSignals(False)
 
-    @pyqtSlot(str)
-    def on_SerialReceivedText(self, text: str):
+    @pyqtSlot(bytearray)
+    def on_SerialReceivedText(self, byte_array: bytearray):
         """ 
-        Received line of text on serial port 
-        Display the line in the text display window
+        Received text () on serial port 
+        Display it in the text display window
         """
         self.logger.log(logging.DEBUG, "[{}]: text received.".format(int(QThread.currentThreadId())))
-        self.logger.log(logging.DEBUG, "[{}]: {}".format(int(QThread.currentThreadId()),text))
-        self.ui.plainTextEdit_SerialTextDisplay.appendPlainText("{}".format(text))
+        try:
+            text = byte_array.decode(self.encoding)
+            self.logger.log(logging.DEBUG, "[{}]: {}".format(int(QThread.currentThreadId()),text))
+            # Move cursor to the end of the document
+            cursor = self.ui.plainTextEdit_SerialTextDisplay.textCursor()
+            cursor.movePosition(QTextCursor.End)
+            cursor.insertText(text)
+            self.ui.plainTextEdit_SerialTextDisplay.setTextCursor(cursor)
+        except:
+            self.logger.log(logging.ERROR, "[{}]: could not decode text in {}.".format(int(QThread.currentThreadId()),repr(byte_array)))
 
     @pyqtSlot(list)
     def on_SerialReceivedLines(self, lines: list):
@@ -474,8 +522,26 @@ class QSerialUI(QObject):
         """
         self.logger.log(logging.DEBUG, "[{}]: text received.".format(int(QThread.currentThreadId())))
         for line in lines:
-            self.logger.log(logging.DEBUG, "[{}]: {}".format(int(QThread.currentThreadId()),line))
-            self.ui.plainTextEdit_SerialTextDisplay.appendPlainText("{}".format(line))
+            if NEW_READLINE:
+                self.logger.log(logging.DEBUG, "[{}]: {}".format(int(QThread.currentThreadId()),line.decode(self.encoding)))
+                self.ui.plainTextEdit_SerialTextDisplay.appendPlainText("{}".format(line))
+            else:
+                self.logger.log(logging.DEBUG, "[{}]: {}".format(int(QThread.currentThreadId()),line))
+                self.ui.plainTextEdit_SerialTextDisplay.appendPlainText("{}".format(line))
+
+    @pyqtSlot(bool)
+    def on_serialWorkerStateChanged(self, running: bool):
+        """ 
+        Serial worker was started or stopped
+        """
+        self.logger.log(logging.DEBUG, "[{}]: serial worker is {}.".format(int(QThread.currentThreadId()), "on" if running else "off"))
+        self.receiverIsRunning = running
+        if running: 
+            self.ui.pushButton_SerialStartStop.setText("Stop")
+            self.ui.pushButton_ChartStartStop.setText("Stop")
+        else:
+            self.ui.pushButton_SerialStartStop.setText("Start")
+            self.ui.pushButton_ChartStartStop.setText("Start")
 
     def on_throughputReceived(self, numReceived, numSent):
         """
@@ -483,8 +549,8 @@ class QSerialUI(QObject):
         """
         rx = numReceived - self.lastNumReceived
         tx = numSent - self.lastNumSent
-        self.rx = 0.8*self.rx + 0.2*rx # poor mans low pass
-        self.tx = 0.8*self.tx + 0.2*tx # poor mans low pass
+        self.rx = 0.5*self.rx + 0.5*rx # poor man's low pass
+        self.tx = 0.5*self.tx + 0.5*tx # poor man's low pass
         self.ui.throughput.setText("{:<5.1f} {:<5.1f} kB/s".format(self.rx/1000, self.tx/1000))
         self.lastNumReceived = numReceived
         self.lastNumSent = numSent
@@ -516,12 +582,13 @@ class QSerial(QObject):
     Serial Interface for QT
 
     Worker Signals
-        textReceived                     received one line on serial RX
+        textReceived                     received text on serial RX
         linesReceived                    received multiple lines on serial RX
         newPortListReady                 completed a port scan
         newBaudListReady                 completed a baud scan
         throughputReady                  throughput data is available
         serialStatusReady                report on port and baudrate available
+        serialWorkerStateChanged         worker started or stopped
 
     Worker Slots
         on_startReceiverRequest()        start timer that reads input port
@@ -545,19 +612,18 @@ class QSerial(QObject):
         
     # Signals
     ########################################################################################
-    textReceived      = pyqtSignal(str)                                                    # text received on serial port
-    linesReceived     = pyqtSignal(list)                                                   # lines of text received on serial port
-    newPortListReady  = pyqtSignal(list, list)                                             # updated list of serial ports is available
-    newBaudListReady  = pyqtSignal(tuple)                                                  # updated list of baudrates is available
-    serialStatusReady = pyqtSignal(str, int, str, str, float)                              # serial status is available
-    throughputReady   = pyqtSignal(int,int)                                                # number of characters received/sent on serial port
-    finished          = pyqtSignal() 
+    textReceived             = pyqtSignal(bytearray)                                       # text received on serial port
+    linesReceived            = pyqtSignal(list)                                            # lines of text received on serial port
+    newPortListReady         = pyqtSignal(list, list)                                      # updated list of serial ports is available
+    newBaudListReady         = pyqtSignal(tuple)                                           # updated list of baudrates is available
+    serialStatusReady        = pyqtSignal(str, int, str, str, float)                       # serial status is available
+    throughputReady          = pyqtSignal(int,int)                                         # number of characters received/sent on serial port
+    serialWorkerStateChanged = pyqtSignal(bool)                                            # worker started or stopped
+    finished                 = pyqtSignal() 
         
     def __init__(self, parent=None):
 
         super(QSerial, self).__init__(parent)
-
-        # debugpy.debug_this_thread()
 
         self.logger = logging.getLogger("QSerial")           
 
@@ -573,9 +639,10 @@ class QSerial(QObject):
         # Fastest serial baud rate is 5,000,000 bits per second 
         # Regular serial baud rate is   115,200 bits per second
         # Slow serial baud rate is        9,600 bits per second
-        # Transmitting one byte e.g. with 8N1 (8 data bits, no stop bit, one stop bit) might take up to 10 bits
+        # Transmitting one byte with 8N1 (8 data bits, no stop bit, one stop bit) might take up to 10 bits
         # Transmitting two int16 like "-8192, -8191\r\n" takes 14 bytes (3 times more than the actual numbers)
-        # This would result in receiving 1k lines/second with 115200 and 40k lines/second with 5,000,000        
+        # This would result in receiving 1k lines/second with 115200 and 40k lines/second with 5,000,000
+        # These numbers are now updated with function based on baud rate further below        
         self.receiverInterval          = 5                                                 # in milliseconds 
         self.receiverIntervalStandby   = 50                                                # in milliseconds
         self.readLineTimeOut           = 0                                                 # in seconds
@@ -596,7 +663,8 @@ class QSerial(QObject):
          
         Set up QTimer for throughput measurements
         """
-        # debugpy.debug_this_thread()
+        if DEBUGPY_ENABLED:
+            debugpy.debug_this_thread() # this should enable debugging of all methods QSerial methods
         
         # setup the receiver timer
         self.serialReceiverState = SerialReceiverState.stopped # initialize state machine
@@ -615,7 +683,6 @@ class QSerial(QObject):
         """
         Report throughput
         """
-        # debugpy.debug_this_thread()
         if self.PSer.ser_open:
             self.throughputReady.emit(self.PSer.totalCharsReceived, self.PSer.totalCharsSent)
         else:
@@ -627,13 +694,13 @@ class QSerial(QObject):
         Start QTimer for reading data from serial input line (RX)
         Response will need to be analyzed in the main task.
         """
-        # debugpy.debug_this_thread()
         # clear serial buffers
         self.PSer.clear()
         # start the receiver timer
         self.receiverTimer.setInterval(self.receiverIntervalStandby) 
         self.receiverTimer.start()        
         self.serialReceiverState = SerialReceiverState.awaitingData
+        self.serialWorkerStateChanged.emit(True)
         self.logger.log(logging.INFO, "[{}]: started receiver.".format(int(QThread.currentThreadId())))
 
     @pyqtSlot()
@@ -641,9 +708,9 @@ class QSerial(QObject):
         """ 
         Stop the receiver timer
         """
-        # debugpy.debug_this_thread()
         self.receiverTimer.stop()
         self.serialReceiverState = SerialReceiverState.stopped
+        self.serialWorkerStateChanged.emit(False)
         self.logger.log(logging.INFO, "[{}]: stopped receiver.".format(int(QThread.currentThreadId())))
 
     @pyqtSlot()
@@ -651,7 +718,6 @@ class QSerial(QObject):
         """ 
         Stop QTimer for reading through put from PSer)
         """
-        # debugpy.debug_this_thread()
         self.throughputTimer.start()
         self.logger.log(logging.INFO, "[{}]: started throughput timer.".format(int(QThread.currentThreadId())))
 
@@ -660,7 +726,6 @@ class QSerial(QObject):
         """ 
         Stop QTimer for reading through put from PSer)
         """
-        # debugpy.debug_this_thread()
         self.throughputTimer.stop()
         self.logger.log(logging.INFO, "[{}]: stopped throughput timer.".format(int(QThread.currentThreadId())))
 
@@ -669,63 +734,40 @@ class QSerial(QObject):
         """ 
         Reading lines of text from serial RX 
         """
-        debugpy.debug_this_thread()
         if (self.serialReceiverState != SerialReceiverState.stopped):
             startTime = time.perf_counter()
-            lines = self.PSer.readlines() # read lines until buffer empty
-            endTime = time.perf_counter()
             
-            if lines: 
-                self.logger.log(logging.DEBUG, "[{}]: {} lines {:.3f} [ms] per line.".format(int(QThread.currentThreadId()),len(lines), 1000*(endTime-startTime)/len(lines)))
-                if self.serialReceiverState == SerialReceiverState.awaitingData:
-                    self.receiverTimer.setInterval(self.receiverInterval)
-                    self.serialReceiverState == SerialReceiverState.receivingData
-                self.linesReceived.emit(lines)
+            # check if end of line handling is wanted
+            if self.PSer.newline != "": 
+                # use the sio interface and handle line termination
+                lines = self.PSer.readlines() # read lines until buffer empty
+                endTime = time.perf_counter()
+                
+                if lines: 
+                    self.logger.log(logging.DEBUG, "[{}]: {} lines {:.3f} [ms] per line.".format(int(QThread.currentThreadId()),len(lines), 1000*(endTime-startTime)/len(lines)))
+                    if self.serialReceiverState == SerialReceiverState.awaitingData:
+                        self.receiverTimer.setInterval(self.receiverInterval)
+                        self.serialReceiverState == SerialReceiverState.receivingData
+                    self.linesReceived.emit(lines)
+
+                else:
+                    if self.serialReceiverState == SerialReceiverState.receivingData:
+                        self.serialReceiverCountDown += 1
+                        if self.serialReceiverCountDown >= RECEIVER_FINISHCOUNT:    
+                            # switch to awaiting data
+                            self.serialReceiverState = SerialReceiverState.awaitingData
+                            # slow down timer
+                            self.receiverTimer.setInterval(self.receiverIntervalStandby)
+                            self.serialReceiverCountDown = 0
+                            self.logger.log(logging.DEBUG, "[{}]: receiving finished, set slower update rate.".format(int(QThread.currentThreadId())))
 
             else:
-                if self.serialReceiverState == SerialReceiverState.receivingData:
-                    self.serialReceiverCountDown += 1
-                    if self.serialReceiverCountDown >= RECEIVER_FINISHCOUNT:    
-                        # switch to awaiting data
-                        self.serialReceiverState = SerialReceiverState.awaitingData
-                        # slow down timer
-                        self.receiverTimer.setInterval(self.receiverIntervalStandby)
-                        self.serialReceiverCountDown = 0
-
-        # if self.ser.ser_open and (self.serialReceiverState != SerialReceiverState.stopped):
-
-        #     # update states
-        #     avail = self.ser.avail()
-        #     if avail > 0:
-        #         # switch to receiving data
-        #         self.logger.log(logging.DEBUG, "[{}]: checking input, {} chars available.".format(int(QThread.currentThreadId()),avail))
-        #         self.serialReceiverState = SerialReceiverState.receivingData
-        #         self.receiverTimer.setInterval(self.receiverInterval)
-        #     else:
-        #         # not receiving data
-        #         if self.serialReceiverState == SerialReceiverState.receivingData:
-        #             # we  try a few more times then switch to slower awaiting mode
-        #             self.serialReceiverCountDown += 1
-        #             if self.serialReceiverCountDown >= RECEIVER_FINISHCOUNT:    
-        #                 # switch to awaiting data
-        #                 self.serialReceiverState = SerialReceiverState.awaitingData
-        #                 self.receiverTimer.setInterval(self.receiverIntervalStandby)
-        #                 self.serialReceiverCountDown = 0
-
-        #     if self.serialReceiverState == SerialReceiverState.receivingData:
-        #         # receiving data
-        #         while avail > 0:
-        #             # startTime = time.perf_counter()
-        #             line = self.ser.readline(eol_chars=self.textLineTerminator, timeout=self.readLineTimeOut, encoding='utf-8')
-        #             # endTime = time.perf_counter()
-        #             # up to here takes 0.0034 to 0.0054 secs
-        #             self.logger.log(logging.DEBUG, "[{}]: {}".format(int(QThread.currentThreadId()),line))
-        #             if line != None: self.textReceived.emit(line)
-        #             # endTime = time.perf_counter()
-        #             # up to here takes 0.0035 to 0.0053 secs
-        #             avail = self.ser.avail()
-        #             # self.logger.log(logging.INFO, "[{}]: serial data available {}, toc-tic: {}.".format(int(QThread.currentThreadId()),avail,(endTime-startTime)))
-
+                # use the ser interface directly
+                byte_array = self.PSer.read()
+                endTime = time.perf_counter()
+                self.logger.log(logging.DEBUG, "[{}]: {} bytes {:.3f} [ms] per line.".format(int(QThread.currentThreadId()),len(byte_array), 1000*(endTime-startTime)/len(byte_array)))
+                self.textReceived.emit(byte_array)
+        
         else:
             self.logger.log(logging.ERROR, "[{}]: checking input, receiver is stopped or port is not open.".format(int(QThread.currentThreadId())))
 
@@ -737,8 +779,8 @@ class QSerial(QObject):
         Worker received request to stop
         We want to stop QTimer and close serial port and then let subscribers know that serial worker is no longer available
         """
-        # debugpy.debug_this_thread()
         self.receiverTimer.stop()
+        self.serialWorkerStateChanged.emit(False)
         self.PSer.close() # close sio and ser
         self.serialPort = ""
         self.serialBaudRate = -1
@@ -750,9 +792,8 @@ class QSerial(QObject):
         """ 
         Request to transmit text to serial TX line 
         """
-        # debugpy.debug_this_thread()
         if self.PSer.ser_open:
-            res = self.PSer.write(text, encoding='utf-8')
+            res = self.PSer.write(text.encode(self.PSer.encoding))
             self.logger.log(logging.DEBUG, "[{}]: transmitted \"{}\" [{}].".format(int(QThread.currentThreadId()),text, res))
         else:
             self.logger.log(logging.ERROR, "[{}]: tx, port not opened.".format(int(QThread.currentThreadId())))
@@ -763,7 +804,6 @@ class QSerial(QObject):
         Request to transmit a line of text to serial TX line 
         Terminate the text with eol characters.
         """
-        # debugpy.debug_this_thread()
         if self.PSer.ser_open:
             res = self.PSer.writeline(text)
             self.logger.log(logging.DEBUG, "[{}]: transmitted \"{}\" [{}].".format(int(QThread.currentThreadId()),text, res))
@@ -775,11 +815,31 @@ class QSerial(QObject):
         """ 
         Request to transmit multiple lines of text to serial TX line
         """
-        # debugpy.debug_this_thread()
         if self.PSer.ser_open:
             for text in lines:
                 res = self.PSer.writeline(text)
                 self.logger.log(logging.DEBUG, "[{}]: transmitted \"{}\" [{}].".format(int(QThread.currentThreadId()),text, res))
+        else:
+            self.logger.log(logging.ERROR, "[{}]: tx, port not opened.".format(int(QThread.currentThreadId())))
+
+    @pyqtSlot(str)
+    def on_sendFileRequest(self, fname: str):
+        """ 
+        Request to transmit file to serial TX line 
+        """
+        if DEBUGPY_ENABLED: debugpy.debug_this_thread()
+        
+        if self.PSer.ser_open:
+            if fname:
+                with open(fname, 'rb') as f: # open file in binary read mode
+                    try: 
+                        file_content = f.read()
+                        res = self.PSer.write(file_content)
+                        self.logger.log(logging.DEBUG, "[{}]: transmitted \"{}\" [{}].".format(int(QThread.currentThreadId()),fname, res))
+                    except:
+                        self.logger.log(logging.ERROR, "[{}]: error transmitting \"{}\".".format(int(QThread.currentThreadId()),fname))
+            else:
+                self.logger.log(logging.WARNING, "[{}]: no file name provided.".format(int(QThread.currentThreadId())))        
         else:
             self.logger.log(logging.ERROR, "[{}]: tx, port not opened.".format(int(QThread.currentThreadId())))
 
@@ -788,11 +848,10 @@ class QSerial(QObject):
         """ 
         Request to change port received 
         """
-        #debugpy.debug_this_thread()
         self.PSer.close()
         if port != "":
             readLineTimeOut, receiverInterval, receiverIntervalStandby = compute_timeouts(baud)
-            if self.PSer.open(port=port, baud=baud, lineTerminator=self.textLineTerminator, encoding='utf-8', timeout=readLineTimeOut):
+            if self.PSer.open(port=port, baud=baud, lineTerminator=self.textLineTerminator, encoding=self.PSer.encoding, timeout=readLineTimeOut):
                 self.serialPort = port
                 self.serialBaudRate = baud
                 self.readLineTimeOut = readLineTimeOut
@@ -806,11 +865,7 @@ class QSerial(QObject):
     def on_closePortRequest(self):
         """ 
         Request to close port received 
-
-        stop timer
-        close port
         """
-        # debugpy.debug_this_thread()
         self.PSer.close()
 
     @pyqtSlot(int)
@@ -818,14 +873,13 @@ class QSerial(QObject):
         """ 
         New baudrate received 
         """
-        #debugpy.debug_this_thread()
         if (baud is None) or (baud <= 0):
             self.logger.log(logging.WARNING, "[{}]: range error, baudrate not changed to {},".format(int(QThread.currentThreadId()), baud))
         else:                
             readLineTimeOut, receiverInterval, receiverIntervalStandby = compute_timeouts(baud)    
             if self.PSer.ser_open:
                 if self.serialBaudRates.index(baud) >= 0: # check if baud rate is available by searching for its index in the baud rate list
-                    self.PSer.changeport(self.PSer.port, baud, lineTerminator=self.textLineTerminator, encoding='utf-8', timeout=readLineTimeOut)
+                    self.PSer.changeport(self.PSer.port, baud, lineTerminator=self.textLineTerminator, encoding=self.PSer.encoding, timeout=readLineTimeOut)
                     if self.PSer.baud == baud: # check if new value matches desired value
                         self.readLineTimeOut = readLineTimeOut
                         self.serialBaudRate = baud  # update local variable
@@ -842,16 +896,16 @@ class QSerial(QObject):
                 self.logger.log(logging.ERROR, "[{}]: failed to set baudrate, serial port not open!".format(int(QThread.currentThreadId())))
             
     @pyqtSlot(str)
-    def on_changeLineTerminationRequest(self, lineTermination='\r\n'):
+    def on_changeLineTerminationRequest(self, lineTermination: str):
         """ 
         New LineTermination received
         """
-        # debugpy.debug_this_thread()
         if (lineTermination is None):
             self.logger.log(logging.WARNING, "[{}]: line termination not changed, line termination string not provided.".format(int(QThread.currentThreadId())))
             return
         else:            
             self.PSer.newline = lineTermination
+            self.textLineTerminator = lineTermination
             self.logger.log(logging.INFO, "[{}]: changed line termination to {}.".format(int(QThread.currentThreadId()), repr(self.textLineTerminator)))
 
     @pyqtSlot()
@@ -859,7 +913,6 @@ class QSerial(QObject):
         """ 
         Request to scan for serial ports received 
         """            
-        # debugpy.debug_this_thread()
         if self.PSer.scanports() > 0 :
             self.serialPorts =     [sublist[0] for sublist in self.PSer.ports]
             self.serialPortNames = [sublist[1] for sublist in self.PSer.ports]
@@ -874,7 +927,6 @@ class QSerial(QObject):
         """ 
         Request to report serial baud rates received 
         """
-        # debugpy.debug_this_thread()
         if self.PSer.ser_open:
             self.serialBaudRates = self.PSer.baudrates
         else:
@@ -890,7 +942,6 @@ class QSerial(QObject):
         """ 
         Request to report serial port and baudrate received
         """
-        # debugpy.debug_this_thread()
         self.logger.log(logging.INFO, "[{}]: provided serial status".format(int(QThread.currentThreadId())))
         if self.PSer.ser_open:
             self.serialStatusReady.emit(self.PSer.port, self.PSer.baud, self.PSer.newline, self.PSer.encoding, self.PSer.timeout)
@@ -900,18 +951,18 @@ class QSerial(QObject):
 def compute_timeouts(baud: int):
     # Set timeout to the amount of time it takes to receive the shortest expected line of text
     # integer '123/n/r' 5 bytes, which is at least 45 serial bits
-    # readLineTimeOut = 40 / baud [s] is very small and we should imply make it non blocking (zero)
+    # readLineTimeOut = 40 / baud [s] is very small and we should imply make it by just setting it to zero (non blocking)
     readLineTimeOut = 0 # make it non blocking        
     
     # Set the QTimer interval so that each call we get a couple of lines
     # lets assume we receive 4 integers in one line, this is approx 32 bytes, 10 serial bits per byte
-    # lets request 4 lines per call
-    receiverInterval  = ceil(4 * 32 * 10 / baud * 1000)  # in milliseconds
+    # lets request NUM_LINES_COLLATE lines per call 
+    receiverInterval  = ceil(NUM_LINES_COLLATE * 32 * 10 / baud * 1000)  # in milliseconds
     # check serial should occur no more than 200 times per second no less than 10 times per second
     if receiverInterval < 5: receiverInterval = 5 # set maximum to 200 Hz
-    receiverIntervalStandby  = 10 * receiverInterval
-    if receiverIntervalStandby > 100: 
-        receiverIntervalStandby = 100 # set minim to 10Hz
+    receiverIntervalStandby  = 10 * receiverInterval # make standby 10 times slower
+    if receiverIntervalStandby > 100: # 
+        receiverIntervalStandby = 100 # but check at least 10 times per second
     
     return readLineTimeOut, receiverInterval, receiverIntervalStandby
 
@@ -926,14 +977,16 @@ class PSerial():
     """
     
     def __init__(self):
-        # debugpy.debug_this_thread()
+        if DEBUGPY_ENABLED:
+            debugpy.debug_this_thread() # this should enable debugging of all PSerial methods
+            
         self.logger = logging.getLogger("PSerial")           
         self.ser = None
         self.sio = None
         self._port = ""
         self._baud = -1
         self._newline = ""
-        self._encoding = ""
+        self._encoding = "utf-8"
         self._timeout = -1
         self.ser_open = False
         self.sio_open = False
@@ -948,16 +1001,14 @@ class PSerial():
         """ 
         scans for all available ports 
         """
-        # debugpy.debug_this_thread()
         self._ports = [
             [p.device, p.description]
             for p in list_ports.comports()
         ]
         return len(self._ports)
 
-    def open(self, port: str, baud: int, lineTerminator: str, encoding='utf-8', timeout: float= 0.05) -> bool:
+    def open(self, port: str, baud: int, lineTerminator: str, encoding, timeout: float) -> bool:
         """ open specified port """
-        #debugpy.debug_this_thread()
         try:       
             self.ser = sp(
                 port = port,                    # the serial device
@@ -966,7 +1017,7 @@ class PSerial():
                 parity = PARITY_NONE,           # most common option
                 stopbits = STOPBITS_ONE,        # most common option
                 timeout = timeout,              # wait until requested characters are received on read request or timeout occurs
-                write_timeout = None,           # wait until requested characters are sent
+                write_timeout = timeout,        # wait until requested characters are sent
                 inter_byte_timeout = None,      # disable inter character timeout
                 rtscts = False,                 # do not use 'request to send' and 'clear to send' handshaking
                 dsrdtr = False,                 # dont want 'data set ready' signaling
@@ -1003,21 +1054,26 @@ class PSerial():
                 self.sio = None
                 self.sio_open = False
                 self._newline = ""
-                self._encoding = ""
+                self._encoding = encoding
                 self.logger.log(logging.DEBUG, "[SIO {}]: could not open.".format(int(QThread.currentThreadId())))
                 return False
             else:
                 return True
         
     def close(self):
-        """ closes serial port """
-        # debugpy.debug_this_thread()
+        """ 
+        closes serial port 
+        
+        we have issue in closing textIOwrapped serial port
+        somehow it claims to be already closed
+        """
         if (self.sio is not None):
             # close the port
             try: 
                 self.sio.close()
             except:
-                self.logger.log(logging.ERROR, "[SIO {}]: failed to complete closure.".format(int(QThread.currentThreadId())))
+                # self.logger.log(logging.ERROR, "[SIO {}]: failed to complete closure.".format(int(QThread.currentThreadId())))
+                pass
         self.logger.log(logging.INFO, "[SIO {}]: closed.".format(int(QThread.currentThreadId())))
         self.sio_open = False
         
@@ -1029,136 +1085,239 @@ class PSerial():
                 self.ser.reset_output_buffer()
                 self.ser.close()
             except:
-                self.logger.log(logging.ERROR, "[SER {}]: failed to complete closure.".format(int(QThread.currentThreadId())))                      
+                # self.logger.log(logging.ERROR, "[SER {}]: failed to complete closure.".format(int(QThread.currentThreadId())))                      
+                pass
             self._port = ""
         self.logger.log(logging.INFO, "[SER {}]: closed.".format(int(QThread.currentThreadId())))
         self.ser_open = False
             
-    def changeport(self, port: str, baud: int, lineTerminator: bytes, encoding: str = 'utf-8', timeout: float= 0.05):
+    def changeport(self, port: str, baud: int, lineTerminator: bytes, encoding: str, timeout: float):
         """ switch to different port """
-        # debugpy.debug_this_thread()
         self.close()
         self.open(port=port, baud=baud, lineTerminator=lineTerminator, encoding=encoding, timeout=timeout ) # open also clears the buffers
         self.logger.log(logging.DEBUG, "[SER {}]: changed port to {} with baud {}, eol {} and encoding {}".format(int(QThread.currentThreadId()),port,baud,repr(lineTerminator),encoding))
     
-    def read(self) -> bytes:
+    def read(self) -> bytearray:
         """ reads serial buffer until empty """
-        # debugpy.debug_this_thread()
-        binaryArray = bytearray()
+        byte_array = bytearray()
         startTime = time.perf_counter()
         maxTime = startTime + 0.1 # dont spend more than 100ms on reading
         while True:
             bytes_to_read = self.ser.in_waiting
             if bytes_to_read:
-                binaryArray += self.ser.read(bytes_to_read)
+                byte_array += self.ser.read(bytes_to_read)
                 self.totalCharsReceived += bytes_to_read
             else:
+                self.logger.log(logging.DEBUG, "[SER {}]: end of read, buffer empty.".format(int(QThread.currentThreadId())))
                 break
             if time.perf_counter() >= maxTime: 
+                self.logger.log(logging.DEBUG, "[SER {}]: end of read, timeout.".format(int(QThread.currentThreadId())))
                 break
-        return binaryArray
+        return byte_array
 
     def readlines(self) -> list:
         """ 
         reads lines of text until no more lines available
         
-        the textIOWrapper readline() function will return partial lines when serial timeout is 0 (non blocking) 
-        a line includes the line termination characters
+        !!! This implementation creates up to 100% CPU load.
+        !!! It will need to be rewritten to use a byte array and split it by line termination characters and deal with partial lines received.
+        
+        The textIOWrapper readline() function will return partial lines when serial timeout is 0 (non blocking) 
+        since a complete line includes the line termination characters we can handle partial lines
+        
+        We still have issues with occasionally receiving empty lines and lines appear to contain numbers merged from two lines
+        not sure how to fix this
+        
+        byte_array.split(b'\n\r')
+        
+        use rfind method to find last delimiter to separate partial lines
+        
+        
+        def find_all_occurrences(byte_array, pattern):
+            start = 0
+            while True:
+                index = byte_array.find(pattern, start)
+                if index == -1:
+                    return
+                yield index
+                start = index + len(pattern)
+
+        def split_bytearray(data, separator=b'\r\n'):
+            lines = []
+            start = 0
+
+            while True:
+                # Find the separator
+                index = data.find(separator, start)
+
+                # No more separators found, break the loop
+                if index == -1:
+                    break
+
+                # Extract the line and add to the list
+                line = data[start:index]
+                lines.append(line)
+
+                # Move the start index past this separator
+                start = index + len(separator)
+
+            # Add the remaining data as the last line if it's not empty
+            if start < len(data):
+                lines.append(data[start:])
+
+            return lines
+                    
         """
-        # debugpy.debug_this_thread()
-        lines = []        
-        startTime = time.perf_counter()
-        maxTime = startTime + 0.1 # dont spend more than 100ms on reading to keep system responsive
-        while True:        
-            line = self.sio.readline()
-            self.totalCharsReceived += len(line)
-            if line:
-                if line.endswith(self._newline):
-                    if self.havePartialLine: 
-                        line = self.partialLine + line # concatenate partial line from previous reading with current reading
-                        self.havePartialLine = False
-                    lines.append(line.rstrip('\r\n')) # add line to and remove any line termination characters
-                else:
-                    self.partialLine = line # save partial line
-                    self.havePartialLine = True
-            else:
-                break
-            if time.perf_counter() >= maxTime: 
-                break
-        endTime = time.perf_counter()
-        self.logger.log(logging.DEBUG, "[SER {}]: tic toc {}.".format(int(QThread.currentThreadId()), endTime-startTime))
-        return lines
-    
-    def readline(self) -> str:
-        """ reads a line of text """
-        # debugpy.debug_this_thread()
-        startTime = time.perf_counter()
-        _line = self.sio.readline()
-        self.totalCharsReceived += len(line)
-        if _line:
-            if _line.endswith(self._newline):
-                if self.havePartialLine: 
-                    line = self.partialLine + _line # concatenate partial line from previous reading with current reading
-                    self.havePartialLine = False
-                else:
-                    line = _line
-            else:
-                self.partialLine = _line # save partial line
+        if NEW_READLINE:
+            # 1. read all bytes from the serial buffer
+            # 2. find the right most location of the line termination characters
+            # 3. if location has been found 
+            #    3.1 split the byte array into lines
+            #    3.2 if there was previous a partial line add it to the first line
+            #    3.3 if there is a remainder after the last delimiter make it the new partial line
+            # 4. if no location has been found add the byte_array to the partial line array
+            
+            lines = []        
+            startTime = time.perf_counter()
+            byte_array = self.read()
+            idx = byte_array.rfind(self.newline)
+            if idx == -1:
+                # no delimiter found
+                self.partialLine += byte_array
                 self.havePartialLine = True
-                line = ""
-        endTime = time.perf_counter()
-        self.logger.log(logging.DEBUG, "[SER {}]: tic toc {}, line {}.".format(int(QThread.currentThreadId()), endTime-startTime,  line))
-        return line.rstrip('\r\n')
-
-
-        # line = bytearray()
-        # end_time = time.time() + timeout
-        # eol_len = len(eol_chars)
-
-        # self.logger.log(logging.DEBUG, "[SER {}]: eol {} timeout {} [s].".format(int(QThread.currentThreadId()), repr(eol_chars), timeout))
-
-        # while time.time() < end_time:
-        #     c = self.ser.read(1)
-        #     if c:
-        #         line += c
-        #         if line[-eol_len:] == eol_chars:
-        #             try:
-        #                 decoded_text = line[:-eol_len].decode(encoding) # Strip EOL characters from end of line 
-        #             except UnicodeDecodeError:
-        #                 decoded_text = None  # or handle it in a way that makes sense for your application
+            else:
+                # delimiter found
+                lines = byte_array.split(self.newline)
+                if self.havePartialLine:
+                    lines[0] = self.partialLine + lines[0] # merge previous end of line with first line
+                    self.havePartialLine = False # clear partial line flag
+                    self.partialLine = b'' # clear partial line
+                # check remaining part of the byte_array
+                e = idx + len(self.newline) 
+                if e != len(byte_array):
+                    # we have remainder, lets put it into the partial line
+                    self.partialLine = byte_array[e:]
+            endTime = time.perf_counter()
+            self.logger.log(logging.DEBUG, "[SER {}]: tic toc {}.".format(int(QThread.currentThreadId()), endTime-startTime))
+            return lines
+                        
+        else:            
+            lines = []        
+            startTime = time.perf_counter()
+            maxTime = startTime + 0.1 # dont spend more than 100ms on reading to keep system responsive
+            while True:        
+                line = self.sio.readline()
+                self.totalCharsReceived += len(line)
+                if line:
+                    if line.endswith(self._newline):
+                        if self.havePartialLine: 
+                            line = self.partialLine + line # concatenate partial line from previous reading with current reading
+                            self.havePartialLine = False
+                        lines.append(line.rstrip('\r\n')) # add line to and remove any line termination characters
+                    else:
+                        self.partialLine = line # save partial line
+                        self.havePartialLine = True
+                else:
+                    break
+                if time.perf_counter() >= maxTime: 
+                    break
+            endTime = time.perf_counter()
+            self.logger.log(logging.DEBUG, "[SER {}]: tic toc {}.".format(int(QThread.currentThreadId()), endTime-startTime))
+            return lines
+    
+    def readline(self) -> bytearray:
+        """ 
+        reads a line of text 
         
-        #             endTime = time.perf_counter()
-        #             self.logger.log(logging.DEBUG, "[SER {}]: tic toc {}, line {}.".format(int(QThread.currentThreadId()), endTime-startTime,  repr(line)))
-        #             # 0.00013 to 0.00016 secs        
-        #             return decoded_text
-        #     else:
-        #         break  # Timeout or other read issue
+        !!! This will need to be rewritten to use a byte array and split it by line termination characters and deal with partial lines received.
+        self.ser. read_until(self.newline) will include self.newline in the returned string
+        """
+        if NEW_READLINE:
+            startTime = time.perf_counter()
+            _line = self.ser.read_until(self.newline)
+            self.totalCharsReceived += len(_line)
+            if _line:
+                if _line.endswith(self.newline):
+                    # dont have partial line
+                    if self.havePartialLine: 
+                        line = self.partialLine + _line # concatenate partial line from previous reading with current reading
+                        self.havePartialLine = False
+                        self.partialLine = b''
+                    else:
+                        line = _line
+                else:
+                    # have partial line
+                    self.partialLine = _line # save partial line
+                    self.havePartialLine = True
+                    line = b''
+            endTime = time.perf_counter()
+            self.logger.log(logging.DEBUG, "[SER {}]: tic toc {}, line {}.".format(int(QThread.currentThreadId()), endTime-startTime,  repr(line)))
+            return line.rstrip(self.newline)
+        
+        else:
+            startTime = time.perf_counter()
+            _line = self.sio.readline()
+            self.totalCharsReceived += len(_line)
+            if _line:
+                if _line.endswith(self._newline):
+                    if self.havePartialLine: 
+                        line = self.partialLine + _line # concatenate partial line from previous reading with current reading
+                        self.havePartialLine = False
+                    else:
+                        line = _line
+                else:
+                    self.partialLine = _line # save partial line
+                    self.havePartialLine = True
+                    line = ""
+            endTime = time.perf_counter()
+            self.logger.log(logging.DEBUG, "[SER {}]: tic toc {}, line {}.".format(int(QThread.currentThreadId()), endTime-startTime,  line))
+            return line.rstrip(self.newline)
 
-        # try:
-        #     decoded_text = line.decode(encoding) # Return all characters read so far as there was no EOL found
-        # except UnicodeDecodeError:
-        #     decoded_text = None  # or handle it in a way that makes sense for your application
-
-        # endTime = time.perf_counter()
-        # self.logger.log(logging.DEBUG, "[SER {}]: tic toc {}, line {}.".format(int(QThread.currentThreadId()), endTime-startTime,  repr(line)))
-        # return decoded_text
-
-    # def writeline(self, text, eol_chars=b'\r\n', encoding='utf-8') -> int:
-    def writeline(self, text) -> int:
+    def writeline(self, text: str) -> int:
         """ sends a line of text """
-        # debugpy.debug_this_thread()
-        len = self.sio.write(text)
-        self.sio.flush()
-        return len 
+        if DEBUGPY_ENABLED: debugpy.debug_this_thread()
+        l = 0
+        try:
+            self.sio.write(text)
+            l = len(text)
+            self.totalCharsSent += l
+        except:
+            self.logger.log(logging.ERROR, "[SIO {}]: failed to write with timeout {}.".format(int(QThread.currentThreadId()), self.timeout ))
+        self.logger.log(logging.DEBUG, "[SIO {}]: wrote {} chars.".format(int(QThread.currentThreadId()), l))
+        return l 
+
+    def writelines(self, lines: list) -> int:
+        """ sends several lines of text """
+        if DEBUGPY_ENABLED: debugpy.debug_this_thread()
+        l = 0
+        for line in lines:
+            try:
+                self.sio.write(line)
+                _l = len(line)
+                self.totalCharsSent += _l
+                l += _l
+            except:
+                self.logger.log(logging.ERROR, "[SIO {}]: failed to write with timeout {}.".format(int(QThread.currentThreadId()), self.timeout ))
+                return l
+        self.logger.log(logging.DEBUG, "[SIO {}]: wrote {} chars.".format(int(QThread.currentThreadId()), l))
+        return l
         
-    def write(self, binaryArray: bytes) -> int:
-        """ sends byte array """
-        # debugpy.debug_this_thread()
-        return self.ser.write(binaryArray)
+    def write(self, b: bytes) -> int:
+        """ sends an array of bytes """
+        if DEBUGPY_ENABLED: debugpy.debug_this_thread()
+        l = 0
+        try:
+            l = self.ser.write(b)
+        except:
+            self.logger.log(logging.ERROR, "[SER {}]: failed to write with timeout {}.".format(int(QThread.currentThreadId()), self.timeout ))
+            return l
+
+        self.totalCharsSent += l
+        self.logger.log(logging.DEBUG, "[SER {}]: wrote {} bytes.".format(int(QThread.currentThreadId()), l))
+        return l
 
     def avail(self) -> int:
         """ is there data in the serial receiving buffer? """
-        # debugpy.debug_this_thread()
         if self.ser is not None:
             return self.ser.in_waiting
         else:
@@ -1169,7 +1328,6 @@ class PSerial():
         clear serial buffers
         we want to clear not flush
         """
-        # debugpy.debug_this_thread()
         if self.ser is not None:
             self.ser.reset_input_buffer()
             self.ser.reset_output_buffer()
@@ -1248,20 +1406,19 @@ class PSerial():
     @property
     def newline(self):
         """ returns current line termination """
-        if self.ser_open: return self._newline
-        else: return ""
-
+        return self._newline
+        
     @newline.setter
     def newline(self, val):
         """ sets serial ioWrapper line termination """
-        if (val is None) or (val == ""):
+        if (val is None):
             self.logger.log(logging.WARNING, "[SER {}]: newline not changed, need to provide string.".format(int(QThread.currentThreadId())))
             return
         if self.sio_open:
-            self.sio.reconfigure(newline = val)
+            if val != "": 
+                self.sio.reconfigure(newline = val)
             self._newline = val
             self.logger.log(logging.DEBUG, "[SER {}]: newline:{}.".format(int(QThread.currentThreadId()), repr(val)))
-
         else:
             self._newline = ""
             self.logger.log(logging.ERROR, "[SER {}]: failed to set line termination, serial ioWrapper not open!".format(int(QThread.currentThreadId())))

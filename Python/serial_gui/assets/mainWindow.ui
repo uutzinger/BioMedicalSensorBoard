@@ -82,7 +82,7 @@
        </font>
       </property>
       <property name="text">
-       <string>Send</string>
+       <string>Send File</string>
       </property>
       <property name="autoDefault">
        <bool>false</bool>
@@ -240,7 +240,7 @@
       </item>
       <item>
        <property name="text">
-        <string>newline return (\n\r)</string>
+        <string>none</string>
        </property>
       </item>
      </widget>
@@ -421,7 +421,7 @@
      <widget class="QComboBox" name="comboBoxDropDown_DataSeparator">
       <property name="geometry">
        <rect>
-        <x>400</x>
+        <x>370</x>
         <y>500</y>
         <width>81</width>
         <height>31</height>
@@ -475,7 +475,7 @@
      <x>0</x>
      <y>0</y>
      <width>1200</width>
-     <height>26</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuInfo">
