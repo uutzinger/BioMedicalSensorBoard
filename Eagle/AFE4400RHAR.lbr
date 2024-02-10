@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE eagle SYSTEM "eagle.dtd">
+<eagle version="9.6.2">
+<drawing>
+<settings>
+<setting alwaysvectorfont="no"/>
+<setting keepoldvectorfont="yes"/>
+<setting verticaltext="up"/>
+</settings>
+<grid distance="50" unitdist="mil" unit="mil" style="lines" multiple="1" display="no" altdistance="5" altunitdist="mil" altunit="mil"/>
+<layers>
+<layer number="1" name="Top" color="4" fill="1" visible="yes" active="yes"/>
+<layer number="16" name="Bottom" color="1" fill="1" visible="yes" active="yes"/>
+<layer number="17" name="Pads" color="2" fill="1" visible="yes" active="yes"/>
+<layer number="18" name="Vias" color="2" fill="1" visible="yes" active="yes"/>
+<layer number="19" name="Unrouted" color="6" fill="1" visible="yes" active="yes"/>
+<layer number="20" name="Dimension" color="15" fill="1" visible="yes" active="yes"/>
+<layer number="21" name="tPlace" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="22" name="bPlace" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="23" name="tOrigins" color="15" fill="1" visible="yes" active="yes"/>
+<layer number="24" name="bOrigins" color="15" fill="1" visible="yes" active="yes"/>
+<layer number="25" name="tNames" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="26" name="bNames" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="27" name="tValues" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="28" name="bValues" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="29" name="tStop" color="7" fill="3" visible="no" active="yes"/>
+<layer number="30" name="bStop" color="7" fill="6" visible="no" active="yes"/>
+<layer number="31" name="tCream" color="7" fill="4" visible="no" active="yes"/>
+<layer number="32" name="bCream" color="7" fill="5" visible="no" active="yes"/>
+<layer number="33" name="tFinish" color="6" fill="3" visible="no" active="yes"/>
+<layer number="34" name="bFinish" color="6" fill="6" visible="no" active="yes"/>
+<layer number="35" name="tGlue" color="7" fill="4" visible="no" active="yes"/>
+<layer number="36" name="bGlue" color="7" fill="5" visible="no" active="yes"/>
+<layer number="37" name="tTest" color="7" fill="1" visible="no" active="yes"/>
+<layer number="38" name="bTest" color="7" fill="1" visible="no" active="yes"/>
+<layer number="39" name="tKeepout" color="4" fill="11" visible="yes" active="yes"/>
+<layer number="40" name="bKeepout" color="1" fill="11" visible="yes" active="yes"/>
+<layer number="41" name="tRestrict" color="4" fill="10" visible="yes" active="yes"/>
+<layer number="42" name="bRestrict" color="1" fill="10" visible="yes" active="yes"/>
+<layer number="43" name="vRestrict" color="2" fill="10" visible="yes" active="yes"/>
+<layer number="44" name="Drills" color="7" fill="1" visible="no" active="yes"/>
+<layer number="45" name="Holes" color="7" fill="1" visible="no" active="yes"/>
+<layer number="46" name="Milling" color="3" fill="1" visible="no" active="yes"/>
+<layer number="47" name="Measures" color="7" fill="1" visible="no" active="yes"/>
+<layer number="48" name="Document" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="49" name="Reference" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="51" name="tDocu" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="52" name="bDocu" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="90" name="Modules" color="5" fill="1" visible="yes" active="yes"/>
+<layer number="91" name="Nets" color="2" fill="1" visible="yes" active="yes"/>
+<layer number="92" name="Busses" color="1" fill="1" visible="yes" active="yes"/>
+<layer number="93" name="Pins" color="2" fill="1" visible="no" active="yes"/>
+<layer number="94" name="Symbols" color="4" fill="1" visible="yes" active="yes"/>
+<layer number="95" name="Names" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="96" name="Values" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="97" name="Info" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="98" name="Guide" color="6" fill="1" visible="yes" active="yes"/>
+</layers>
+<library>
+<description>&lt;Integrated Analog Front End (AFE) for Heart-Rate Monitors and Low-Cost Pulse Oximeters&lt;/b&gt;&lt;p&gt;
+&lt;author&gt;Created by SamacSys&lt;/author&gt;</description>
+<packages>
+<package name="QFN50P600X600X100-41N">
+<description>&lt;b&gt;Rha (s-pvqfn-n40)&lt;/b&gt;&lt;br&gt;
+</description>
+<smd name="1" x="-2.95" y="2.25" dx="0.9" dy="0.3" layer="1"/>
+<smd name="2" x="-2.95" y="1.75" dx="0.9" dy="0.3" layer="1"/>
+<smd name="3" x="-2.95" y="1.25" dx="0.9" dy="0.3" layer="1"/>
+<smd name="4" x="-2.95" y="0.75" dx="0.9" dy="0.3" layer="1"/>
+<smd name="5" x="-2.95" y="0.25" dx="0.9" dy="0.3" layer="1"/>
+<smd name="6" x="-2.95" y="-0.25" dx="0.9" dy="0.3" layer="1"/>
+<smd name="7" x="-2.95" y="-0.75" dx="0.9" dy="0.3" layer="1"/>
+<smd name="8" x="-2.95" y="-1.25" dx="0.9" dy="0.3" layer="1"/>
+<smd name="9" x="-2.95" y="-1.75" dx="0.9" dy="0.3" layer="1"/>
+<smd name="10" x="-2.95" y="-2.25" dx="0.9" dy="0.3" layer="1"/>
+<smd name="11" x="-2.25" y="-2.95" dx="0.9" dy="0.3" layer="1" rot="R90"/>
+<smd name="12" x="-1.75" y="-2.95" dx="0.9" dy="0.3" layer="1" rot="R90"/>
+<smd name="13" x="-1.25" y="-2.95" dx="0.9" dy="0.3" layer="1" rot="R90"/>
+<smd name="14" x="-0.75" y="-2.95" dx="0.9" dy="0.3" layer="1" rot="R90"/>
+<smd name="15" x="-0.25" y="-2.95" dx="0.9" dy="0.3" layer="1" rot="R90"/>
+<smd name="16" x="0.25" y="-2.95" dx="0.9" dy="0.3" layer="1" rot="R90"/>
+<smd name="17" x="0.75" y="-2.95" dx="0.9" dy="0.3" layer="1" rot="R90"/>
+<smd name="18" x="1.25" y="-2.95" dx="0.9" dy="0.3" layer="1" rot="R90"/>
+<smd name="19" x="1.75" y="-2.95" dx="0.9" dy="0.3" layer="1" rot="R90"/>
+<smd name="20" x="2.25" y="-2.95" dx="0.9" dy="0.3" layer="1" rot="R90"/>
+<smd name="21" x="2.95" y="-2.25" dx="0.9" dy="0.3" layer="1"/>
+<smd name="22" x="2.95" y="-1.75" dx="0.9" dy="0.3" layer="1"/>
+<smd name="23" x="2.95" y="-1.25" dx="0.9" dy="0.3" layer="1"/>
+<smd name="24" x="2.95" y="-0.75" dx="0.9" dy="0.3" layer="1"/>
+<smd name="25" x="2.95" y="-0.25" dx="0.9" dy="0.3" layer="1"/>
+<smd name="26" x="2.95" y="0.25" dx="0.9" dy="0.3" layer="1"/>
+<smd name="27" x="2.95" y="0.75" dx="0.9" dy="0.3" layer="1"/>
+<smd name="28" x="2.95" y="1.25" dx="0.9" dy="0.3" layer="1"/>
+<smd name="29" x="2.95" y="1.75" dx="0.9" dy="0.3" layer="1"/>
+<smd name="30" x="2.95" y="2.25" dx="0.9" dy="0.3" layer="1"/>
+<smd name="31" x="2.25" y="2.95" dx="0.9" dy="0.3" layer="1" rot="R90"/>
+<smd name="32" x="1.75" y="2.95" dx="0.9" dy="0.3" layer="1" rot="R90"/>
+<smd name="33" x="1.25" y="2.95" dx="0.9" dy="0.3" layer="1" rot="R90"/>
+<smd name="34" x="0.75" y="2.95" dx="0.9" dy="0.3" layer="1" rot="R90"/>
+<smd name="35" x="0.25" y="2.95" dx="0.9" dy="0.3" layer="1" rot="R90"/>
+<smd name="36" x="-0.25" y="2.95" dx="0.9" dy="0.3" layer="1" rot="R90"/>
+<smd name="37" x="-0.75" y="2.95" dx="0.9" dy="0.3" layer="1" rot="R90"/>
+<smd name="38" x="-1.25" y="2.95" dx="0.9" dy="0.3" layer="1" rot="R90"/>
+<smd name="39" x="-1.75" y="2.95" dx="0.9" dy="0.3" layer="1" rot="R90"/>
+<smd name="40" x="-2.25" y="2.95" dx="0.9" dy="0.3" layer="1" rot="R90"/>
+<smd name="41" x="0" y="0" dx="3.6068" dy="3.6068" layer="1" rot="R90"/>
+<text x="0" y="0" size="1.27" layer="25" align="center">&gt;NAME</text>
+<text x="0" y="0" size="1.27" layer="27" align="center">&gt;VALUE</text>
+<wire x1="-3.65" y1="3.65" x2="3.65" y2="3.65" width="0.05" layer="51"/>
+<wire x1="3.65" y1="3.65" x2="3.65" y2="-3.65" width="0.05" layer="51"/>
+<wire x1="3.65" y1="-3.65" x2="-3.65" y2="-3.65" width="0.05" layer="51"/>
+<wire x1="-3.65" y1="-3.65" x2="-3.65" y2="3.65" width="0.05" layer="51"/>
+<wire x1="-3" y1="3" x2="3" y2="3" width="0.1" layer="51"/>
+<wire x1="3" y1="3" x2="3" y2="-3" width="0.1" layer="51"/>
+<wire x1="3" y1="-3" x2="-3" y2="-3" width="0.1" layer="51"/>
+<wire x1="-3" y1="-3" x2="-3" y2="3" width="0.1" layer="51"/>
+<wire x1="-3" y1="2.5" x2="-2.5" y2="3" width="0.1" layer="51"/>
+<circle x="-3.4" y="3" radius="0.125" width="0.25" layer="25"/>
+</package>
+</packages>
+<symbols>
+<symbol name="AFE4400RHAR">
+<wire x1="5.08" y1="20.32" x2="40.64" y2="20.32" width="0.254" layer="94"/>
+<wire x1="40.64" y1="-45.72" x2="40.64" y2="20.32" width="0.254" layer="94"/>
+<wire x1="40.64" y1="-45.72" x2="5.08" y2="-45.72" width="0.254" layer="94"/>
+<wire x1="5.08" y1="20.32" x2="5.08" y2="-45.72" width="0.254" layer="94"/>
+<text x="41.91" y="25.4" size="1.778" layer="95" align="center-left">&gt;NAME</text>
+<text x="41.91" y="22.86" size="1.778" layer="96" align="center-left">&gt;VALUE</text>
+<pin name="INN" x="0" y="0" length="middle" direction="in"/>
+<pin name="INP" x="0" y="-2.54" length="middle" direction="in"/>
+<pin name="RX_ANA_GND_1" x="0" y="-5.08" length="middle" direction="pwr"/>
+<pin name="VCM" x="0" y="-7.62" length="middle"/>
+<pin name="DNC_1" x="0" y="-10.16" length="middle"/>
+<pin name="DNC_2" x="0" y="-12.7" length="middle"/>
+<pin name="BG" x="0" y="-15.24" length="middle"/>
+<pin name="VSS" x="0" y="-17.78" length="middle" direction="pwr"/>
+<pin name="TX_REF" x="0" y="-20.32" length="middle" direction="in"/>
+<pin name="DNC_3" x="0" y="-22.86" length="middle"/>
+<pin name="TX_CTRL_SUP" x="10.16" y="-50.8" length="middle" rot="R90"/>
+<pin name="LED_DRV_GND_1" x="12.7" y="-50.8" length="middle" direction="pwr" rot="R90"/>
+<pin name="LED_DRV_GND_2" x="15.24" y="-50.8" length="middle" direction="pwr" rot="R90"/>
+<pin name="TXN" x="17.78" y="-50.8" length="middle" rot="R90"/>
+<pin name="TXP" x="20.32" y="-50.8" length="middle" rot="R90"/>
+<pin name="LED_DRV_GND_3" x="22.86" y="-50.8" length="middle" direction="pwr" rot="R90"/>
+<pin name="LED_DRV_SUP_1" x="25.4" y="-50.8" length="middle" rot="R90"/>
+<pin name="LED_DRV_SUP_2" x="27.94" y="-50.8" length="middle" rot="R90"/>
+<pin name="RX_DIG_GND_1" x="30.48" y="-50.8" length="middle" direction="pwr" rot="R90"/>
+<pin name="AFE_!PDN" x="33.02" y="-50.8" length="middle" rot="R90"/>
+<pin name="CLKOUT" x="45.72" y="0" length="middle" direction="out" rot="R180"/>
+<pin name="!RESET" x="45.72" y="-2.54" length="middle" rot="R180"/>
+<pin name="ADC_RDY" x="45.72" y="-5.08" length="middle" rot="R180"/>
+<pin name="SPISTE" x="45.72" y="-7.62" length="middle" rot="R180"/>
+<pin name="SPISIMO" x="45.72" y="-10.16" length="middle" rot="R180"/>
+<pin name="SPISOMI" x="45.72" y="-12.7" length="middle" rot="R180"/>
+<pin name="SCLK" x="45.72" y="-15.24" length="middle" direction="in" rot="R180"/>
+<pin name="PD_ALM" x="45.72" y="-17.78" length="middle" rot="R180"/>
+<pin name="LED_ALM" x="45.72" y="-20.32" length="middle" rot="R180"/>
+<pin name="DIAG_END" x="45.72" y="-22.86" length="middle" rot="R180"/>
+<pin name="EP_GND" x="10.16" y="25.4" length="middle" direction="pwr" rot="R270"/>
+<pin name="RX_ANA_GND_3" x="12.7" y="25.4" length="middle" direction="pwr" rot="R270"/>
+<pin name="RX_ANA_SUP_2" x="15.24" y="25.4" length="middle" rot="R270"/>
+<pin name="XIN" x="17.78" y="25.4" length="middle" direction="in" rot="R270"/>
+<pin name="XOUT" x="20.32" y="25.4" length="middle" direction="out" rot="R270"/>
+<pin name="RX_ANA_GND_2" x="22.86" y="25.4" length="middle" direction="pwr" rot="R270"/>
+<pin name="DNC_5" x="25.4" y="25.4" length="middle" rot="R270"/>
+<pin name="DNC_4" x="27.94" y="25.4" length="middle" rot="R270"/>
+<pin name="RX_ANA_SUP_1" x="30.48" y="25.4" length="middle" rot="R270"/>
+<pin name="RX_DIG_GND_2" x="33.02" y="25.4" length="middle" direction="pwr" rot="R270"/>
+<pin name="RX_DIG_SUP" x="35.56" y="25.4" length="middle" rot="R270"/>
+</symbol>
+</symbols>
+<devicesets>
+<deviceset name="AFE4400RHAR" prefix="IC">
+<description>&lt;b&gt;Integrated Analog Front End (AFE) for Heart-Rate Monitors and Low-Cost Pulse Oximeters&lt;/b&gt;&lt;p&gt;
+Source: &lt;a href="http://www.ti.com/lit/ds/symlink/afe4400.pdf"&gt; Datasheet &lt;/a&gt;</description>
+<gates>
+<gate name="G$1" symbol="AFE4400RHAR" x="0" y="0"/>
+</gates>
+<devices>
+<device name="" package="QFN50P600X600X100-41N">
+<connects>
+<connect gate="G$1" pin="!RESET" pad="29"/>
+<connect gate="G$1" pin="ADC_RDY" pad="28"/>
+<connect gate="G$1" pin="AFE_!PDN" pad="20"/>
+<connect gate="G$1" pin="BG" pad="7"/>
+<connect gate="G$1" pin="CLKOUT" pad="30"/>
+<connect gate="G$1" pin="DIAG_END" pad="21"/>
+<connect gate="G$1" pin="DNC_1" pad="5"/>
+<connect gate="G$1" pin="DNC_2" pad="6"/>
+<connect gate="G$1" pin="DNC_3" pad="10"/>
+<connect gate="G$1" pin="DNC_4" pad="34"/>
+<connect gate="G$1" pin="DNC_5" pad="35"/>
+<connect gate="G$1" pin="EP_GND" pad="41"/>
+<connect gate="G$1" pin="INN" pad="1"/>
+<connect gate="G$1" pin="INP" pad="2"/>
+<connect gate="G$1" pin="LED_ALM" pad="22"/>
+<connect gate="G$1" pin="LED_DRV_GND_1" pad="12"/>
+<connect gate="G$1" pin="LED_DRV_GND_2" pad="13"/>
+<connect gate="G$1" pin="LED_DRV_GND_3" pad="16"/>
+<connect gate="G$1" pin="LED_DRV_SUP_1" pad="17"/>
+<connect gate="G$1" pin="LED_DRV_SUP_2" pad="18"/>
+<connect gate="G$1" pin="PD_ALM" pad="23"/>
+<connect gate="G$1" pin="RX_ANA_GND_1" pad="3"/>
+<connect gate="G$1" pin="RX_ANA_GND_2" pad="36"/>
+<connect gate="G$1" pin="RX_ANA_GND_3" pad="40"/>
+<connect gate="G$1" pin="RX_ANA_SUP_1" pad="33"/>
+<connect gate="G$1" pin="RX_ANA_SUP_2" pad="39"/>
+<connect gate="G$1" pin="RX_DIG_GND_1" pad="19"/>
+<connect gate="G$1" pin="RX_DIG_GND_2" pad="32"/>
+<connect gate="G$1" pin="RX_DIG_SUP" pad="31"/>
+<connect gate="G$1" pin="SCLK" pad="24"/>
+<connect gate="G$1" pin="SPISIMO" pad="26"/>
+<connect gate="G$1" pin="SPISOMI" pad="25"/>
+<connect gate="G$1" pin="SPISTE" pad="27"/>
+<connect gate="G$1" pin="TXN" pad="14"/>
+<connect gate="G$1" pin="TXP" pad="15"/>
+<connect gate="G$1" pin="TX_CTRL_SUP" pad="11"/>
+<connect gate="G$1" pin="TX_REF" pad="9"/>
+<connect gate="G$1" pin="VCM" pad="4"/>
+<connect gate="G$1" pin="VSS" pad="8"/>
+<connect gate="G$1" pin="XIN" pad="38"/>
+<connect gate="G$1" pin="XOUT" pad="37"/>
+</connects>
+<technologies>
+<technology name="">
+<attribute name="DESCRIPTION" value="Integrated Analog Front End (AFE) for Heart-Rate Monitors and Low-Cost Pulse Oximeters" constant="no"/>
+<attribute name="HEIGHT" value="1mm" constant="no"/>
+<attribute name="MANUFACTURER_NAME" value="Texas Instruments" constant="no"/>
+<attribute name="MANUFACTURER_PART_NUMBER" value="AFE4400RHAR" constant="no"/>
+<attribute name="MOUSER_PART_NUMBER" value="595-AFE4400RHAR" constant="no"/>
+<attribute name="MOUSER_PRICE-STOCK" value="https://www.mouser.co.uk/ProductDetail/Texas-Instruments/AFE4400RHAR?qs=MURVExHfc2zl%2FM9SqCv0pw%3D%3D" constant="no"/>
+</technology>
+</technologies>
+</device>
+</devices>
+</deviceset>
+</devicesets>
+</library>
+</drawing>
+</eagle>
