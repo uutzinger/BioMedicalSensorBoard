@@ -12203,9 +12203,9 @@ Direct vs Transimpedance</text>
 <attribute name="NAME" x="50.8" y="-7.366" size="1.778" layer="95" font="vector" align="bottom-center"/>
 <attribute name="VALUE" x="50.8" y="-10.414" size="1.778" layer="96" font="vector" align="top-center"/>
 </instance>
-<instance part="R14" gate="G$1" x="78.74" y="1.27" smashed="yes" rot="R270">
-<attribute name="NAME" x="80.264" y="1.27" size="1.778" layer="95" font="vector" rot="R270" align="bottom-center"/>
-<attribute name="VALUE" x="77.216" y="1.27" size="1.778" layer="96" font="vector" rot="R270" align="top-center"/>
+<instance part="R14" gate="G$1" x="80.264" y="0.254" smashed="yes" rot="R270">
+<attribute name="NAME" x="81.788" y="0.254" size="1.778" layer="95" font="vector" rot="R270" align="bottom-center"/>
+<attribute name="VALUE" x="78.74" y="0.254" size="1.778" layer="96" font="vector" rot="R270" align="top-center"/>
 </instance>
 <instance part="SUPPLY6" gate="1" x="64.77" y="-41.656" smashed="yes">
 <attribute name="VALUE" x="62.865" y="-44.831" size="1.778" layer="96"/>
@@ -12515,10 +12515,10 @@ Direct vs Transimpedance</text>
 <pinref part="SINGLE_PUG" gate="G$1" pin="2"/>
 <wire x1="91.44" y1="2.54" x2="85.344" y2="2.54" width="0.1524" layer="91"/>
 <wire x1="85.344" y1="2.54" x2="85.344" y2="7.62" width="0.1524" layer="91"/>
-<wire x1="85.344" y1="7.62" x2="73.66" y2="7.62" width="0.1524" layer="91"/>
+<wire x1="85.344" y1="7.62" x2="72.39" y2="7.62" width="0.1524" layer="91"/>
 <pinref part="JP1" gate="G$1" pin="3"/>
-<wire x1="36.83" y1="24.13" x2="73.66" y2="24.13" width="0.1524" layer="91"/>
-<wire x1="73.66" y1="24.13" x2="73.66" y2="7.62" width="0.1524" layer="91"/>
+<wire x1="36.83" y1="24.13" x2="72.39" y2="24.13" width="0.1524" layer="91"/>
+<wire x1="72.39" y1="24.13" x2="72.39" y2="7.62" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="SCL" class="0">
@@ -12683,15 +12683,19 @@ Direct vs Transimpedance</text>
 <wire x1="34.29" y1="21.59" x2="67.31" y2="21.59" width="0.1524" layer="91"/>
 <wire x1="67.31" y1="21.59" x2="67.31" y2="13.97" width="0.1524" layer="91"/>
 <junction x="67.31" y="13.97"/>
+<pinref part="IC2" gate="G$1" pin="REF"/>
+<wire x1="63.5" y1="-25.4" x2="74.93" y2="-25.4" width="0.1524" layer="91"/>
+<wire x1="74.93" y1="-25.4" x2="74.93" y2="13.97" width="0.1524" layer="91"/>
+<wire x1="74.93" y1="13.97" x2="67.31" y2="13.97" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="N$25" class="0">
 <segment>
 <pinref part="R14" gate="G$1" pin="2"/>
-<wire x1="78.74" y1="-3.81" x2="76.2" y2="-3.81" width="0.1524" layer="91"/>
+<wire x1="80.264" y1="-4.826" x2="77.724" y2="-4.826" width="0.1524" layer="91"/>
 <pinref part="IC1" gate="G$1" pin="OUT_C"/>
-<wire x1="76.2" y1="-3.81" x2="76.2" y2="-1.27" width="0.1524" layer="91"/>
-<wire x1="76.2" y1="-1.27" x2="72.39" y2="-1.27" width="0.1524" layer="91"/>
+<wire x1="77.724" y1="-4.826" x2="77.724" y2="-1.27" width="0.1524" layer="91"/>
+<wire x1="77.724" y1="-1.27" x2="72.39" y2="-1.27" width="0.1524" layer="91"/>
 <wire x1="72.39" y1="-1.27" x2="66.294" y2="-1.27" width="0.1524" layer="91"/>
 <wire x1="72.39" y1="-15.24" x2="72.39" y2="-1.27" width="0.1524" layer="91"/>
 <junction x="72.39" y="-1.27"/>
@@ -12718,9 +12722,9 @@ Direct vs Transimpedance</text>
 <wire x1="67.564" y1="-8.89" x2="67.564" y2="1.27" width="0.1524" layer="91"/>
 <wire x1="55.88" y1="-8.89" x2="67.564" y2="-8.89" width="0.1524" layer="91"/>
 <pinref part="R14" gate="G$1" pin="1"/>
-<wire x1="78.74" y1="6.35" x2="76.2" y2="6.35" width="0.1524" layer="91"/>
-<wire x1="67.564" y1="1.27" x2="76.2" y2="1.27" width="0.1524" layer="91"/>
-<wire x1="76.2" y1="1.27" x2="76.2" y2="6.35" width="0.1524" layer="91"/>
+<wire x1="80.264" y1="5.334" x2="77.724" y2="5.334" width="0.1524" layer="91"/>
+<wire x1="67.564" y1="1.27" x2="77.724" y2="1.27" width="0.1524" layer="91"/>
+<wire x1="77.724" y1="1.27" x2="77.724" y2="5.334" width="0.1524" layer="91"/>
 <junction x="67.564" y="1.27"/>
 <wire x1="90.424" y1="-8.89" x2="67.564" y2="-8.89" width="0.1524" layer="91"/>
 <junction x="67.564" y="-8.89"/>
