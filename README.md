@@ -23,7 +23,7 @@ An expandable, low-costs, open-design system is needed that measures physiologic
 
 ## Sensor Systems
 
-- [ECG](ECG.md) Electro Cardiogram Solutions
+- [ECG](ecg.md) Electro Cardiogram Solutions
 - [Impedance](impedance.md) Bio Impedence Solutions
 - [Temperature](temperature.md) Temperature and Strain Gauges Solutions
 - [Sound](sound.md) Sound Recording Solutions

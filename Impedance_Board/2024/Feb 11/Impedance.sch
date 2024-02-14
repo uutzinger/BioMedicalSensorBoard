@@ -6,7 +6,7 @@
 <setting alwaysvectorfont="no"/>
 <setting verticaltext="up"/>
 </settings>
-<grid distance="0.1" unitdist="inch" unit="inch" style="lines" multiple="1" display="yes" altdistance="0.01" altunitdist="inch" altunit="inch"/>
+<grid distance="0.1" unitdist="inch" unit="inch" style="lines" multiple="1" display="no" altdistance="0.01" altunitdist="inch" altunit="inch"/>
 <layers>
 <layer number="1" name="Top" color="4" fill="1" visible="no" active="no"/>
 <layer number="16" name="Bottom" color="1" fill="1" visible="no" active="no"/>
@@ -11973,6 +11973,7 @@ Warning: This is the KIT version of this package. This package has a smaller dia
 <part name="R14" library="SparkFun-Resistors" library_urn="urn:adsk.eagle:library:532" deviceset="1KOHM" device="-0603-1/10W-1%" package3d_urn="urn:adsk.eagle:package:39650/1" value="1k"/>
 <part name="SUPPLY6" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="FRAME1" library="SparkFun-Aesthetics" library_urn="urn:adsk.eagle:library:507" deviceset="FRAME-LETTER" device="NO_PACKAGE" package3d_urn="urn:adsk.eagle:package:37104/1"/>
+<part name="JP2" library="SparkFun-Jumpers" library_urn="urn:adsk.eagle:library:528" deviceset="JUMPER-SMT_3_1-NC_TRACE" device="_NO-SILK" package3d_urn="urn:adsk.eagle:package:39287/1"/>
 </parts>
 <sheets>
 <sheet>
@@ -12017,9 +12018,9 @@ Direct vs Transimpedance</text>
 <attribute name="NAME" x="-41.91" y="19.2786" size="1.778" layer="95"/>
 <attribute name="VALUE" x="-41.91" y="14.478" size="1.778" layer="96"/>
 </instance>
-<instance part="C3" gate="G$1" x="3.81" y="8.89" smashed="yes" rot="R90">
-<attribute name="NAME" x="3.429" y="10.414" size="1.778" layer="95" rot="R90"/>
-<attribute name="VALUE" x="8.509" y="10.414" size="1.778" layer="96" rot="R90"/>
+<instance part="C3" gate="G$1" x="8.636" y="8.89" smashed="yes" rot="R90">
+<attribute name="NAME" x="8.255" y="10.414" size="1.778" layer="95" rot="R90"/>
+<attribute name="VALUE" x="8.255" y="15.494" size="1.778" layer="96" rot="R90"/>
 </instance>
 <instance part="R5" gate="G$1" x="13.97" y="16.764" smashed="yes" rot="R270">
 <attribute name="NAME" x="15.4686" y="20.574" size="1.778" layer="95" rot="R270"/>
@@ -12180,7 +12181,7 @@ Direct vs Transimpedance</text>
 <attribute name="VALUE" x="-97.282" y="-53.34" size="1.778" layer="96"/>
 </instance>
 <instance part="JP1" gate="G$1" x="31.75" y="24.13" smashed="yes" rot="R90">
-<attribute name="NAME" x="31.369" y="26.67" size="1.778" layer="95" font="vector" rot="R90"/>
+<attribute name="NAME" x="31.369" y="26.67" size="1.778" layer="95" font="vector"/>
 <attribute name="VALUE" x="32.131" y="26.67" size="1.778" layer="96" font="vector" rot="R90" align="top-left" display="off"/>
 </instance>
 <instance part="IC1" gate="G$1" x="35.814" y="13.97" smashed="yes">
@@ -12216,6 +12217,10 @@ Direct vs Transimpedance</text>
 <attribute name="SHEET" x="109.22" y="-97.79" size="2.54" layer="94" font="vector"/>
 <attribute name="DRAWING_NAME" x="38.354" y="-81.28" size="2.7432" layer="94" font="vector"/>
 </instance>
+<instance part="JP2" gate="G$1" x="-1.27" y="-7.62" smashed="yes" rot="MR270">
+<attribute name="NAME" x="-1.651" y="-10.16" size="1.778" layer="95" font="vector" rot="MR180"/>
+<attribute name="VALUE" x="-0.889" y="-10.16" size="1.778" layer="96" font="vector" rot="MR270" align="top-left" display="off"/>
+</instance>
 </instances>
 <busses>
 </busses>
@@ -12249,7 +12254,7 @@ Direct vs Transimpedance</text>
 <segment>
 <pinref part="AD5933" gate="G$0" pin="VOUT"/>
 <pinref part="C3" gate="G$1" pin="1"/>
-<wire x1="-1.27" y1="8.89" x2="-10.16" y2="8.89" width="0.1524" layer="91"/>
+<wire x1="3.556" y1="8.89" x2="-10.16" y2="8.89" width="0.1524" layer="91"/>
 <pinref part="U4" gate="A" pin="2"/>
 <wire x1="-10.16" y1="8.89" x2="-12.7" y2="8.89" width="0.1524" layer="91"/>
 <wire x1="-10.16" y1="8.89" x2="-10.16" y2="25.4" width="0.1524" layer="91"/>
@@ -12610,7 +12615,7 @@ Direct vs Transimpedance</text>
 <net name="N$6" class="0">
 <segment>
 <pinref part="C3" gate="G$1" pin="2"/>
-<wire x1="6.35" y1="8.89" x2="13.97" y2="8.89" width="0.1524" layer="91"/>
+<wire x1="11.176" y1="8.89" x2="13.97" y2="8.89" width="0.1524" layer="91"/>
 <pinref part="R6" gate="G$1" pin="1"/>
 <wire x1="13.97" y1="8.89" x2="13.97" y2="7.62" width="0.1524" layer="91"/>
 <pinref part="R5" gate="G$1" pin="2"/>
@@ -12732,24 +12737,35 @@ Direct vs Transimpedance</text>
 </net>
 <net name="N$13" class="0">
 <segment>
-<wire x1="23.622" y1="-5.08" x2="23.622" y2="-1.27" width="0.1524" layer="91"/>
-<pinref part="R7" gate="G$1" pin="2"/>
-<wire x1="20.32" y1="-5.08" x2="23.622" y2="-5.08" width="0.1524" layer="91"/>
-<pinref part="IC1" gate="G$1" pin="OUT_B"/>
-<wire x1="29.21" y1="-7.62" x2="29.21" y2="-1.27" width="0.1524" layer="91"/>
-<wire x1="29.21" y1="-1.27" x2="35.814" y2="-1.27" width="0.1524" layer="91"/>
-<pinref part="R4" gate="G$1" pin="2"/>
-<wire x1="-33.02" y1="17.78" x2="-5.08" y2="17.78" width="0.1524" layer="91"/>
-<wire x1="-5.08" y1="17.78" x2="-5.08" y2="-7.62" width="0.1524" layer="91"/>
-<wire x1="-5.08" y1="-7.62" x2="-5.08" y2="-36.83" width="0.1524" layer="91"/>
-<wire x1="-5.08" y1="-36.83" x2="67.31" y2="-36.83" width="0.1524" layer="91"/>
+<wire x1="-6.35" y1="-36.83" x2="67.31" y2="-36.83" width="0.1524" layer="91"/>
 <wire x1="67.31" y1="-36.83" x2="67.31" y2="-22.86" width="0.1524" layer="91"/>
 <pinref part="IC2" gate="G$1" pin="VOUT"/>
 <wire x1="67.31" y1="-22.86" x2="63.5" y2="-22.86" width="0.1524" layer="91"/>
-<wire x1="29.21" y1="-7.62" x2="-5.08" y2="-7.62" width="0.1524" layer="91"/>
-<junction x="-5.08" y="-7.62"/>
-<wire x1="23.622" y1="-1.27" x2="29.21" y2="-1.27" width="0.1524" layer="91"/>
+<pinref part="JP2" gate="G$1" pin="1"/>
+<wire x1="-6.35" y1="-36.83" x2="-6.35" y2="-7.62" width="0.1524" layer="91"/>
+</segment>
+</net>
+<net name="N$3" class="0">
+<segment>
+<pinref part="IC1" gate="G$1" pin="OUT_B"/>
+<wire x1="29.21" y1="-7.62" x2="29.21" y2="-1.27" width="0.1524" layer="91"/>
+<wire x1="29.21" y1="-1.27" x2="35.814" y2="-1.27" width="0.1524" layer="91"/>
 <junction x="29.21" y="-1.27"/>
+<wire x1="23.622" y1="-1.27" x2="29.21" y2="-1.27" width="0.1524" layer="91"/>
+<wire x1="23.622" y1="-5.08" x2="23.622" y2="-1.27" width="0.1524" layer="91"/>
+<pinref part="R7" gate="G$1" pin="2"/>
+<wire x1="20.32" y1="-5.08" x2="23.622" y2="-5.08" width="0.1524" layer="91"/>
+<pinref part="JP2" gate="G$1" pin="3"/>
+<wire x1="29.21" y1="-7.62" x2="3.81" y2="-7.62" width="0.1524" layer="91"/>
+</segment>
+</net>
+<net name="N$4" class="0">
+<segment>
+<pinref part="R4" gate="G$1" pin="2"/>
+<wire x1="-33.02" y1="17.78" x2="-2.54" y2="17.78" width="0.1524" layer="91"/>
+<pinref part="JP2" gate="G$1" pin="2"/>
+<wire x1="-1.27" y1="-2.54" x2="-1.27" y2="17.78" width="0.1524" layer="91"/>
+<wire x1="-1.27" y1="17.78" x2="-2.54" y2="17.78" width="0.1524" layer="91"/>
 </segment>
 </net>
 </nets>
@@ -12764,8 +12780,8 @@ Direct vs Transimpedance</text>
 <approved hash="104,1,-12.7,-16.51,AD5933,AGND2,GND,,,"/>
 <approved hash="104,1,35.814,6.35,IC1,V+,3.3V,,,"/>
 <approved hash="104,1,66.294,6.35,IC1,V-,GND,,,"/>
-<approved hash="113,1,-99.2293,-17.6479,J1,,,,,"/>
-<approved hash="113,1,-108.655,54.4568,CAL_INT,,,,,"/>
+<approved hash="113,1,-99.2293,-17.6174,J1,,,,,"/>
+<approved hash="113,1,-108.655,54.4872,CAL_INT,,,,,"/>
 </errors>
 </schematic>
 </drawing>
