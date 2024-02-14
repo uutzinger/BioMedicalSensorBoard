@@ -10,7 +10,7 @@
 
 ## General Circuit for AD5933
 
-![Circuit](Impedance_Board\circuit.svg)
+![Circuit](Impedance_Board/circuit.svg)
 
 From [1] and [2]
 
