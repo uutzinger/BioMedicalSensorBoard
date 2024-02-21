@@ -25,6 +25,7 @@ An expandable, low-costs, open-design system is needed that measures physiologic
 
 - [ECG](ecg.md) Electro Cardiogram Solutions
 - [Impedance](impedance.md) Bio Impedance Solutions
+- [Impedance & Potential](MAX30001G.md) Combined ECG, Impedance and Galvanic Skin Response
 - [Temperature](temperature.md) Temperature and Strain Gauges Solutions
 - [Sound](sound.md) Sound Recording Solutions
 - [Pressure](pressure.md) Pressure Sensors Solutions
@@ -36,5 +37,9 @@ An expandable, low-costs, open-design system is needed that measures physiologic
 
 Currently the following boards have been designed:
 
-- Thermistor board using two LTC2473 for precision differential analog to digital conversion at up to 800 samples per second, equipmed with QWIIC connectors to connect them to a microcontroller.
-- The same board can also be used to measure strain gauges.
+- Thermistor board using two LTC2473 for precision differential analog to digital conversion at up to 800 samples per second, equiped with QWIIC connectors to connect them to a micro controller. The same board can also be used to measure strain gauges.
+- Thermistor board using analog in
+- ECG board using Sparkfun ECG analog front end
+- SPO2 board using 
+- Impedance board using
+- Impedance and Potential board using MAX3001G.
