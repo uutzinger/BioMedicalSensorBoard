@@ -1,6 +1,6 @@
 # Biomedical Sensor Board
 
-![alt text](./Concept.png)
+![alt text](./assetts/Concept.png)
 
 - We strive to create an educational system to measure physiological signals.
 - It shall be easily reproducible at an educational institution.
@@ -28,6 +28,7 @@ An expandable, low-costs, open-design system is needed that measures physiologic
 - [Impedance & Potential](MAX30001G.md) Combined ECG, Impedance and Galvanic Skin Response
 - [Temperature](temperature.md) Temperature and Strain Gauges Solutions
 - [Sound](sound.md) Sound Recording Solutions
+- [Sound ES8388](ES8388_audio_board.md) PCB Artist I2S codec interfacing with ESP
 - [Pressure](pressure.md) Pressure Sensors Solutions
 - [SpO<sub>2</sub>](spo2.md) Pulse Oximeter Solutions
 - [Micro Controller](microcontroller.md) Micro Controller Solutions
