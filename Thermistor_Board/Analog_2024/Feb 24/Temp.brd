@@ -205,6 +205,19 @@ MediBrick2000</text>
 <text x="32.25" y="63.5" size="1.778" layer="25" rot="R270">A3</text>
 <text x="29.75" y="63.5" size="1.778" layer="25" rot="R270">A4</text>
 <text x="27.25" y="63.5" size="1.778" layer="25" rot="R270">A5</text>
+<text x="51.25" y="41.25" size="1.778" layer="25">TP1 - TP2: R1
+TP2 - TP3: R3
+TP1 - TP1: R2</text>
+<text x="38.5" y="23" size="1.016" layer="25">TP2</text>
+<text x="46" y="19" size="1.016" layer="25">TP1</text>
+<text x="44.25" y="15.25" size="1.016" layer="25">TP4</text>
+<text x="34" y="17.25" size="1.016" layer="25">TP3</text>
+<text x="16.5" y="17.5" size="1.016" layer="25">TP3</text>
+<text x="20.5" y="23.25" size="1.016" layer="25">TP2</text>
+<text x="28.75" y="19" size="1.016" layer="25">TP1</text>
+<text x="26.25" y="15.75" size="1.016" layer="25">TP4</text>
+<text x="2.75" y="51.5" size="1.778" layer="25">Close Jumpers after 
+measuring Resistors</text>
 </plain>
 <libraries>
 <library name="SJ-3523-SMT-TR">
