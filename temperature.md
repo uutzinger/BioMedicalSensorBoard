@@ -21,7 +21,7 @@
 ## Full bridge circuit for custom Thermistors
 
 ### Wheatstone Bridge
-For accurate readings a Wheatstone bridge is needed to record the resitance of a thermnistor. This is a full bridge with 4 resistors. Such bridge will be insensitive to temperature changes at the location of R1,R2 and R3 as long as they are kept close to each other.
+For accurate readings a Wheatstone bridge is needed to record the resistance of a thermistor. This is a full bridge with 4 resistors. Such bridge will be insensitive to temperature changes at the location of R1,R2 and R3 as long as they are kept close to each other.
 
 <img src="./assetts/Wheatstone.svg" alt="drawing" height="300"/>
 
@@ -29,7 +29,7 @@ made with https://www.circuit-diagram.org/editor
 
 The thermistor resitance is
 
-$ R_{Thermistor} = {R_3 (V_{in} R_2 - V_{diff} (R_1+R_2)) \over Vin R1 + Vdiff (R_1+R_2)} $
+$ R_{Thermistor} = \frac{R_3 (V_{in} R_2 - V_{diff} (R_1+R_2))}{Vin R1 + Vdiff (R_1+R_2)} $
 
 Where $V_{diff} = V-1 - V_2$
 
@@ -45,12 +45,12 @@ int32_t R_thermistor = int32_t ( ( uint64_t(R3) * uint64_t(Vin*R2 - Vdiff*(R1+R2
 
 The Steinhart-Hart equation provides a formula to model the resistance of the thermistor based on 3 calibration values A,B and C. These are manufacturer provided and material constants but vary for each type of thermistor.
 
-$ {1\over T} = A + B ln(R) + C (ln R)^3$
+$ \frac{1}{T} = A + B ln(R) + C (ln(R))^3 $
 
 To solve the Steinhart-Hart Equation we need to use floats as we have logarithm to compute. We will provide integer result in 100*Centigrade. On some micro controllers log and float math takes resources. Its better to average and reduce noise on the ADC readings and after filtering compute the Temperature.
 
 ```
-float lnR = log(float(R_termistor));                // natural logarithm
+float lnR = log(float(R_thermistor));                // natural logarithm
 float Temp = 1.0/(A + B * lnR + C * (lnR*lnR*lnR));
 Temp = (Temp-273.15);                               // Kelvin to Centigrade
 return int16_t(Temp*100.0);                         // convert temperature e.g. 29.12 to 2912
@@ -62,7 +62,7 @@ With above formula we need to measure V at junction of thermistor and R3 and at 
 
 Analog input on Arduino and ESP microcontrollers are inaccurate and noisy. You will need to enable the calibration features and average many readings in order to obtain accuracy of 0.1C.
 
-### Analog Devices
+### Analog Devices Precision Differential ADC
 When high precision measurements are needed we use a differential 16bit AD converter with 800 samples per second such as:
 
 <img src="./assetts/LTC2471-8586.png" alt="drawing" height="200"/>
