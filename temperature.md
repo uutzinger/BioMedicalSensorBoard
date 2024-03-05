@@ -29,7 +29,7 @@ made with https://www.circuit-diagram.org/editor
 
 The thermistor resitance is
 
-$ R_{Thermistor} = \frac{R_3 (V_{in} R_2 - V_{diff} (R_1+R_2))}{Vin R1 + Vdiff (R_1+R_2)} $
+$R_{Thermistor} = \frac{R_3 (V_{in} R_2 - V_{diff} (R_1+R_2))}{Vin R1 + Vdiff (R_1+R_2)}$
 
 Where $V_{diff} = V_1 - V_2$
 
@@ -45,7 +45,7 @@ int32_t R_thermistor = int32_t ( ( uint64_t(R3) * uint64_t(Vin*R2 - Vdiff*(R1+R2
 
 The Steinhart-Hart equation provides a formula to model the resistance of the thermistor based on 3 calibration values A, B and C. These are manufacturer provided and material constants but they vary for each type of thermistor.
 
-$ \frac{1}{T} = A + B ln(R) + C (ln(R))^3 $
+$\frac{1}{T} = A + B ln(R) + C (ln(R))^3$
 
 To solve the Steinhart-Hart Equation we need to use floats as we have logarithm to compute. We will provide integer result in 100*Centigrade. On some micro controllers, log and float math takes resources. Its better to average and reduce noise on the ADC readings and then apply floating point math to the data.
 
