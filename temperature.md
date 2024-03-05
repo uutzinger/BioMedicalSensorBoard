@@ -31,11 +31,11 @@ The thermistor resitance is
 
 $ R_{Thermistor} = \frac{R_3 (V_{in} R_2 - V_{diff} (R_1+R_2))}{Vin R1 + Vdiff (R_1+R_2)} $
 
-Where $V_{diff} = V-1 - V_2$
+Where $V_{diff} = V_1 - V_2$
 
-$V_1$ and $V_2$ can be measured with microcontroller's ADC converter. 
+$V_1$ and $V_2$ can be measured with microcontroller's ADC converter. ESP ADC is of low quality. Averaging and software calibration is needed.
 
-To implement this with integer software we need to use uint64_t because resistors are 10,000 (Ohms) and $V_{in}$ is 3,300 (milli Volts) resulting in numbers larger than 32 bits.
+To implement this with integer software we need to use 64 bit math because resistors are 10,000 (Ohms) and $V_{in}$ is 3,300 (milli Volts) resulting in numbers larger than 32 bits.
 
 ```
 int32_t R_thermistor = int32_t ( ( uint64_t(R3) * uint64_t(Vin*R2 - Vdiff*(R1+R2)) ) / uint64_t(Vin*R1 + Vdiff*(R1+R2)) );
@@ -43,11 +43,11 @@ int32_t R_thermistor = int32_t ( ( uint64_t(R3) * uint64_t(Vin*R2 - Vdiff*(R1+R2
 
 ### Steinhart-Hart Equation
 
-The Steinhart-Hart equation provides a formula to model the resistance of the thermistor based on 3 calibration values A,B and C. These are manufacturer provided and material constants but vary for each type of thermistor.
+The Steinhart-Hart equation provides a formula to model the resistance of the thermistor based on 3 calibration values A, B and C. These are manufacturer provided and material constants but they vary for each type of thermistor.
 
 $ \frac{1}{T} = A + B ln(R) + C (ln(R))^3 $
 
-To solve the Steinhart-Hart Equation we need to use floats as we have logarithm to compute. We will provide integer result in 100*Centigrade. On some micro controllers log and float math takes resources. Its better to average and reduce noise on the ADC readings and after filtering compute the Temperature.
+To solve the Steinhart-Hart Equation we need to use floats as we have logarithm to compute. We will provide integer result in 100*Centigrade. On some micro controllers, log and float math takes resources. Its better to average and reduce noise on the ADC readings and then apply floating point math to the data.
 
 ```
 float lnR = log(float(R_thermistor));                // natural logarithm

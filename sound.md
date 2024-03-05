@@ -1,27 +1,26 @@
 # Sound Recording
 
 ## Digital Stethoscope
-- [Texas Instruments Overview](https://www.ti.com/solution/digital-stethoscope)
+
 - [IEEE Paper with Arduino](https://ieeexplore.ieee.org/document/8994674)
 
 ## Audio Library for Arduino and ESP
 - [arduino-audio-tools](https://github.com/pschatzmann/arduino-audio-tools) with [audiotools review](https://youtu.be/a936wNgtcRA?si=jpXgP3CTCKrXq8GU)
 - [arduino-audio-driver](https://github.com/pschatzmann/arduino-audio-driver)
 
-## Sound ICS
-Suggested ICS to work with micro controllers.
+## Sound Codecs
+Suggested codecs to work with micro controllers.
 
-- [SGTL5000](https://www.nxp.com/products/audio-and-radio/audio-converters/ultra-low-power-audio-codec:SGTL5000)
-- [ES8388](https://pcbartists.com/wp-content/uploads/2022/07/ES8388-module-datasheet-July-2021.pdf)
-- [VS1053](https://cdn-shop.adafruit.com/datasheets/vs1053.pdf)
-- [WM8960](https://community.nxp.com/pwmxy87654/attachments/pwmxy87654/imx-processors/52419/1/WM8960.pdf)
+- [SGTL5000, NXP](https://www.nxp.com/products/audio-and-radio/audio-converters/ultra-low-power-audio-codec:SGTL5000)
+- [ES8388, Everest Semidoncutors](https://pcbartists.com/wp-content/uploads/2022/07/ES8388-module-datasheet-July-2021.pdf)
+- [VS1053, VLSI Solution](https://cdn-shop.adafruit.com/datasheets/vs1053.pdf)
+- [WM8960, NXP](https://community.nxp.com/pwmxy87654/attachments/pwmxy87654/imx-processors/52419/1/WM8960.pdf)
   
 ## Sound boards
 Sound boards developed for micro controllers, using i2s:
 
 - [Teensy audio board (SGTL5000)](https://www.pjrc.com/store/teensy3_audio.html) $14.40
-- [Audiopants ESP32 based on Teensy Audio (SGTL5000)](https://noties.space/headphones-help)
-- [Audiopants github](https://github.com/chipperdoodles/audiopants)
+- [Audiopants ESP32 based on Teensy Audio (SGTL5000)](https://noties.space/headphones-help), [Audiopants github](https://github.com/chipperdoodles/audiopants)
 - [audioinjector](https://www.audioinjector.net/) Produces several audio boards for raspberry pi. They likely also work for micro controllers.
 - [I2S ADC Audio I2S Capture Card Module](https://github.com/pschatzmann/arduino-audio-tools/wiki/External-ADC#i2s-adc-audio-i2s-capture-card-module) $12
 - [ES8388 Audio Codec Module](https://github.com/pschatzmann/arduino-audio-tools/wiki/Audio-Boards#es8388-audio-codec-module) $17

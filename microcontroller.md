@@ -1,6 +1,10 @@
 # Microcontroller
-## ESP
-ESP32 peripheral support: https://docs.espressif.com/projects/arduino-esp32/en/latest/libraries.html
+Code included with this project is using Arduino programming environment. Communication with base station uses ESPNow. Therefor code will only work with ESP base micro controller.
+
+During development, Adafruit ESP32-S3 Feather was primarily used but also SparkFun Thing Plus to test older hardware version.
+
+## Arduino ESP32
+Currently, the Arduino ESP32 supports the peripherals with Arduino APIs as listed here: https://docs.espressif.com/projects/arduino-esp32/en/latest/libraries.html
 
 ### ESP 8266
 - released in 2014
@@ -44,13 +48,13 @@ ESP32 peripheral support: https://docs.espressif.com/projects/arduino-esp32/en/l
 - Low quality A/D
 - Does not supprt A2DP (Bluetooh Classic)
 - Likely will BLE Audio will not be usable
-- Does not yet support I2S
+- Arduino Library support for I2S is in beta
 - Arduino-Audio-Tools does not support AudioStream?
 - $11.50
   
 ### ESP32-C6
 - released in 2023
-- Not yet supported by Arduino IDE
+- Arduino IDE support expected
 - RISC-V dual core 32-bit 160MHz
 - WiFi 6
 - Bluetooth LE 5

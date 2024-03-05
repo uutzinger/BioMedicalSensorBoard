@@ -1,12 +1,13 @@
 # Tissue Impedance
-Resources on Bio Front Ends: https://ez.analog.com/webinar/m/presentations/2742
 
-## Analog Devices ICS
+## IEC 60601 
+IEC 60601 limits 10 µA maximum dc-leakage current through the body under normal conditions and 50 µA maximum under worst-case, single-fault conditions. An impedance circuit should not exceed that current.
+
+## Analog Devices AFE
 - [AD5933 12-bit impedance converter ($18)](https://www.analog.com/en/products/ad5933.html) evaluation kit available ($68)
 - [User Guide with reference schematics](https://www.analog.com/media/en/technical-documentation/user-guides/UG-364.pdf)
 
-## Maxim ICS
-
+## Maxim AFE
 - Biopotential
   - ECG (waveform)
   - R-R (heart rate)
@@ -85,17 +86,49 @@ Munoz et al [2] describe their implementation in a 2022 paper. Several other web
 
 For bioimpedance measurements the following analog front end elements should be used: a high-pass filter (HPF), a voltage-to-current converter (VCC), and an instrumentation amplifier (INA).
 
-The HPF is a first order system composed by a 100 kΩ resistor and a 10 nF capacitor to remove the DC components of $V_{out}$. $f_c = 1 / (2 \pi R C)$ resulting in 160Hz. 
+The HPF is a first order system composed of a 100 kΩ resistor and a 10 nF capacitor to remove the DC components of $V_{out}$. $f_c = 1 / (2 \pi R C)$ resulting in 160Hz. 
 
-The HPF output is connected to VCC, which consists of an operational amplifier and two resistors. $R_{VCC current} = 1 kΩ$; $R_{VCC_{protect}} = 10 kΩ$. Because the impedance is supposed to vary from tens to hundreds of ohms, $R_{feedback} = 10 kΩ$ ensures that current flows mainly through $Z_{Load}$, which is connected in parallel to $R_{feedback}$. The current through $R_{VCC_{curent}}$  is $(V_{out} - V_{ref}) / R_{VCC_{current}}$. Therefore the voltage over $Z_{load}$ is $-(V_{out} - V_{ref}) / R_{VCC_{current}} * Z_{load}$.
+The HPF output is connected to VCC, which consists of an operational amplifier and two resistors. The current injected into the tissue should not exceed 10 uA. 
 
-The unity gain instrumentation amplifier receives, through its non-inverting input, the voltages on the electrodes connected to $Z_{load}$. Since the ADC converter of the AD5933 is unipolar, a potential ($V_{ref}$) is added as reference voltage to the instrumentation amplifier. The output of the INA is $V_{INA} =  V_{load} + V_{ref}.
+$R_{VCC current} = 1 kΩ$ (This will exceed 10 µA!)
 
-The current through $R_{AD_{IN}}$ is $(V_{INA} - V_{ref})/R_{AD_{IN}}$. The output of the internal OpAmp in the AD5933 is $I_{RFB} * R_{AD_{FB}}. Therefore $V_{AD5933} = (V_{INA} - V_{ref})/R_{AD{IN}} * R_{AD_{FB}}$.
+$R_{VCC_{protect}} = 10 kΩ$
 
-The DSP of the AD5933 calculates the real and imaginary parts of Z_Load, which are read through an inter-integrated circuit (I2C) protocol 
+Because the impedance is supposed to vary from tens to hundreds of ohms, 
+
+$R_{feedback} = 10 kΩ$ 
+
+ensures that current flows mainly through $Z_{Load}$, which is connected in parallel to $R_{feedback}$.
+
+The current through VCC is
+
+$R_{VCC_{curent}} = (V_{out} - V_{ref}) / R_{VCC_{current}}$. 
+
+Therefore the voltage over $Z_{load}$ is
+
+$V_{Z_{load}} = -(V_{out} - V_{ref}) / R_{VCC_{current}} * Z_{load}$.
+
+The unity gain instrumentation amplifier receives, through its non-inverting input, the voltages on the electrodes connected to $Z_{load}$. Since the ADC converter of the AD5933 is unipolar, a potential ($V_{ref}$) is added as reference voltage to the instrumentation amplifier. The output of the INA is 
+
+$V_{INA} =  V_{load} + V_{ref}
+
+The current through $R_{AD_{IN}}$ is:
+
+$(V_{INA} - V_{ref})/R_{AD_{IN}}$
+
+The output of the internal OpAmp in the AD5933 is 
+
+$I_{RFB} * R_{AD_{FB}}$
+
+Therefore 
+
+$V_{AD5933} = (V_{INA} - V_{ref})/R_{AD{IN}} * R_{AD_{FB}}$.
+
+The DSP of the AD5933 calculates the real and imaginary parts of $Z_{load}$, which are read through an inter-integrated circuit (I2C) protocol by a micro controller.
 
 ### Electrical Components
+
+A list of designs using the AD5933 used the following values for resistors and capacitors:
 
 | Design        | $C_{HP}$ | $R_{HP}$ | $RFB$ | $R_V{CC_{current}}$ | $R_{VCC_{protect}}$ | $R_{INA_{GAIN}}$ | $R_{REFGEN}$ | $R_{AD_{IN}}$ | $R_{AD_{FB}}$ | $VCC +$
 |---            |---   |---    |---   |---            |---              |---            |---       |---      |---      |---
@@ -146,4 +179,3 @@ For general reading: [Analog Devices: Bio-Impedance Circuit Design for Body Worn
 10) [Uwe Pliquett, Andreas Barthel, 2012 J. Phys.: Conf. Ser. 407 012019](https://iopscience.iop.org/article/10.1088/1742-6596/407/1/012019)
 10) [Paco Bogonez-Franco et al, 2014, Problems encountered during inappropriate use of commercial bioimpedance devices in novel applications, 7 th International Workshop on Impedance Spectroscopy 2014](https://www.researchgate.net/publication/269571754_Problems_encountered_during_inappropriate_use_of_commercial_bioimpedance_devices_in_novel_applications)
 12) [J Ferreira et al 2010 J. Phys.: Conf. Ser. 224 012011](https://iopscience.iop.org/article/10.1088/1742-6596/224/1/012011/pdf)
-

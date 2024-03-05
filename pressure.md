@@ -7,4 +7,4 @@
 
 # Sparkfun
 - SparkFun Qwiic MicroPressure Sensor
-- Several sensors available, need to check range, noise and smallest measureable pressure change
+- Several sensors available, need to check range, noise and smallest measurable pressure change
