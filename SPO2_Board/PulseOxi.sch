@@ -2088,7 +2088,7 @@ Source: &lt;a href="https://abracon.com/Resonators/abm3.pdf"&gt; Datasheet &lt;/
 <part name="P+1" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="VCC" device=""/>
 <part name="GND48" library="supply1" deviceset="GND" device=""/>
 <part name="P+12" library="supply1" deviceset="VCC" device=""/>
-<part name="U$11" library="ABM3-8.000MHZ-D2Y-T" deviceset="ABM3-8.000MHZ-D2Y-T" device=""/>
+<part name="OSC" library="ABM3-8.000MHZ-D2Y-T" deviceset="ABM3-8.000MHZ-D2Y-T" device=""/>
 <part name="X2" library="circuitects" deviceset="DB9" device=""/>
 <part name="GND32" library="supply1" deviceset="GND" device=""/>
 <part name="GND34" library="supply1" deviceset="GND" device=""/>
@@ -2170,7 +2170,7 @@ Source: &lt;a href="https://abracon.com/Resonators/abm3.pdf"&gt; Datasheet &lt;/
 <instance part="P+12" gate="VCC" x="-20.16" y="-10.98" smashed="yes">
 <attribute name="VALUE" x="-22.7" y="-13.52" size="1.778" layer="96" rot="R90"/>
 </instance>
-<instance part="U$11" gate="G$1" x="46.99" y="102.87" smashed="yes" rot="R180">
+<instance part="OSC" gate="G$1" x="46.99" y="102.87" smashed="yes" rot="R180">
 <attribute name="NAME" x="49.53" y="100.584" size="1.778" layer="95" rot="R180"/>
 </instance>
 <instance part="X2" gate="G$1" x="-30.988" y="59.69" smashed="yes" rot="R180">
@@ -2606,7 +2606,7 @@ Source: &lt;a href="https://abracon.com/Resonators/abm3.pdf"&gt; Datasheet &lt;/
 </net>
 <net name="N$16" class="0">
 <segment>
-<pinref part="U$11" gate="G$1" pin="2"/>
+<pinref part="OSC" gate="G$1" pin="2"/>
 <wire x1="36.83" y1="98.552" x2="36.83" y2="102.87" width="0.1524" layer="91"/>
 <junction x="36.83" y="102.87"/>
 <pinref part="C9" gate="G$1" pin="1"/>
@@ -2617,7 +2617,7 @@ Source: &lt;a href="https://abracon.com/Resonators/abm3.pdf"&gt; Datasheet &lt;/
 </net>
 <net name="N$19" class="0">
 <segment>
-<pinref part="U$11" gate="G$1" pin="1"/>
+<pinref part="OSC" gate="G$1" pin="1"/>
 <pinref part="C10" gate="G$1" pin="1"/>
 <junction x="46.99" y="102.87"/>
 <pinref part="IC1" gate="G$1" pin="XOUT"/>

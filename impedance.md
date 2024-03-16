@@ -130,18 +130,18 @@ The DSP of the AD5933 calculates the real and imaginary parts of $Z_{load}$, whi
 
 A list of designs using the AD5933 used the following values for resistors and capacitors:
 
-| Design        | $C_{HP}$ | $R_{HP}$ | $RFB$ | $R_V{CC_{current}}$ | $R_{VCC_{protect}}$ | $R_{INA_{GAIN}}$ | $R_{REFGEN}$ | $R_{AD_{IN}}$ | $R_{AD_{FB}}$ | $VCC +$
+| Design        | $C_{HP}$ | $R_{HP}$ | $RFB$ | $R_{VCC_{current}}$ | $R_{VCC_{protect}}$ | $R_{INA_{GAIN}}$ | $R_{REFGEN}$ | $R_{AD_{IN}}$ | $R_{AD_{FB}}$ | $VCC +$
 |---            |---   |---    |---   |---            |---              |---            |---       |---      |---      |---
 | Eval [1]      | 47nF | 49.9k | 200k | N.A.          | N.A.            | N.A.          | 49.9k    | 20k     | 20k     |
 | Datasheet [3] | 47nF | N.S.  | N.S. | N.A.          | N.A.            | N.A.          | N.S.     | 20k     | 20k     |
 | Munoz [2]     | 10nF | 100k  | N.A. | 1k            | 10k             | Gain=1        | 1k       | 1k      | 1k      | GND
-| Instru Bio [4]| 10nF |  10k  | N.A. | 1k            |  1k             | Gain=10, 5.5k | VDD/2    | 1k      | 1k      | GND
+| Instru Bio [4]| 10nF |  10k  | N.A. | 1k            |  1k             | Gain=10,5.5k  | VDD/2    | 1k      | 1k      | GND
 | Instru BIA [5]| 10nF | 100k  | N.A. | 1M            |  1M             | Gain=1.5,100k | VDD/2    | 1k      | 1k      | GND
 | Instru BIA [6]| 10nF | 100k  | N.A. | 285k          |  1M             |               | VDD/2    |         |         | VDD/2
 | Instru Thor[7]| 1.2nF|  10k  | N.A. | 1M            |  1M             | Gain=1.5,100k | 1k       | 1k      | 1k      | GND
 | Instru Thor[8]| 100nF|  20k  | N.A. | 100k          |  10k            | Gain=1.5,100k | 3.2/1k   | 1k      | 1k      | GND
-| UA 2023       | 10nF | 100k  |      |  82k          |  82k            | 1k            | 20k      | 20k     | 20k     | VDD/2
-| UA 2024       |      |       |      |               |                 |               |          |         |         | 
+| UA 2023       | 10nF | 100k  | N.A. |  82k          |  82k            | Gain=51,1k    | 20k      | 20k     | 20k     | VDD/2
+| UA 2024       | 10nF | 100k  | 200k | 265k          |   1k            | Gain=51,1k    | 10k      | 20k     | 20k     | VDD/2
 
 - Network Analyzer AD5933
 - Operation Amplifier(s) AD8608 or AD8606 or AD8605
@@ -152,12 +152,13 @@ A list of designs using the AD5933 used the following values for resistors and c
 - 10nF, 100k fc=160Hz
 
 #### $R_{current}$ and $R_{protect}$
-- If input into VCC is 200mV, 1k $R_{VCC_{current}}$ will result in 200 $\mu A$ current
-- Setting of Range 1 in AD5933 is 1V if operating at 3.3V., for $10 \mu A$ we need 110k $R_{VCC_{current}}$.
+- Input into VCC is at 1.65V offset with 1V amplitude. With $I_{CC} <10uA$ and $V_{CC} = 2.65V$ and $R_{VCC_{current}}$ will need to be 265kΩ.
+- Setting of Range 1 in AD5933 is 1V if operating at 3.3V., for $10 \mu A$ we need 110kΩ for $R_{VCC_{current}}$.
 - Analog Devices: "Bio-Impedance Circuit Design for Body Worn Systems"
 
 #### $R_{Gain}$ 
 - $G = 1 + (49.4k/R_{Gain})$
+- With $R_{INA_{GAIN}}$  = 1kΩ the gain will be $G=51$
 
 ### Impedance Estimation
 

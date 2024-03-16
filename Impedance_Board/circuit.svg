@@ -23,43 +23,36 @@
      inkscape:pageopacity="0.0"
      inkscape:pagecheckerboard="0"
      showgrid="false"
-     inkscape:zoom="2"
-     inkscape:cx="311.25"
-     inkscape:cy="268.75"
+     inkscape:zoom="1.4142136"
+     inkscape:cx="331.98663"
+     inkscape:cy="100.76272"
      inkscape:window-width="2560"
      inkscape:window-height="1351"
-     inkscape:window-x="2391"
+     inkscape:window-x="-9"
      inkscape:window-y="-9"
      inkscape:window-maximized="1"
      inkscape:current-layer="svg450" />
   <rect
-     style="opacity:0.97;fill:#00b7ff;fill-opacity:0.13677812;stroke:#00ceff;stroke-width:0.0944882;stroke-linejoin:bevel;stroke-opacity:1"
+     style="opacity:0.97;fill:#00b7ff;fill-opacity:0.136778;stroke:#00ceff;stroke-width:0.0967995;stroke-linejoin:bevel;stroke-opacity:1"
      id="rect27472"
-     width="493.5"
+     width="517.93835"
      height="296.5"
-     x="718.5"
+     x="694.06165"
      y="31.5" />
   <line
      x1="150"
-     y1="410"
+     y1="428"
      x2="150"
-     y2="470"
-     style="stroke:rgb(0, 0, 0);stroke-linecap:square;stroke-width:2"
+     y2="488"
+     style="stroke:#000000;stroke-width:2;stroke-linecap:square"
      id="line2" />
   <line
      x1="150"
-     y1="320"
+     y1="336"
      x2="150"
-     y2="390"
-     style="stroke:rgb(0, 0, 0);stroke-linecap:square;stroke-width:2"
+     y2="406"
+     style="stroke:#000000;stroke-width:2;stroke-linecap:square"
      id="line4" />
-  <line
-     x1="150"
-     y1="320"
-     x2="150"
-     y2="330"
-     style="stroke:rgb(0, 0, 0);stroke-linecap:square;stroke-width:2"
-     id="line6" />
   <text
      x="105"
      y="290"
@@ -83,17 +76,17 @@
      id="line12" />
   <line
      x1="150"
-     y1="180"
+     y1="184"
      x2="150"
-     y2="190"
-     style="stroke:rgb(0, 0, 0);stroke-linecap:square;stroke-width:2"
+     y2="194"
+     style="stroke:#000000;stroke-width:2;stroke-linecap:square"
      id="line14" />
   <line
      x1="150"
-     y1="50"
+     y1="62"
      x2="150"
-     y2="140"
-     style="stroke:rgb(0, 0, 0);stroke-linecap:square;stroke-width:2"
+     y2="152"
+     style="stroke:#000000;stroke-width:2;stroke-linecap:square"
      id="line16" />
   <line
      x1="120"
@@ -271,13 +264,6 @@
      y2="100"
      style="stroke:rgb(0, 0, 0);stroke-linecap:square;stroke-width:2"
      id="line68" />
-  <line
-     x1="600"
-     y1="300"
-     x2="730"
-     y2="300"
-     style="stroke:rgb(0, 0, 0);stroke-linecap:square;stroke-width:2"
-     id="line70" />
   <line
      x1="600"
      y1="300"
@@ -991,11 +977,10 @@
      style="fill-opacity:0;fill:rgb(0, 0, 0);stroke:rgb(0, 0, 0);stroke-linecap:square;stroke-width:2"
      id="path282" />
   <text
-     x="756"
-     y="335"
-     style="font-family:Arial;font-size:11px;text-anchor:end"
+     x="758"
+     y="327"
+     style="font-size:11px;font-family:Arial;text-anchor:end"
      dominant-baseline="middle"
-     transform="rotate(0, 756, 335)"
      id="text284">R_REFGEN</text>
   <line
      x1="770"
@@ -1055,18 +1040,18 @@
      style="stroke:rgb(0, 0, 0);stroke-linecap:square;stroke-width:2"
      id="line302" />
   <line
-     x1="700"
+     x1="676"
      y1="230"
-     x2="700"
+     x2="676"
      y2="280"
-     style="stroke:rgb(0, 0, 0);stroke-linecap:square;stroke-width:2"
+     style="stroke:#000000;stroke-width:2;stroke-linecap:square"
      id="line304" />
   <line
      x1="600"
      y1="280"
-     x2="700"
+     x2="676"
      y2="280"
-     style="stroke:rgb(0, 0, 0);stroke-linecap:square;stroke-width:2"
+     style="stroke:#000000;stroke-width:1.74356;stroke-linecap:square"
      id="line306" />
   <line
      x1="600"
@@ -1094,46 +1079,45 @@
      style="fill-opacity:0;fill:rgb(0, 0, 0);stroke:rgb(0, 0, 0);stroke-linecap:square;stroke-width:2"
      id="path314" />
   <line
-     x1="700"
+     x1="676"
      y1="140"
-     x2="700"
+     x2="676"
      y2="180"
-     style="stroke:rgb(0, 0, 0);stroke-linecap:square;stroke-width:2"
+     style="stroke:#000000;stroke-width:2;stroke-linecap:square"
      id="line316" />
   <line
-     x1="700"
+     x1="676"
      y1="180"
-     x2="700"
+     x2="676"
      y2="201"
-     style="stroke:rgb(0, 0, 0);stroke-linecap:square;stroke-width:2"
+     style="stroke:#000000;stroke-width:2;stroke-linecap:square"
      id="line318" />
   <line
-     x1="700"
+     x1="676"
      y1="209"
-     x2="700"
+     x2="676"
      y2="230"
-     style="stroke:rgb(0, 0, 0);stroke-linecap:square;stroke-width:2"
+     style="stroke:#000000;stroke-width:2;stroke-linecap:square"
      id="line320" />
   <line
-     x1="686"
+     x1="662"
      y1="201"
-     x2="714"
+     x2="690"
      y2="201"
-     style="stroke:rgb(0, 0, 0);stroke-linecap:square;stroke-width:2"
+     style="stroke:#000000;stroke-width:2;stroke-linecap:square"
      id="line322" />
   <line
-     x1="686"
+     x1="662"
      y1="209"
-     x2="714"
+     x2="690"
      y2="209"
-     style="stroke:rgb(0, 0, 0);stroke-linecap:square;stroke-width:2"
+     style="stroke:#000000;stroke-width:2;stroke-linecap:square"
      id="line324" />
   <text
-     x="680"
+     x="656"
      y="205"
-     style="font-family:Arial;font-size:11px;text-anchor:end"
+     style="font-size:11px;font-family:Arial;text-anchor:end"
      dominant-baseline="middle"
-     transform="rotate(0, 680, 205)"
      id="text326">Z</text>
   <line
      x1="600"
@@ -1186,10 +1170,10 @@
      id="line340" />
   <line
      x1="430"
-     y1="80"
+     y1="70"
      x2="430"
-     y2="90"
-     style="stroke:rgb(0, 0, 0);stroke-linecap:square;stroke-width:2"
+     y2="80"
+     style="stroke:#000000;stroke-width:2;stroke-linecap:square"
      id="line342" />
   <text
      x="430"
@@ -1512,13 +1496,12 @@
      ry="2"
      style="fill-opacity:1;fill:rgb(0, 0, 0);stroke:rgb(0, 0, 0);stroke-width:2"
      id="ellipse438" />
-  <ellipse
-     cx="700"
+  <circle
+     cx="676"
      cy="140"
-     rx="2"
-     ry="2"
-     style="fill-opacity:1;fill:rgb(0, 0, 0);stroke:rgb(0, 0, 0);stroke-width:2"
-     id="ellipse440" />
+     style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:2"
+     id="ellipse440"
+     r="2" />
   <ellipse
      cx="620"
      cy="390"
@@ -1584,33 +1567,33 @@
      xml:space="preserve"
      style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none"
      x="952.02881"
-     y="133.4984"
+     y="143.4984"
      id="text10869"><tspan
        sodipodi:role="line"
        id="tspan10867"
        x="952.02881"
-       y="133.4984"
+       y="143.4984"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:24px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#008000">Instrument Amplifier</tspan></text>
   <text
      xml:space="preserve"
      style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none"
-     x="779.5528"
-     y="358.59424"
+     x="601.5528"
+     y="494.59424"
      id="text12607"><tspan
        sodipodi:role="line"
-       x="779.5528"
-       y="358.59424"
+       x="601.5528"
+       y="494.59424"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:24px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#008000"
        id="tspan12631">Offset Voltage Generator</tspan></text>
   <text
      xml:space="preserve"
      style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none"
      x="20.463337"
-     y="329.36099"
+     y="325.36099"
      id="text13783"><tspan
        sodipodi:role="line"
        x="20.463337"
-       y="329.36099"
+       y="325.36099"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:24px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#008000"
        id="tspan13781">Internal AD5933 Amplifier</tspan></text>
   <text
@@ -1648,7 +1631,7 @@
        id="tspan18397">Impedance</tspan></text>
   <path
      style="fill:#ff0000;stroke:#ff0000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-     d="m 706.5,215.75 26,29.5"
+     d="m 700.5,215.75 26,29.5"
      id="path20366"
      sodipodi:nodetypes="cc" />
   <path
@@ -1692,4 +1675,32 @@
      style="font-size:12px;font-family:Arial;text-anchor:end"
      dominant-baseline="middle"
      id="text27280">V_AD5933</text>
+  <line
+     x1="710"
+     y1="300"
+     x2="730"
+     y2="300"
+     style="stroke:#000000;stroke-width:2;stroke-linecap:square"
+     id="line1401" />
+  <line
+     x1="672"
+     y1="300"
+     x2="692"
+     y2="300"
+     style="stroke:#000000;stroke-width:2;stroke-linecap:square"
+     id="line1403" />
+  <line
+     x1="636"
+     y1="300"
+     x2="656"
+     y2="300"
+     style="stroke:#000000;stroke-width:2;stroke-linecap:square"
+     id="line1405" />
+  <line
+     x1="600"
+     y1="300"
+     x2="620"
+     y2="300"
+     style="stroke:#000000;stroke-width:2;stroke-linecap:square"
+     id="line1407" />
 </svg>

@@ -4517,9 +4517,9 @@ increase frequency or change internal lower filter cut off.</text>
 <attribute name="NAME" x="-53.848" y="35.941" size="1.778" layer="95" rot="MR0"/>
 <attribute name="VALUE" x="-54.102" y="30.861" size="1.778" layer="96" rot="MR0"/>
 </instance>
-<instance part="C19" gate="G$1" x="-60.96" y="35.56" smashed="yes" rot="MR0">
+<instance part="C19" gate="G$1" x="-60.96" y="33.02" smashed="yes" rot="MR0">
 <attribute name="NAME" x="-61.468" y="35.941" size="1.778" layer="95" rot="MR0"/>
-<attribute name="VALUE" x="-61.468" y="33.401" size="1.778" layer="96" rot="MR0"/>
+<attribute name="VALUE" x="-61.468" y="30.861" size="1.778" layer="96" rot="MR0"/>
 </instance>
 <instance part="SUPPLY7" gate="1" x="-60.96" y="43.18" smashed="yes" rot="MR180">
 <attribute name="VALUE" x="-62.865" y="46.355" size="1.778" layer="96" rot="MR180"/>
@@ -4593,8 +4593,8 @@ increase frequency or change internal lower filter cut off.</text>
 <attribute name="NAME" x="78.486" y="-50.546" size="1.778" layer="95" rot="R90"/>
 <attribute name="VALUE" x="80.772" y="-50.546" size="1.778" layer="96" rot="R90"/>
 </instance>
-<instance part="SUPPLY11" gate="G$1" x="77.47" y="-57.15" smashed="yes" rot="MR0">
-<attribute name="VALUE" x="77.47" y="-59.055" size="1.778" layer="96" rot="MR0" align="center"/>
+<instance part="SUPPLY11" gate="G$1" x="80.01" y="-58.166" smashed="yes" rot="MR0">
+<attribute name="VALUE" x="80.01" y="-60.071" size="1.778" layer="96" rot="MR0" align="center"/>
 </instance>
 <instance part="DRVP" gate="G$1" x="103.124" y="39.37" smashed="yes">
 <attribute name="NAME" x="103.124" y="40.894" size="1.778" layer="95" font="vector"/>
@@ -4864,13 +4864,13 @@ increase frequency or change internal lower filter cut off.</text>
 <segment>
 <pinref part="D7" gate="G$1" pin="1"/>
 <wire x1="76.2" y1="-52.07" x2="76.2" y2="-53.34" width="0.1524" layer="91"/>
-<wire x1="76.2" y1="-53.34" x2="77.47" y2="-53.34" width="0.1524" layer="91"/>
-<wire x1="77.47" y1="-53.34" x2="85.09" y2="-53.34" width="0.1524" layer="91"/>
-<junction x="77.47" y="-53.34"/>
+<wire x1="76.2" y1="-53.34" x2="80.01" y2="-53.34" width="0.1524" layer="91"/>
+<wire x1="80.01" y1="-53.34" x2="85.09" y2="-53.34" width="0.1524" layer="91"/>
+<junction x="80.01" y="-53.34"/>
 <pinref part="D6" gate="G$1" pin="1"/>
 <wire x1="85.09" y1="-53.34" x2="85.09" y2="-52.07" width="0.1524" layer="91"/>
 <pinref part="SUPPLY11" gate="G$1" pin="GND"/>
-<wire x1="77.47" y1="-54.61" x2="77.47" y2="-53.34" width="0.1524" layer="91"/>
+<wire x1="80.01" y1="-55.626" x2="80.01" y2="-53.34" width="0.1524" layer="91"/>
 <wire x1="76.2" y1="-53.34" x2="67.31" y2="-53.34" width="0.1524" layer="91"/>
 <junction x="76.2" y="-53.34"/>
 <pinref part="D8" gate="G$1" pin="1"/>
@@ -4897,6 +4897,7 @@ increase frequency or change internal lower filter cut off.</text>
 <segment>
 <pinref part="C19" gate="G$1" pin="1"/>
 <pinref part="SUPPLY7" gate="1" pin="GND"/>
+<wire x1="-60.96" y1="38.1" x2="-60.96" y2="40.64" width="0.1524" layer="91"/>
 </segment>
 <segment>
 <pinref part="C18" gate="G$1" pin="1"/>
@@ -5167,7 +5168,7 @@ increase frequency or change internal lower filter cut off.</text>
 <pinref part="IC1" gate="G$1" pin="VREF"/>
 <pinref part="C19" gate="G$1" pin="2"/>
 <wire x1="-46.99" y1="22.86" x2="-60.96" y2="22.86" width="0.1524" layer="91"/>
-<wire x1="-60.96" y1="22.86" x2="-60.96" y2="33.02" width="0.1524" layer="91"/>
+<wire x1="-60.96" y1="22.86" x2="-60.96" y2="30.48" width="0.1524" layer="91"/>
 <label x="-53.34" y="22.86" size="1.778" layer="95"/>
 </segment>
 </net>
@@ -5550,10 +5551,10 @@ increase frequency or change internal lower filter cut off.</text>
 <wire x1="-76.2" y1="25.4" x2="-76.2" y2="26.67" width="0.1524" layer="91"/>
 <wire x1="-76.2" y1="26.67" x2="-86.36" y2="26.67" width="0.1524" layer="91"/>
 <junction x="-76.2" y="26.67"/>
-<wire x1="-76.2" y1="26.67" x2="-72.39" y2="26.67" width="0.1524" layer="91"/>
-<wire x1="-72.39" y1="17.78" x2="-72.39" y2="26.67" width="0.1524" layer="91"/>
+<wire x1="-76.2" y1="26.67" x2="-64.77" y2="26.67" width="0.1524" layer="91"/>
+<wire x1="-64.77" y1="17.78" x2="-64.77" y2="26.67" width="0.1524" layer="91"/>
 <pinref part="IC1" gate="G$1" pin="OVDD"/>
-<wire x1="-46.99" y1="17.78" x2="-72.39" y2="17.78" width="0.1524" layer="91"/>
+<wire x1="-46.99" y1="17.78" x2="-64.77" y2="17.78" width="0.1524" layer="91"/>
 <wire x1="-86.36" y1="26.67" x2="-120.65" y2="26.67" width="0.1524" layer="91"/>
 <junction x="-86.36" y="26.67"/>
 <junction x="-120.65" y="26.67"/>

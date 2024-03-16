@@ -1,0 +1,213 @@
+Setup starting...
+Debug:   DriverPins::begin
+Debug:   DriverPins::begin::setupPinMode
+Debug:   DriverPins::begin::SPI
+Debug:   DriverPins::begin::I2C
+Debug:   DriverPins::begin::I2C::begin
+Debug:   PinsI2C::begin for 7
+Info:    setting up I2C scl: 4, sda: 3
+Info:    Setting i2c clock: 100000
+Debug:   -> 44100
+Debug:   AudioBoard::pins::begin
+Debug:   DriverPins::begin
+Debug:   DriverPins::begin::setupPinMode
+Debug:   DriverPins::begin::SPI
+Debug:   DriverPins::begin::I2C
+Debug:   AudioBoard::pins::begin::returned:true
+Debug:   AudioBoard::driver::begin
+Debug:   AudioDriver::begin:pins
+Debug:   AudioDriver::begin:setSPI
+Debug:   AudioDriver::begin:setConfig
+Debug:   es8388_init
+Debug:   i2c_bus_check: addr=0x10
+Info:    Found ES8388
+Debug:   i2c_bus_write_bytes: addr=0x10 reglen=1 datalen=1 - reg=0x19 value=0x4
+Debug:   i2c_bus_write_bytes: addr=0x10 reglen=1 datalen=1 - reg=0x1 value=0x50
+Debug:   i2c_bus_write_bytes: addr=0x10 reglen=1 datalen=1 - reg=0x2 value=0x0
+Debug:   i2c_bus_write_bytes: addr=0x10 reglen=1 datalen=1 - reg=0x35 value=0xA0
+Debug:   i2c_bus_write_bytes: addr=0x10 reglen=1 datalen=1 - reg=0x37 value=0xD0
+Debug:   i2c_bus_write_bytes: addr=0x10 reglen=1 datalen=1 - reg=0x39 value=0xD0
+Debug:   i2c_bus_write_bytes: addr=0x10 reglen=1 datalen=1 - reg=0x8 value=0x0
+Debug:   i2c_bus_write_bytes: addr=0x10 reglen=1 datalen=1 - reg=0x4 value=0xC0
+Debug:   i2c_bus_write_bytes: addr=0x10 reglen=1 datalen=1 - reg=0x0 value=0x12
+Debug:   i2c_bus_write_bytes: addr=0x10 reglen=1 datalen=1 - reg=0x17 value=0x18
+Debug:   i2c_bus_write_bytes: addr=0x10 reglen=1 datalen=1 - reg=0x18 value=0x2
+Debug:   i2c_bus_write_bytes: addr=0x10 reglen=1 datalen=1 - reg=0x26 value=0x0
+Debug:   i2c_bus_write_bytes: addr=0x10 reglen=1 datalen=1 - reg=0x27 value=0x90
+Debug:   i2c_bus_write_bytes: addr=0x10 reglen=1 datalen=1 - reg=0x2A value=0x90
+Debug:   i2c_bus_write_bytes: addr=0x10 reglen=1 datalen=1 - reg=0x2B value=0x80
+Debug:   i2c_bus_write_bytes: addr=0x10 reglen=1 datalen=1 - reg=0x2D value=0x0
+Debug:   es8388_set_adc_dac_volume: 0.0
+Debug:   i2c_bus_write_bytes: addr=0x10 reglen=1 datalen=1 - reg=0x1B value=0x0
+Debug:   i2c_bus_write_bytes: addr=0x10 reglen=1 datalen=1 - reg=0x1A value=0x0
+Info:    output_device: 0
+Debug:   i2c_bus_write_bytes: addr=0x10 reglen=1 datalen=1 - reg=0x4 value=0x3C
+Debug:   i2c_bus_write_bytes: addr=0x10 reglen=1 datalen=1 - reg=0x3 value=0xFF
+Debug:   es8388_set_mic_gain: 25
+Debug:   i2c_bus_write_bytes: addr=0x10 reglen=1 datalen=1 - reg=0x9 value=0x88
+Debug:   i2c_bus_write_bytes: addr=0x10 reglen=1 datalen=1 - reg=0xA value=0x0
+Debug:   i2c_bus_write_bytes: addr=0x10 reglen=1 datalen=1 - reg=0xB value=0x2
+Debug:   i2c_bus_write_bytes: addr=0x10 reglen=1 datalen=1 - reg=0xC value=0xD
+Debug:   i2c_bus_write_bytes: addr=0x10 reglen=1 datalen=1 - reg=0xD value=0x2
+Debug:   es8388_set_adc_dac_volume: 0.0
+Debug:   i2c_bus_write_bytes: addr=0x10 reglen=1 datalen=1 - reg=0x10 value=0x0
+Debug:   i2c_bus_write_bytes: addr=0x10 reglen=1 datalen=1 - reg=0x11 value=0x0
+Debug:   i2c_bus_write_bytes: addr=0x10 reglen=1 datalen=1 - reg=0x3 value=0x9
+Debug:   AudioDriver::begin::init succeeded
+Debug:   mode->CODEC_MODE_ENCODE
+Debug:   es8388_ctrl_state_active: 1, 1
+Debug:   es8388_start
+Debug:   i2c_bus_read_bytes: addr=16 reglen=1 datalen=1 - reg=43
+Debug:   i2c_bus_write_bytes: addr=0x10 reglen=1 datalen=1 - reg=0x2B value=0x80
+Debug:   i2c_bus_read_bytes: addr=16 reglen=1 datalen=1 - reg=43
+Debug:   i2c_bus_write_bytes: addr=0x10 reglen=1 datalen=1 - reg=0x3 value=0x0
+Debug:   es8388_start default is mode:1
+Debug:   start default is decode mode:1
+Debug:   AudioDriver::begin::controlState succeeded
+Debug:   es8388_config_i2s
+Debug:   es8388_config_fmt
+Debug:   i2c_bus_read_bytes: addr=16 reglen=1 datalen=1 - reg=12
+Debug:   i2c_bus_write_bytes: addr=0x10 reglen=1 datalen=1 - reg=0xC value=0xC
+Debug:   i2c_bus_read_bytes: addr=16 reglen=1 datalen=1 - reg=23
+Debug:   i2c_bus_write_bytes: addr=0x10 reglen=1 datalen=1 - reg=0x17 value=0x18
+Debug:   es8388_set_bits_per_sample
+Debug:   i2c_bus_read_bytes: addr=16 reglen=1 datalen=1 - reg=12
+Debug:   i2c_bus_write_bytes: addr=0x10 reglen=1 datalen=1 - reg=0xC value=0xC
+Debug:   i2c_bus_read_bytes: addr=16 reglen=1 datalen=1 - reg=23
+Debug:   i2c_bus_write_bytes: addr=0x10 reglen=1 datalen=1 - reg=0x17 value=0x18
+Debug:   AudioDriver::begin::configInterface succeeded
+Debug:   AudioDriver::begin:setPAPower
+Debug:   AudioDriver::begin:completed
+Debug:   i2c_bus_write_bytes: addr=0x10 reglen=1 datalen=1 - reg=0x17 value=0x18
+Debug:   AudioDriver::begin::configInterface succeeded
+Debug:   AudioDriver::begin:setPAPower
+Debug:   AudioDriver::begin:completed
+Debug:   AudioBoard::driver::begin::returned:true
+Debug:   volume 70
+Debug:   es8388_set_voice_volume (HACK 1): 70
+Debug:   i2c_bus_write_bytes: addr=0x10 reglen=1 datalen=1 - reg=0x1A value=0x0
+Debug:   i2c_bus_write_bytes: addr=0x10 reglen=1 datalen=1 - reg=0x1B value=0x0
+Debug:   i2c_bus_write_bytes: addr=0x10 reglen=1 datalen=1 - reg=0x2E value=0x17
+Debug:   i2c_bus_write_bytes: addr=0x10 reglen=1 datalen=1 - reg=0x2F value=0x17
+Debug:   i2c_bus_write_bytes: addr=0x10 reglen=1 datalen=1 - reg=0x30 value=0x17
+Debug:   i2c_bus_write_bytes: addr=0x10 reglen=1 datalen=1 - reg=0x31 value=0x17
+Debug:   AudioBoard::volume::set
+[D] I2SCodecStream.h : 88 - virtual bool audio_tools::I2SCodecStream::begin(audio_tools::I2SCodecConfig)
+[D] I2SCodecStream.h : 228 - input: 1
+[D] I2SCodecStream.h : 230 - output: 3
+[D] I2SCodecStream.h : 245 - BIT_LENGTH_16BITS
+[D] I2SCodecStream.h : 282 - RATE_8K
+[D] I2SCodecStream.h : 290 - I2S_NORMAL
+Debug:   AudioBoard::pins::begin
+Debug:   DriverPins::begin
+Debug:   DriverPins::begin::setupPinMode
+Debug:   DriverPins::begin::SPI
+Debug:   DriverPins::begin::I2C
+Debug:   AudioBoard::pins::begin::returned:true
+Debug:   AudioBoard::driver::begin
+Debug:   AudioDriver::begin:pins
+Debug:   AudioDriver::begin:setSPI
+Debug:   AudioDriver::begin:setConfig
+Debug:   es8388_init
+Debug:   i2c_bus_check: addr=0x10
+Info:    Found ES8388
+Debug:   i2c_bus_write_bytes: addr=0x10 reglen=1 datalen=1 - reg=0x19 value=0x4
+Debug:   i2c_bus_write_bytes: addr=0x10 reglen=1 datalen=1 - reg=0x1 value=0x50
+Debug:   i2c_bus_write_bytes: addr=0x10 reglen=1 datalen=1 - reg=0x2 value=0x0
+Debug:   i2c_bus_write_bytes: addr=0x10 reglen=1 datalen=1 - reg=0x35 value=0xA0
+Debug:   i2c_bus_write_bytes: addr=0x10 reglen=1 datalen=1 - reg=0x37 value=0xD0
+Debug:   i2c_bus_write_bytes: addr=0x10 reglen=1 datalen=1 - reg=0x39 value=0xD0
+Debug:   i2c_bus_write_bytes: addr=0x10 reglen=1 datalen=1 - reg=0x8 value=0x0
+Debug:   i2c_bus_write_bytes: addr=0x10 reglen=1 datalen=1 - reg=0x4 value=0xC0
+Debug:   i2c_bus_write_bytes: addr=0x10 reglen=1 datalen=1 - reg=0x0 value=0x12
+Debug:   i2c_bus_write_bytes: addr=0x10 reglen=1 datalen=1 - reg=0x17 value=0x18
+Debug:   i2c_bus_write_bytes: addr=0x10 reglen=1 datalen=1 - reg=0x18 value=0x2
+Debug:   i2c_bus_write_bytes: addr=0x10 reglen=1 datalen=1 - reg=0x26 value=0x0
+Debug:   i2c_bus_write_bytes: addr=0x10 reglen=1 datalen=1 - reg=0x27 value=0x90
+Debug:   i2c_bus_write_bytes: addr=0x10 reglen=1 datalen=1 - reg=0x2A value=0x90
+Debug:   i2c_bus_write_bytes: addr=0x10 reglen=1 datalen=1 - reg=0x2B value=0x80
+Debug:   i2c_bus_write_bytes: addr=0x10 reglen=1 datalen=1 - reg=0x2D value=0x0
+Debug:   es8388_set_adc_dac_volume: 0.0
+Debug:   i2c_bus_write_bytes: addr=0x10 reglen=1 datalen=1 - reg=0x1B value=0x0
+Debug:   i2c_bus_write_bytes: addr=0x10 reglen=1 datalen=1 - reg=0x1A value=0x0
+Info:    output_device: 3
+Debug:   i2c_bus_write_bytes: addr=0x10 reglen=1 datalen=1 - reg=0x4 value=0x3C
+Debug:   i2c_bus_write_bytes: addr=0x10 reglen=1 datalen=1 - reg=0x3 value=0xFF
+Debug:   es8388_set_mic_gain: 25
+Debug:   i2c_bus_write_bytes: addr=0x10 reglen=1 datalen=1 - reg=0x9 value=0x88
+Debug:   i2c_bus_write_bytes: addr=0x10 reglen=1 datalen=1 - reg=0xA value=0x0
+Debug:   i2c_bus_write_bytes: addr=0x10 reglen=1 datalen=1 - reg=0xB value=0x2
+Debug:   i2c_bus_write_bytes: addr=0x10 reglen=1 datalen=1 - reg=0xC value=0xD
+Debug:   i2c_bus_write_bytes: addr=0x10 reglen=1 datalen=1 - reg=0xD value=0x2
+Debug:   es8388_set_adc_dac_volume: 0.0
+Debug:   i2c_bus_write_bytes: addr=0x10 reglen=1 datalen=1 - reg=0x10 value=0x0
+Debug:   i2c_bus_write_bytes: addr=0x10 reglen=1 datalen=1 - reg=0x11 value=0x0
+Debug:   i2c_bus_write_bytes: addr=0x10 reglen=1 datalen=1 - reg=0x3 value=0x9
+Debug:   AudioDriver::begin::init succeeded
+Debug:   mode->CODEC_MODE_BOTH
+Debug:   es8388_ctrl_state_active: 3, 1
+Debug:   es8388_start
+Debug:   i2c_bus_read_bytes: addr=16 reglen=1 datalen=1 - reg=43
+Debug:   i2c_bus_write_bytes: addr=0x10 reglen=1 datalen=1 - reg=0x2B value=0x80
+Debug:   i2c_bus_read_bytes: addr=16 reglen=1 datalen=1 - reg=43
+Debug:   i2c_bus_write_bytes: addr=0x10 reglen=1 datalen=1 - reg=0x3 value=0x0
+Debug:   es8388_start default is mode:3
+Debug:   i2c_bus_write_bytes: addr=0x10 reglen=1 datalen=1 - reg=0x4 value=0x3C
+Debug:   es8388_set_voice_mute
+Debug:   i2c_bus_read_bytes: addr=16 reglen=1 datalen=1 - reg=25
+Debug:   i2c_bus_write_bytes: addr=0x10 reglen=1 datalen=1 - reg=0x19 value=0x0
+Debug:   es8388_start default is mode:3
+Debug:   start default is decode mode:3
+Debug:   AudioDriver::begin::controlState succeeded
+Debug:   es8388_config_i2s
+Debug:   es8388_config_fmt
+Debug:   i2c_bus_read_bytes: addr=16 reglen=1 datalen=1 - reg=12
+Debug:   i2c_bus_write_bytes: addr=0x10 reglen=1 datalen=1 - reg=0xC value=0xC
+Debug:   i2c_bus_read_bytes: addr=16 reglen=1 datalen=1 - reg=23
+Debug:   i2c_bus_write_bytes: addr=0x10 reglen=1 datalen=1 - reg=0x17 value=0x18
+Debug:   es8388_set_bits_per_sample
+Debug:   i2c_bus_read_bytes: addr=16 reglen=1 datalen=1 - reg=12
+Debug:   i2c_bus_write_bytes: addr=0x10 reglen=1 datalen=1 - reg=0xC value=0xC
+Debug:   i2c_bus_read_bytes: addr=16 reglen=1 datalen=1 - reg=23
+Debug:   i2c_bus_write_bytes: addr=0x10 reglen=1 datalen=1 - reg=0x17 value=0x18
+Debug:   AudioDriver::begin::configInterface succeeded
+Debug:   AudioDriver::begin:setPAPower
+Debug:   AudioDriver::begin:completed
+Debug:   AudioBoard::driver::begin::returned:true
+Debug:   volume 70
+Debug:   es8388_set_voice_volume (HACK 1): 70
+Debug:   i2c_bus_write_bytes: addr=0x10 reglen=1 datalen=1 - reg=0x1A value=0x0
+Debug:   i2c_bus_write_bytes: addr=0x10 reglen=1 datalen=1 - reg=0x1B value=0x0
+Debug:   i2c_bus_write_bytes: addr=0x10 reglen=1 datalen=1 - reg=0x2E value=0x17
+Debug:   i2c_bus_write_bytes: addr=0x10 reglen=1 datalen=1 - reg=0x2F value=0x17
+Debug:   i2c_bus_write_bytes: addr=0x10 reglen=1 datalen=1 - reg=0x30 value=0x17
+Debug:   i2c_bus_write_bytes: addr=0x10 reglen=1 datalen=1 - reg=0x31 value=0x17
+Debug:   AudioBoard::volume::set
+[D] I2SStream.h : 55 - bool audio_tools::I2SStream::begin(audio_tools::I2SConfig)
+[D] I2SESP32V1.h : 39 - bool audio_tools::I2SDriverESP32V1::begin(audio_tools::I2SConfigESP32V1)
+[D] I2SESP32V1.h : 355 - bool audio_tools::I2SDriverESP32V1::begin(audio_tools::I2SConfigESP32V1, int, int)
+[I] AudioTypes.h : 104 - sample_rate: 44100
+[I] AudioTypes.h : 105 - channels: 1
+[I] AudioTypes.h : 106 - bits_per_sample: 16
+[I] I2SConfigESP32V1.h : 79 - rx/tx mode: RXTX_MODE
+[I] I2SConfigESP32V1.h : 80 - port_no: 0
+[I] I2SConfigESP32V1.h : 81 - is_master: Master
+[I] I2SConfigESP32V1.h : 82 - sample rate: 44100
+[I] I2SConfigESP32V1.h : 83 - bits per sample: 16
+[I] I2SConfigESP32V1.h : 84 - number of channels: 1
+[I] I2SConfigESP32V1.h : 85 - signal_type: Digital
+[I] I2SConfigESP32V1.h : 87 - i2s_format: I2S_STD_FORMAT
+[I] I2SConfigESP32V1.h : 90 - use_apll: true
+[I] I2SConfigESP32V1.h : 92 - buffer_count:6
+[I] I2SConfigESP32V1.h : 93 - buffer_size:512
+[I] I2SConfigESP32V1.h : 98 - pin_bck: 6
+[I] I2SConfigESP32V1.h : 100 - pin_ws: 7
+[I] I2SConfigESP32V1.h : 102 - pin_data: 8
+[I] I2SConfigESP32V1.h : 104 - pin_data_rx: 9
+[D] I2SESP32V1.h : 151 - virtual i2s_chan_config_t audio_tools::I2SDriverESP32V1::DriverI2S::getChannelConfig(audio_tools::I2SConfigESP32V1&)
+[D] I2SESP32V1.h : 169 - virtual bool audio_tools::I2SDriverESP32V1::DriverI2S::startChannels(audio_tools::I2SConfigESP32V1&, i2s_channel_obj_t*&, i2s_channel_obj_t*&, int, int)
+[I] I2SESP32V1.h : 170 - tx: 8, rx: 9
+[D] I2SESP32V1.h : 158 - i2s_std_clk_config_t audio_tools::I2SDriverESP32V1::DriverI2S::getClockConfig(audio_tools::I2SConfigESP32V1&)
+[D] I2SESP32V1.h : 124 - i2s_std_slot_config_t audio_tools::I2SDriverESP32V1::DriverI2S::getSlotConfig(audio_tools::I2SConfigESP32V1&)
+[D] I2SESP32V1.h : 212 - startChannels - started
+Setup completed ...
