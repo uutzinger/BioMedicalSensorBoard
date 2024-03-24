@@ -9157,8 +9157,8 @@ CAP-09321</description>
 <part name="AD5933" library="Analog Devices - AD5933YRSZ" deviceset="ANALOG_DEVICES_AD5933YRSZ" device="ANALOG_DEVICES_AD5933YRSZ_0_0"/>
 <part name="R1" library="SparkFun-Resistors" library_urn="urn:adsk.eagle:library:532" deviceset="4.7KOHM" device="-0603-1/10W-1%" package3d_urn="urn:adsk.eagle:package:39650/1" value="4.7k"/>
 <part name="R2" library="SparkFun-Resistors" library_urn="urn:adsk.eagle:library:532" deviceset="4.7KOHM" device="-0603-1/10W-1%" package3d_urn="urn:adsk.eagle:package:39650/1" value="4.7k"/>
-<part name="C1" library="SparkFun-Capacitors" library_urn="urn:adsk.eagle:library:510" deviceset="10UF" device="-0603-6.3V-20%" package3d_urn="urn:adsk.eagle:package:37414/1" value="10uF"/>
-<part name="C2" library="SparkFun-Capacitors" library_urn="urn:adsk.eagle:library:510" deviceset="0.1UF" device="-0603-25V-5%" package3d_urn="urn:adsk.eagle:package:37414/1" value="0.1uF"/>
+<part name="C1" library="SparkFun-Capacitors" library_urn="urn:adsk.eagle:library:510" deviceset="0.1UF" device="-0603-25V-(+80/-20%)" package3d_urn="urn:adsk.eagle:package:37414/1" value="0.1uF"/>
+<part name="C2" library="SparkFun-Capacitors" library_urn="urn:adsk.eagle:library:510" deviceset="10UF" device="-0603-6.3V-20%" package3d_urn="urn:adsk.eagle:package:37414/1" value="10uF"/>
 <part name="R3" library="SparkFun-Resistors" library_urn="urn:adsk.eagle:library:532" deviceset="20KOHM" device="-0603-1/10W-1%" package3d_urn="urn:adsk.eagle:package:39650/1" value="20k"/>
 <part name="R4" library="SparkFun-Resistors" library_urn="urn:adsk.eagle:library:532" deviceset="20KOHM" device="-0603-1/10W-1%" package3d_urn="urn:adsk.eagle:package:39650/1" value="20k"/>
 <part name="C3" library="SparkFun-Capacitors" library_urn="urn:adsk.eagle:library:510" deviceset="10NF" device="-0603-50V-10%" package3d_urn="urn:adsk.eagle:package:37414/1" value="10nF"/>
@@ -9206,7 +9206,7 @@ CAP-09321</description>
 <part name="R16" library="SparkFun-Resistors" library_urn="urn:adsk.eagle:library:532" deviceset="1KOHM" device="-0603-1/10W-1%" package3d_urn="urn:adsk.eagle:package:39650/1" value="1k"/>
 <part name="D1" library="SparkFun-LED" deviceset="LED-RED" device="0603" value="RED"/>
 <part name="GND4" library="SparkFun-Aesthetics" deviceset="GND" device=""/>
-<part name="SJ4" library="SparkFun-Jumpers" library_urn="urn:adsk.eagle:library:528" deviceset="JUMPER-SMT_2_NC_TRACE" device="_NO-SILK" package3d_urn="urn:adsk.eagle:package:39286/1" value="LED DISABLE"/>
+<part name="SJ4" library="SparkFun-Jumpers" library_urn="urn:adsk.eagle:library:528" deviceset="JUMPER-SMT_2_NC_TRACE" device="_SILK" package3d_urn="urn:adsk.eagle:package:39281/1" value="LED DISABLE"/>
 <part name="JP1" library="SparkFun-Jumpers" library_urn="urn:adsk.eagle:library:528" deviceset="JUMPER-SMT_3_1-NC_TRACE" device="_NO-SILK" package3d_urn="urn:adsk.eagle:package:39287/1"/>
 <part name="IC1" library="AD8608ARZ" deviceset="AD8608ARZ" device=""/>
 <part name="IC2" library="INA826AID" deviceset="INA826AID" device=""/>
@@ -9217,6 +9217,7 @@ CAP-09321</description>
 <part name="SUPPLY6" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="FRAME1" library="SparkFun-Aesthetics" library_urn="urn:adsk.eagle:library:507" deviceset="FRAME-LETTER" device="NO_PACKAGE" package3d_urn="urn:adsk.eagle:package:37104/1"/>
 <part name="JP2" library="SparkFun-Jumpers" library_urn="urn:adsk.eagle:library:528" deviceset="JUMPER-SMT_3_1-NC_TRACE" device="_NO-SILK" package3d_urn="urn:adsk.eagle:package:39287/1"/>
+<part name="C6" library="SparkFun-Capacitors" library_urn="urn:adsk.eagle:library:510" deviceset="0.1UF" device="-0603-25V-(+80/-20%)" package3d_urn="urn:adsk.eagle:package:37414/1" value="0.1uF"/>
 </parts>
 <sheets>
 <sheet>
@@ -9245,13 +9246,13 @@ Direct vs Transimpedance</text>
 <attribute name="NAME" x="-84.3026" y="36.83" size="1.778" layer="95" rot="R90"/>
 <attribute name="VALUE" x="-81.534" y="36.576" size="1.778" layer="96" rot="R90"/>
 </instance>
-<instance part="C1" gate="G$1" x="-53.34" y="-21.59" smashed="yes">
-<attribute name="NAME" x="-51.816" y="-21.209" size="1.778" layer="95"/>
-<attribute name="VALUE" x="-51.816" y="-26.289" size="1.778" layer="96"/>
+<instance part="C1" gate="G$1" x="-58.42" y="-25.4" smashed="yes">
+<attribute name="NAME" x="-56.896" y="-25.019" size="1.778" layer="95"/>
+<attribute name="VALUE" x="-56.896" y="-30.099" size="1.778" layer="96"/>
 </instance>
-<instance part="C2" gate="G$1" x="-66.04" y="-21.59" smashed="yes">
-<attribute name="NAME" x="-64.516" y="-21.209" size="1.778" layer="95"/>
-<attribute name="VALUE" x="-64.516" y="-26.289" size="1.778" layer="96"/>
+<instance part="C2" gate="G$1" x="-66.04" y="-25.4" smashed="yes">
+<attribute name="NAME" x="-64.516" y="-25.019" size="1.778" layer="95"/>
+<attribute name="VALUE" x="-64.516" y="-30.099" size="1.778" layer="96"/>
 </instance>
 <instance part="R3" gate="G$1" x="-53.34" y="10.16" smashed="yes" rot="R90">
 <attribute name="NAME" x="-54.8386" y="6.35" size="1.778" layer="95" rot="R90"/>
@@ -9279,11 +9280,11 @@ Direct vs Transimpedance</text>
 <instance part="SUPPLY1" gate="1" x="13.97" y="-6.35" smashed="yes">
 <attribute name="VALUE" x="12.065" y="-9.525" size="1.778" layer="96"/>
 </instance>
-<instance part="SUPPLY2" gate="1" x="-59.69" y="-31.75" smashed="yes">
-<attribute name="VALUE" x="-61.595" y="-34.925" size="1.778" layer="96"/>
+<instance part="SUPPLY2" gate="1" x="-58.42" y="-32.512" smashed="yes">
+<attribute name="VALUE" x="-60.325" y="-35.687" size="1.778" layer="96"/>
 </instance>
-<instance part="SUPPLY3" gate="G$1" x="-66.04" y="-13.97" smashed="yes">
-<attribute name="VALUE" x="-66.04" y="-11.176" size="1.778" layer="96" align="bottom-center"/>
+<instance part="SUPPLY3" gate="G$1" x="-66.04" y="-16.51" smashed="yes">
+<attribute name="VALUE" x="-66.04" y="-13.716" size="1.778" layer="96" align="bottom-center"/>
 </instance>
 <instance part="SUPPLY5" gate="1" x="-10.16" y="-24.13" smashed="yes">
 <attribute name="VALUE" x="-12.065" y="-27.305" size="1.778" layer="96"/>
@@ -9464,6 +9465,10 @@ Direct vs Transimpedance</text>
 <attribute name="NAME" x="-1.651" y="-10.16" size="1.778" layer="95" font="vector" rot="MR180"/>
 <attribute name="VALUE" x="-0.889" y="-10.16" size="1.778" layer="96" font="vector" rot="MR270" align="top-left" display="off"/>
 </instance>
+<instance part="C6" gate="G$1" x="-50.8" y="-25.4" smashed="yes">
+<attribute name="NAME" x="-49.276" y="-25.019" size="1.778" layer="95"/>
+<attribute name="VALUE" x="-49.276" y="-30.099" size="1.778" layer="96"/>
+</instance>
 </instances>
 <busses>
 </busses>
@@ -9516,11 +9521,13 @@ Direct vs Transimpedance</text>
 <segment>
 <pinref part="C2" gate="G$1" pin="2"/>
 <pinref part="C1" gate="G$1" pin="2"/>
-<wire x1="-66.04" y1="-24.13" x2="-59.69" y2="-26.67" width="0.1524" layer="91"/>
-<wire x1="-59.69" y1="-26.67" x2="-53.34" y2="-24.13" width="0.1524" layer="91"/>
-<wire x1="-59.69" y1="-26.67" x2="-59.69" y2="-29.21" width="0.1524" layer="91"/>
-<junction x="-59.69" y="-26.67"/>
+<wire x1="-66.04" y1="-27.94" x2="-58.42" y2="-27.94" width="0.1524" layer="91"/>
+<wire x1="-58.42" y1="-27.94" x2="-58.42" y2="-29.972" width="0.1524" layer="91"/>
+<junction x="-58.42" y="-27.94"/>
 <pinref part="SUPPLY2" gate="1" pin="GND"/>
+<pinref part="C6" gate="G$1" pin="2"/>
+<wire x1="-58.42" y1="-27.94" x2="-50.8" y2="-27.94" width="0.1524" layer="91"/>
+<junction x="-58.42" y="-27.94"/>
 </segment>
 <segment>
 <pinref part="AD5933" gate="G$0" pin="AGND1"/>
@@ -9634,24 +9641,27 @@ Direct vs Transimpedance</text>
 <pinref part="SUPPLY4" gate="G$1" pin="3.3V"/>
 </segment>
 <segment>
-<pinref part="C1" gate="G$1" pin="1"/>
-<pinref part="AD5933" gate="G$0" pin="DVDD"/>
-<wire x1="-53.34" y1="-16.51" x2="-49.53" y2="-19.05" width="0.1524" layer="91"/>
-<pinref part="AD5933" gate="G$0" pin="AVDD2"/>
-<wire x1="-49.53" y1="-19.05" x2="-43.18" y2="-19.05" width="0.1524" layer="91"/>
-<wire x1="-43.18" y1="-16.51" x2="-49.53" y2="-16.51" width="0.1524" layer="91"/>
-<wire x1="-49.53" y1="-16.51" x2="-49.53" y2="-19.05" width="0.1524" layer="91"/>
-<junction x="-49.53" y="-19.05"/>
-<pinref part="AD5933" gate="G$0" pin="AVDD1"/>
-<wire x1="-43.18" y1="-13.97" x2="-49.53" y2="-13.97" width="0.1524" layer="91"/>
-<wire x1="-49.53" y1="-13.97" x2="-49.53" y2="-16.51" width="0.1524" layer="91"/>
-<junction x="-49.53" y="-16.51"/>
-<pinref part="C2" gate="G$1" pin="1"/>
-<wire x1="-66.04" y1="-16.51" x2="-53.34" y2="-16.51" width="0.1524" layer="91"/>
-<junction x="-53.34" y="-16.51"/>
-<wire x1="-66.04" y1="-16.51" x2="-66.04" y2="-13.97" width="0.1524" layer="91"/>
-<junction x="-66.04" y="-16.51"/>
 <pinref part="SUPPLY3" gate="G$1" pin="3.3V"/>
+<pinref part="C2" gate="G$1" pin="1"/>
+<wire x1="-66.04" y1="-20.32" x2="-66.04" y2="-19.05" width="0.1524" layer="91"/>
+<pinref part="AD5933" gate="G$0" pin="AVDD2"/>
+<wire x1="-66.04" y1="-19.05" x2="-66.04" y2="-16.51" width="0.1524" layer="91"/>
+<wire x1="-43.18" y1="-16.51" x2="-50.8" y2="-16.51" width="0.1524" layer="91"/>
+<pinref part="AD5933" gate="G$0" pin="AVDD1"/>
+<wire x1="-50.8" y1="-13.97" x2="-50.8" y2="-16.51" width="0.1524" layer="91"/>
+<wire x1="-43.18" y1="-13.97" x2="-50.8" y2="-13.97" width="0.1524" layer="91"/>
+<pinref part="C6" gate="G$1" pin="1"/>
+<wire x1="-50.8" y1="-20.32" x2="-50.8" y2="-16.51" width="0.1524" layer="91"/>
+<junction x="-50.8" y="-16.51"/>
+<wire x1="-66.04" y1="-16.51" x2="-50.8" y2="-16.51" width="0.1524" layer="91"/>
+<junction x="-66.04" y="-16.51"/>
+<pinref part="AD5933" gate="G$0" pin="DVDD"/>
+<pinref part="C1" gate="G$1" pin="1"/>
+<wire x1="-43.18" y1="-19.05" x2="-58.42" y2="-19.05" width="0.1524" layer="91"/>
+<wire x1="-58.42" y1="-19.05" x2="-58.42" y2="-20.32" width="0.1524" layer="91"/>
+<wire x1="-58.42" y1="-19.05" x2="-66.04" y2="-19.05" width="0.1524" layer="91"/>
+<junction x="-58.42" y="-19.05"/>
+<junction x="-66.04" y="-19.05"/>
 </segment>
 <segment>
 <pinref part="SUPPLY7" gate="G$1" pin="3.3V"/>

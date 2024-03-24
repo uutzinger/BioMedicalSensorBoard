@@ -16,7 +16,7 @@
 #define WSPIN             8 // Word select
 #define DOPIN            37 // This is connected to DI on ES8388 (MISO)
 #define DIPIN            35 // This is connected to DO on ES8388 (MOSI)
-#define I2S_MODE  RXTX_MODE // RXTX_MODE, RX_MODE, TX_MODE, UNDEFINED_MODE 
+#define I2S_MODE    RX_MODE // RXTX_MODE, RX_MODE, TX_MODE, UNDEFINED_MODE 
 #define MIC_VOLUME        0 // 0 to -96dB attenuation in 0.5dB steps
 #define OUT_VOLUME        0 // 0 to -96dB attenuation in 0.5dB steps
 

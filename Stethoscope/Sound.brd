@@ -186,28 +186,28 @@
 <hole x="66.25" y="66.25" drill="3.5"/>
 <hole x="66.25" y="3.75" drill="3.5"/>
 <hole x="3.75" y="3.75" drill="3.5"/>
-<text x="7.5" y="8.5" size="1.778" layer="25" rot="R90">Sound Board
+<text x="5.25" y="8.75" size="1.27" layer="25" rot="R90">Sound Board
 MediBrick2000</text>
 <wire x1="0" y1="0" x2="0" y2="70" width="0.1524" layer="20"/>
 <wire x1="0" y1="70" x2="70" y2="70" width="0.1524" layer="20"/>
 <wire x1="70" y1="70" x2="70" y2="0" width="0.1524" layer="20"/>
 <wire x1="70" y1="0" x2="0" y2="0" width="0.1524" layer="20"/>
 <dimension x1="0" y1="0" x2="24.8" y2="0" x3="12.4" y3="-3" textsize="1.778" layer="1"/>
-<text x="12" y="62" size="1.016" layer="25">3.3V</text>
-<text x="9" y="63.5" size="1.016" layer="25">GND</text>
-<text x="14.25" y="63.5" size="1.016" layer="25">SDA</text>
-<text x="17.25" y="62" size="1.016" layer="25">SCL</text>
-<text x="22.25" y="62" size="1.016" layer="25">SCLK</text>
-<text x="27.25" y="62" size="1.016" layer="25">DIN</text>
-<text x="19.5" y="63.5" size="1.016" layer="25">MCLK</text>
-<text x="24.75" y="63.5" size="1.016" layer="25">LRCLK</text>
-<text x="29.75" y="63.5" size="1.016" layer="25">DOUT</text>
-<text x="44" y="63.75" size="1.016" layer="25">GND</text>
-<text x="46.75" y="62.5" size="1.016" layer="25">3.3V</text>
-<text x="49" y="63.75" size="1.016" layer="25">LIN2</text>
-<text x="52" y="62.5" size="1.016" layer="25">RIN2</text>
-<text x="54.5" y="63.75" size="1.016" layer="25">LOUT</text>
-<text x="56.75" y="62.5" size="1.016" layer="25">ROUT</text>
+<text x="12.75" y="62.5" size="0.6096" layer="25" font="vector" ratio="20">3.3V</text>
+<text x="10.25" y="62.5" size="0.6096" layer="25" font="vector" ratio="20">GND</text>
+<text x="15.25" y="62.5" size="0.6096" layer="25" font="vector" ratio="20">SDA</text>
+<text x="18" y="62.5" size="0.6096" layer="25" font="vector" ratio="20">SCL</text>
+<text x="22.75" y="62.5" size="0.6096" layer="25" font="vector" ratio="20">SCLK</text>
+<text x="28.25" y="62.5" size="0.6096" layer="25" font="vector" ratio="20">DIN</text>
+<text x="20" y="62.5" size="0.6096" layer="25" font="vector" ratio="20">MCLK</text>
+<text x="25.25" y="62.5" size="0.6096" layer="25" font="vector" ratio="20">LRCLK</text>
+<text x="30.5" y="62.5" size="0.6096" layer="25" font="vector" ratio="20">DOUT</text>
+<text x="44" y="63.75" size="0.6096" layer="25" font="vector" ratio="20">GND</text>
+<text x="46.75" y="62.5" size="0.6096" layer="25" font="vector" ratio="20">3.3V</text>
+<text x="49.75" y="62.5" size="0.6096" layer="25" font="vector" ratio="20">LIN2</text>
+<text x="52" y="62.5" size="0.6096" layer="25" font="vector" ratio="20">RIN2</text>
+<text x="54.5" y="62.5" size="0.6096" layer="25" font="vector" ratio="20">LOUT</text>
+<text x="57.25" y="62.5" size="0.6096" layer="25" font="vector" ratio="20">ROUT</text>
 <hole x="52.25" y="14" drill="3.25"/>
 <hole x="62.25" y="14" drill="3.25"/>
 <hole x="62.25" y="34.5" drill="3.25"/>
@@ -217,7 +217,16 @@ MediBrick2000</text>
 <wire x1="60" y1="16" x2="54.5" y2="16" width="0.254" layer="25"/>
 <wire x1="54.5" y1="16" x2="54.5" y2="29" width="0.254" layer="25"/>
 <dimension x1="0" y1="-4" x2="57.25" y2="-4" x3="28.625" y3="-7" textsize="1.778" layer="1"/>
-<text x="32.75" y="62" size="1.016" layer="25">NC</text>
+<text x="33.5" y="62.5" size="0.6096" layer="25" font="vector" ratio="20">NC</text>
+<text x="3.05" y="28.05" size="1.27" layer="25" font="vector" rot="R90">Utzinger</text>
+<wire x1="0.95" y1="27.5" x2="0.95" y2="35.5" width="0.1524" layer="25"/>
+<wire x1="0.95" y1="35.5" x2="3.7" y2="35.5" width="0.1524" layer="25"/>
+<wire x1="3.7" y1="35.5" x2="3.7" y2="27.5" width="0.1524" layer="25"/>
+<wire x1="3.7" y1="27.5" x2="0.95" y2="27.5" width="0.1524" layer="25"/>
+<wire x1="5.5" y1="27.55" x2="5.5" y2="35.5" width="0.1524" layer="25"/>
+<wire x1="5.5" y1="27.5" x2="3.7" y2="27.5" width="0.1524" layer="25"/>
+<wire x1="5.5" y1="35.5" x2="3.7" y2="35.5" width="0.1524" layer="25"/>
+<text x="5.2" y="27.85" size="1.27" layer="25" font="vector" ratio="20" rot="R90">V2 2024</text>
 </plain>
 <libraries>
 <library name="SparkFun-Jumpers" urn="urn:adsk.eagle:library:528">
@@ -350,6 +359,47 @@ You are welcome to use this library for commercial purposes. For attribution, we
 &lt;ul&gt;&lt;li&gt;BADGERHACK_LOGO&lt;/li&gt;
 &lt;li&gt;FRAME-LETTER&lt;/li&gt;&lt;/ul&gt;&lt;/p&gt;</description>
 </package>
+<package name="OSHW-LOGO-M" urn="urn:adsk.eagle:footprint:37012/1" library_version="1">
+<description>&lt;h3&gt;Open-Source Hardware (OSHW) Logo - Medium - Silkscreen&lt;/h3&gt;
+&lt;p&gt;Silkscreen logo for open-source hardware designs.&lt;/p&gt;
+&lt;p&gt;Devices using:
+&lt;ul&gt;&lt;li&gt;OSHW_LOGO&lt;/li&gt;&lt;/ul&gt;&lt;/p&gt;</description>
+<polygon width="0.0762" layer="21">
+<vertex x="0.6578" y="-1.588" curve="9.499253"/>
+<vertex x="0.9108" y="-1.4576"/>
+<vertex x="1.5392" y="-1.97"/>
+<vertex x="1.97" y="-1.5392"/>
+<vertex x="1.4576" y="-0.9108" curve="19.001165"/>
+<vertex x="1.6747" y="-0.3866"/>
+<vertex x="2.4814" y="-0.3047"/>
+<vertex x="2.4814" y="0.3047"/>
+<vertex x="1.6747" y="0.3866" curve="19.001165"/>
+<vertex x="1.4576" y="0.9108"/>
+<vertex x="1.97" y="1.5392"/>
+<vertex x="1.5392" y="1.97"/>
+<vertex x="0.9108" y="1.4576" curve="19.001165"/>
+<vertex x="0.3866" y="1.6747"/>
+<vertex x="0.3047" y="2.4814"/>
+<vertex x="-0.3047" y="2.4814"/>
+<vertex x="-0.3866" y="1.6747" curve="19.001165"/>
+<vertex x="-0.9108" y="1.4576"/>
+<vertex x="-1.5392" y="1.97"/>
+<vertex x="-1.97" y="1.5392"/>
+<vertex x="-1.4576" y="0.9108" curve="19.001165"/>
+<vertex x="-1.6747" y="0.3866"/>
+<vertex x="-2.4814" y="0.3047"/>
+<vertex x="-2.4814" y="-0.3047"/>
+<vertex x="-1.6747" y="-0.3866" curve="19.001165"/>
+<vertex x="-1.4576" y="-0.9108"/>
+<vertex x="-1.97" y="-1.5392"/>
+<vertex x="-1.5392" y="-1.97"/>
+<vertex x="-0.9108" y="-1.4576" curve="9.499253"/>
+<vertex x="-0.6578" y="-1.588"/>
+<vertex x="-0.299" y="-0.7218" curve="-67.507353"/>
+<vertex x="-0.7813" y="0" curve="-247.497552"/>
+<vertex x="0.299" y="-0.7218"/>
+</polygon>
+</package>
 </packages>
 <packages3d>
 <package3d name="DUMMY" urn="urn:adsk.eagle:package:37104/1" type="box" library_version="1">
@@ -361,6 +411,15 @@ BADGERHACK_LOGO
 FRAME-LETTER</description>
 <packageinstances>
 <packageinstance name="DUMMY"/>
+</packageinstances>
+</package3d>
+<package3d name="OSHW-LOGO-M" urn="urn:adsk.eagle:package:37126/1" type="box" library_version="1">
+<description>Open-Source Hardware (OSHW) Logo - Medium - Silkscreen
+Silkscreen logo for open-source hardware designs.
+Devices using:
+OSHW_LOGO</description>
+<packageinstances>
+<packageinstance name="OSHW-LOGO-M"/>
 </packageinstances>
 </package3d>
 </packages3d>
@@ -1107,12 +1166,12 @@ design rules under a new name.</description>
 <attribute name="VALUE" x="62.35" y="62.662" size="0.6096" layer="27" font="vector" ratio="20" rot="R180" align="top-center"/>
 </element>
 <element name="D1" library="SparkFun-LED" package="LED-0603" value="RED" x="65.25" y="61.9" smashed="yes" rot="R270">
-<attribute name="NAME" x="64.361" y="62.5985" size="0.4064" layer="25"/>
+<attribute name="NAME" x="64.861" y="60.5985" size="0.6096" layer="25" font="vector" ratio="20"/>
 <attribute name="PROD_ID" value="DIO-00819" x="72.25" y="64.9" size="1.778" layer="27" rot="R270" display="off"/>
-<attribute name="VALUE" x="64.234" y="60.8205" size="0.4064" layer="27"/>
+<attribute name="VALUE" x="64.234" y="60.8205" size="0.4064" layer="27" display="off"/>
 </element>
 <element name="LED_DISABLE" library="SparkFun-Jumpers" library_urn="urn:adsk.eagle:library:528" package="SMT-JUMPER_2_NC_TRACE_SILK" package3d_urn="urn:adsk.eagle:package:39281/1" value="JUMPER-SMT_2_NC_TRACE_SILK" x="67.5" y="61.9" smashed="yes" rot="R180">
-<attribute name="NAME" x="67.5" y="60.757" size="0.6096" layer="25" font="vector" ratio="20" rot="R180" align="bottom-center"/>
+<attribute name="NAME" x="67.5" y="60.257" size="0.6096" layer="25" font="vector" ratio="20" rot="R180" align="bottom-center"/>
 <attribute name="VALUE" x="67.5" y="63.043" size="0.6096" layer="27" font="vector" ratio="20" rot="R180" align="top-center" display="off"/>
 </element>
 <element name="FRAME1" library="SparkFun-Aesthetics" library_urn="urn:adsk.eagle:library:507" package="DUMMY" package3d_urn="urn:adsk.eagle:package:37104/1" value="FRAME-LETTERNO_PACKAGE" x="-0.25" y="-5.25" smashed="yes">
@@ -1140,8 +1199,8 @@ design rules under a new name.</description>
 <attribute name="MANUFACTURER_PART_NUMBER" value="AMM-2742-T-R" x="57.25" y="26.25" size="1.778" layer="27" display="off"/>
 <attribute name="MOUSER_PART_NUMBER" value="665-AMM-2742-T-R" x="57.25" y="26.25" size="1.778" layer="27" display="off"/>
 <attribute name="MOUSER_PRICE-STOCK" value="https://www.mouser.co.uk/ProductDetail/PUI-Audio/AMM-2742-T-R?qs=zhx2xqPtQQyJoGop0O%252BpMA%3D%3D" x="57.25" y="26.25" size="1.778" layer="27" display="off"/>
-<attribute name="NAME" x="61.862" y="26.25" size="1.27" layer="25" align="center"/>
-<attribute name="VALUE" x="60.862" y="23" size="1.27" layer="27" align="center"/>
+<attribute name="NAME" x="61.112" y="26.25" size="0.6096" layer="25" font="vector" ratio="20" align="center"/>
+<attribute name="VALUE" x="60.862" y="23" size="0.6096" layer="27" font="vector" align="center"/>
 </element>
 <element name="C2" library="SparkFun-Capacitors" library_urn="urn:adsk.eagle:library:510" package="0603" package3d_urn="urn:adsk.eagle:package:37414/1" value="10uF" x="56.9" y="31.4" smashed="yes" rot="R180">
 <attribute name="NAME" x="54.65" y="31.638" size="0.6096" layer="25" font="vector" ratio="20" rot="R180" align="bottom-center"/>
@@ -1159,14 +1218,14 @@ design rules under a new name.</description>
 <attribute name="VALUE" x="43.5" y="26.46" size="0.6096" layer="27" font="vector" ratio="20" align="bottom-center"/>
 </element>
 <element name="C1" library="SparkFun-Capacitors" library_urn="urn:adsk.eagle:library:510" package="0603" package3d_urn="urn:adsk.eagle:package:37414/1" value="4.7uF" x="52.75" y="27.25" smashed="yes" rot="R180">
-<attribute name="NAME" x="53.45" y="28.588" size="0.6096" layer="25" font="vector" ratio="20" rot="R180" align="bottom-center"/>
+<attribute name="NAME" x="52.7" y="28.588" size="0.6096" layer="25" font="vector" ratio="20" rot="R180" align="bottom-center"/>
 <attribute name="PROD_ID" value="CAP-08280" x="52.75" y="27.25" size="1.778" layer="27" rot="R180" display="off"/>
-<attribute name="VALUE" x="51.55" y="28.012" size="0.6096" layer="27" font="vector" ratio="20" rot="R180" align="top-center"/>
+<attribute name="VALUE" x="52.8" y="29.012" size="0.6096" layer="27" font="vector" ratio="20" rot="R180" align="top-center"/>
 </element>
 <element name="R1" library="SparkFun-Resistors" library_urn="urn:adsk.eagle:library:532" package="0603" package3d_urn="urn:adsk.eagle:package:39650/1" value="4.7k" x="52.75" y="25.5" smashed="yes" rot="R180">
-<attribute name="NAME" x="53.5" y="24.738" size="0.6096" layer="25" font="vector" ratio="20" rot="R180" align="bottom-center"/>
+<attribute name="NAME" x="52.75" y="24.738" size="0.6096" layer="25" font="vector" ratio="20" rot="R180" align="bottom-center"/>
 <attribute name="PROD_ID" value="RES-07857" x="52.75" y="25.5" size="1.778" layer="27" rot="R180" display="off"/>
-<attribute name="VALUE" x="51.85" y="24.162" size="0.6096" layer="27" font="vector" ratio="20" rot="R180" align="top-center"/>
+<attribute name="VALUE" x="51.1" y="24.162" size="0.6096" layer="27" font="vector" ratio="20" rot="R180" align="top-center"/>
 </element>
 <element name="R2" library="SparkFun-Resistors" library_urn="urn:adsk.eagle:library:532" package="0603" package3d_urn="urn:adsk.eagle:package:39650/1" value="10k" x="48.5" y="29.5" smashed="yes">
 <attribute name="NAME" x="45.6" y="30.612" size="0.6096" layer="25" font="vector" ratio="20" align="bottom-center"/>
@@ -1200,8 +1259,8 @@ design rules under a new name.</description>
 <attribute name="MANUFACTURER_PART_NUMBER" value="AMM-2742-T-R" x="54.25" y="19.75" size="1.778" layer="27" display="off"/>
 <attribute name="MOUSER_PART_NUMBER" value="665-AMM-2742-T-R" x="54.25" y="19.75" size="1.778" layer="27" display="off"/>
 <attribute name="MOUSER_PRICE-STOCK" value="https://www.mouser.co.uk/ProductDetail/PUI-Audio/AMM-2742-T-R?qs=zhx2xqPtQQyJoGop0O%252BpMA%3D%3D" x="54.25" y="19.75" size="1.778" layer="27" display="off"/>
-<attribute name="NAME" x="61.862" y="19.75" size="1.27" layer="25" align="center"/>
-<attribute name="VALUE" x="60.862" y="17.25" size="1.27" layer="27" align="center"/>
+<attribute name="NAME" x="60.862" y="19.75" size="0.6096" layer="25" font="vector" ratio="20" align="center"/>
+<attribute name="VALUE" x="60.862" y="17.25" size="0.6096" layer="27" font="vector" align="center"/>
 </element>
 <element name="U$2" library="SparkFun-IC-Amplifiers" library_urn="urn:adsk.eagle:library:520" package="SOT23-5" package3d_urn="urn:adsk.eagle:package:38670/1" value="OPA344" x="48.5" y="19.95" smashed="yes" rot="R270">
 <attribute name="NAME" x="44" y="20.605" size="0.6096" layer="25" font="vector" ratio="20" align="bottom-center"/>
@@ -1228,6 +1287,7 @@ design rules under a new name.</description>
 <attribute name="PROD_ID" value="RES-10809" x="54.6" y="33.75" size="1.778" layer="27" rot="R180" display="off"/>
 <attribute name="VALUE" x="44.1" y="17.212" size="0.6096" layer="27" font="vector" ratio="20" rot="R180" align="top-center"/>
 </element>
+<element name="U$3" library="SparkFun-Aesthetics" library_urn="urn:adsk.eagle:library:507" package="OSHW-LOGO-M" package3d_urn="urn:adsk.eagle:package:37126/1" value="" x="4.45" y="23.95" smashed="yes" rot="R90"/>
 </elements>
 <signals>
 <signal name="3.3V">
