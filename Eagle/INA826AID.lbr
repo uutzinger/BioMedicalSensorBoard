@@ -1,7 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--/414377/281188/2.50/8/4/Integrated Circuit/-->
-<!DOCTYPE curve SYSTEM "eagle.dtd">
-<eagle version="7.7.0">
+<!--This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License (CC BY-SA) with Design Exception 1.0-->
+<eagle version="7.1.0">
 <drawing>
 <settings>
 <setting alwaysvectorfont="no"/>
@@ -23,9 +21,9 @@
 <layer number="26" name="bNames" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="27" name="tValues" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="28" name="bValues" color="7" fill="1" visible="yes" active="yes"/>
-<layer number="29" name="tStop" color="7" fill="3" visible="no" active="yes"/>
+<layer number="29" name="tStop" color="7" fill="3" visible="yes" active="yes"/>
 <layer number="30" name="bStop" color="7" fill="6" visible="no" active="yes"/>
-<layer number="31" name="tCream" color="7" fill="4" visible="no" active="yes"/>
+<layer number="31" name="tCream" color="7" fill="4" visible="yes" active="yes"/>
 <layer number="32" name="bCream" color="7" fill="5" visible="no" active="yes"/>
 <layer number="33" name="tFinish" color="6" fill="3" visible="no" active="yes"/>
 <layer number="34" name="bFinish" color="6" fill="6" visible="no" active="yes"/>
@@ -49,7 +47,7 @@
 <layer number="90" name="Modules" color="5" fill="1" visible="yes" active="yes"/>
 <layer number="91" name="Nets" color="2" fill="1" visible="yes" active="yes"/>
 <layer number="92" name="Busses" color="1" fill="1" visible="yes" active="yes"/>
-<layer number="93" name="Pins" color="2" fill="1" visible="no" active="yes"/>
+<layer number="93" name="Pins" color="2" fill="1" visible="yes" active="yes"/>
 <layer number="94" name="Symbols" color="4" fill="1" visible="yes" active="yes"/>
 <layer number="95" name="Names" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="96" name="Values" color="7" fill="1" visible="yes" active="yes"/>
@@ -57,83 +55,81 @@
 <layer number="98" name="Guide" color="6" fill="1" visible="yes" active="yes"/>
 </layers>
 <library>
-<description>&lt;Texas Instruments INA826AID Instrumentation Amplifier, 150uV Offset 1MHz GBW, CMMR 80dB, 2.7  36 V, 8-Pin SOIC&lt;/b&gt;&lt;p&gt;
-&lt;author&gt;Created by SamacSys&lt;/author&gt;</description>
 <packages>
-<package name="SOIC127P600X175-8N">
-<description>&lt;b&gt;D (R-PDSO-G8)&lt;/b&gt;&lt;br&gt;
-</description>
-<smd name="1" x="-2.712" y="1.905" dx="1.525" dy="0.65" layer="1" rot="R0"/>
-<smd name="2" x="-2.712" y="0.635" dx="1.525" dy="0.65" layer="1" rot="R0"/>
-<smd name="3" x="-2.712" y="-0.635" dx="1.525" dy="0.65" layer="1" rot="R0"/>
-<smd name="4" x="-2.712" y="-1.905" dx="1.525" dy="0.65" layer="1" rot="R0"/>
-<smd name="5" x="2.712" y="-1.905" dx="1.525" dy="0.65" layer="1" rot="R0"/>
-<smd name="6" x="2.712" y="-0.635" dx="1.525" dy="0.65" layer="1" rot="R0"/>
-<smd name="7" x="2.712" y="0.635" dx="1.525" dy="0.65" layer="1" rot="R0"/>
-<smd name="8" x="2.712" y="1.905" dx="1.525" dy="0.65" layer="1" rot="R0"/>
-<text x="0" y="0" align="center" size="1.27" layer="25" rot="R0" >&gt;NAME</text>
-<text x="0" y="0" align="center" size="1.27" layer="27" rot="R0" >&gt;VALUE</text>
-<wire x1="-3.725" y1="2.75" x2="3.725" y2="2.75" width="0.05" layer="51"/>
-<wire x1="3.725" y1="2.75" x2="3.725" y2="-2.75" width="0.05" layer="51"/>
-<wire x1="3.725" y1="-2.75" x2="-3.725" y2="-2.75" width="0.05" layer="51"/>
-<wire x1="-3.725" y1="-2.75" x2="-3.725" y2="2.75" width="0.05" layer="51"/>
-<wire x1="-1.95" y1="2.45" x2="1.95" y2="2.45" width="0.1" layer="51"/>
-<wire x1="1.95" y1="2.45" x2="1.95" y2="-2.45" width="0.1" layer="51"/>
-<wire x1="1.95" y1="-2.45" x2="-1.95" y2="-2.45" width="0.1" layer="51"/>
-<wire x1="-1.95" y1="-2.45" x2="-1.95" y2="2.45" width="0.1" layer="51"/>
-<wire x1="-1.95" y1="1.18" x2="-0.68" y2="2.45" width="0.1" layer="51"/>
-<wire x1="-1.6" y1="2.45" x2="1.6" y2="2.45" width="0.2" layer="21"/>
-<wire x1="1.6" y1="2.45" x2="1.6" y2="-2.45" width="0.2" layer="21"/>
-<wire x1="1.6" y1="-2.45" x2="-1.6" y2="-2.45" width="0.2" layer="21"/>
-<wire x1="-1.6" y1="-2.45" x2="-1.6" y2="2.45" width="0.2" layer="21"/>
-<wire x1="-3.475" y1="2.58" x2="-1.95" y2="2.58" width="0.2" layer="21"/>
+<package name="SOIC127P599X175-8N">
+<circle x="-4.04" y="2.305" radius="0.1" width="0.2" layer="21"/>
+<circle x="-4.04" y="2.305" radius="0.1" width="0.2" layer="51"/>
+<wire x1="-1.95" y1="2.4525" x2="1.95" y2="2.4525" width="0.127" layer="51"/>
+<wire x1="-1.95" y1="-2.4525" x2="1.95" y2="-2.4525" width="0.127" layer="51"/>
+<wire x1="-1.95" y1="2.525" x2="1.95" y2="2.525" width="0.127" layer="21"/>
+<wire x1="-1.95" y1="-2.525" x2="1.95" y2="-2.525" width="0.127" layer="21"/>
+<wire x1="-1.95" y1="2.4525" x2="-1.95" y2="-2.4525" width="0.127" layer="51"/>
+<wire x1="1.95" y1="2.4525" x2="1.95" y2="-2.4525" width="0.127" layer="51"/>
+<wire x1="-3.705" y1="2.7025" x2="3.705" y2="2.7025" width="0.05" layer="39"/>
+<wire x1="-3.705" y1="-2.7025" x2="3.705" y2="-2.7025" width="0.05" layer="39"/>
+<wire x1="-3.705" y1="2.7025" x2="-3.705" y2="-2.7025" width="0.05" layer="39"/>
+<wire x1="3.705" y1="2.7025" x2="3.705" y2="-2.7025" width="0.05" layer="39"/>
+<text x="-3.56" y="-2.902" size="1.27" layer="27" align="top-left">&gt;VALUE</text>
+<text x="-3.56" y="2.902" size="1.27" layer="25">&gt;NAME</text>
+<smd name="1" x="-2.47" y="1.905" dx="1.97" dy="0.6" layer="1" roundness="25"/>
+<smd name="2" x="-2.47" y="0.635" dx="1.97" dy="0.6" layer="1" roundness="25"/>
+<smd name="3" x="-2.47" y="-0.635" dx="1.97" dy="0.6" layer="1" roundness="25"/>
+<smd name="4" x="-2.47" y="-1.905" dx="1.97" dy="0.6" layer="1" roundness="25"/>
+<smd name="5" x="2.47" y="-1.905" dx="1.97" dy="0.6" layer="1" roundness="25"/>
+<smd name="6" x="2.47" y="-0.635" dx="1.97" dy="0.6" layer="1" roundness="25"/>
+<smd name="7" x="2.47" y="0.635" dx="1.97" dy="0.6" layer="1" roundness="25"/>
+<smd name="8" x="2.47" y="1.905" dx="1.97" dy="0.6" layer="1" roundness="25"/>
 </package>
 </packages>
 <symbols>
 <symbol name="INA826AID">
-<wire x1="5.08" y1="2.54" x2="22.86" y2="2.54" width="0.254" layer="94"/>
-<wire x1="22.86" y1="-10.16" x2="22.86" y2="2.54" width="0.254" layer="94"/>
-<wire x1="22.86" y1="-10.16" x2="5.08" y2="-10.16" width="0.254" layer="94"/>
-<wire x1="5.08" y1="2.54" x2="5.08" y2="-10.16" width="0.254" layer="94"/>
-<text x="24.13" y="7.62" align="center-left" size="1.778" layer="95">&gt;NAME</text>
-<text x="24.13" y="5.08" align="center-left" size="1.778" layer="96">&gt;VALUE</text>
-<pin name="-IN" x="0" y="0" length="middle" direction="io" rot="R0"/>
-<pin name="RG_1" x="0" y="-2.54" length="middle" direction="io" rot="R0"/>
-<pin name="RG_2" x="0" y="-5.08" length="middle" direction="io" rot="R0"/>
-<pin name="+IN" x="0" y="-7.62" length="middle" direction="io" rot="R0"/>
-<pin name="+VS" x="27.94" y="0" length="middle" direction="io" rot="R180"/>
-<pin name="VOUT" x="27.94" y="-2.54" length="middle" direction="io" rot="R180"/>
-<pin name="REF" x="27.94" y="-5.08" length="middle" direction="io" rot="R180"/>
-<pin name="-VS" x="27.94" y="-7.62" length="middle" direction="io" rot="R180"/>
+<wire x1="-25.4" y1="15.24" x2="25.4" y2="15.24" width="0.41" layer="94"/>
+<wire x1="25.4" y1="15.24" x2="25.4" y2="-15.24" width="0.41" layer="94"/>
+<wire x1="25.4" y1="-15.24" x2="-25.4" y2="-15.24" width="0.41" layer="94"/>
+<wire x1="-25.4" y1="-15.24" x2="-25.4" y2="15.24" width="0.41" layer="94"/>
+<text x="-25.4" y="16.24" size="2.0828" layer="95" ratio="10" rot="SR0">&gt;NAME</text>
+<text x="-25.4" y="-19.24" size="2.0828" layer="96" ratio="10" rot="SR0">&gt;VALUE</text>
+<pin name="+IN" x="-30.48" y="12.7" length="middle" direction="in"/>
+<pin name="-INNEG.INPUT" x="-30.48" y="10.16" length="middle" direction="in"/>
+<pin name="REFREFERENCEINPUT" x="-30.48" y="7.62" length="middle" direction="in"/>
+<pin name="RGGAINSETTING" x="-30.48" y="5.08" length="middle" direction="in"/>
+<pin name="+VSSUPPLY" x="-30.48" y="0" length="middle"/>
+<pin name="-VSSUPPLY" x="-30.48" y="-5.08" length="middle"/>
+<pin name="RG" x="-30.48" y="-10.16" length="middle"/>
+<pin name="VOUT" x="30.48" y="12.7" length="middle" direction="out" rot="R180"/>
 </symbol>
 </symbols>
 <devicesets>
-<deviceset name="INA826AID" prefix="IC">
-<description>&lt;b&gt;Texas Instruments INA826AID Instrumentation Amplifier, 150uV Offset 1MHz GBW, CMMR 80dB, 2.7  36 V, 8-Pin SOIC&lt;/b&gt;&lt;p&gt;
-Source: &lt;a href="http://www.ti.com/lit/gpn/ina826"&gt; Datasheet &lt;/a&gt;</description>
+<deviceset name="INA826AID" prefix="U">
+<description> &lt;a href="https://pricing.snapeda.com/parts/INA826AID/Texas%20Instruments/view-part?ref=eda"&gt;Check availability&lt;/a&gt;</description>
 <gates>
 <gate name="G$1" symbol="INA826AID" x="0" y="0"/>
 </gates>
 <devices>
-<device name="" package="SOIC127P600X175-8N">
+<device name="" package="SOIC127P599X175-8N">
 <connects>
-<connect gate="G$1" pin="-IN" pad="1"/>
-<connect gate="G$1" pin="RG_1" pad="2"/>
-<connect gate="G$1" pin="RG_2" pad="3"/>
 <connect gate="G$1" pin="+IN" pad="4"/>
-<connect gate="G$1" pin="-VS" pad="5"/>
-<connect gate="G$1" pin="REF" pad="6"/>
+<connect gate="G$1" pin="-INNEG.INPUT" pad="1"/>
+<connect gate="G$1" pin="REFREFERENCEINPUT" pad="6"/>
+<connect gate="G$1" pin="RG" pad="2"/>
+<connect gate="G$1" pin="RGGAINSETTING" pad="3"/>
 <connect gate="G$1" pin="VOUT" pad="7"/>
-<connect gate="G$1" pin="+VS" pad="8"/>
+<connect gate="G$1" pin="+VSSUPPLY" pad="8"/>
+<connect gate="G$1" pin="-VSSUPPLY" pad="5"/>
 </connects>
 <technologies>
 <technology name="">
-<attribute name="Mouser_Part_Number" value="595-INA826AID" constant="no"/>
-<attribute name="Mouser_Price-Stock" value="https://www.mouser.co.uk/ProductDetail/Texas-Instruments/INA826AID?qs=RqytGdBYyUH0CDtkCzl1iw%3D%3D" constant="no"/>
-<attribute name="Manufacturer_Name" value="Texas Instruments" constant="no"/>
-<attribute name="Manufacturer_Part_Number" value="INA826AID" constant="no"/>
-<attribute name="Description" value="Texas Instruments INA826AID Instrumentation Amplifier, 150uV Offset 1MHz GBW, CMMR 80dB, 2.7  36 V, 8-Pin SOIC" constant="no"/>
-<attribute name="Height" value="1.75mm" constant="no"/>
+<attribute name="MF" value="Texas Instruments"/>
+<attribute name="Description" value="
+Precision, 200-μA Supply Current, 36-V Supply Instrumentation Amplifier
+"/>
+<attribute name="Package" value="SOIC-8 Texas Instruments"/>
+<attribute name="Price" value="None"/>
+<attribute name="Check_prices" value="https://www.snapeda.com/parts/INA826AID/Texas+Instruments/view-part/?ref=eda"/>
+<attribute name="SnapEDA_Link" value="https://www.snapeda.com/parts/INA826AID/Texas+Instruments/view-part/?ref=snap"/>
+<attribute name="MP" value="INA826AID"/>
+<attribute name="Availability" value="In Stock"/>
+<attribute name="Purchase-URL" value="https://www.snapeda.com/api/url_track_click_mouser/?unipart_id=217743&amp;manufacturer=Texas Instruments&amp;part_name=INA826AID&amp;search_term=None"/>
 </technology>
 </technologies>
 </device>

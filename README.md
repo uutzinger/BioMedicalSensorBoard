@@ -82,6 +82,7 @@ In this project we developed measurement board in the following categories:
 - [Sound ES8388](ES8388_audio_board.md) PCB Artist I2S codec interfacing with ESP
 - [Pressure](pressure.md) Pressure Sensors Solutions
 - [SpO<sub>2</sub>](spo2.md) Pulse Oximeter Solutions
+- [Airquality](airquality.md) Pulse Oximeter Solutions
 
 We used the following micro controllers and manufacturing techniques:
 
