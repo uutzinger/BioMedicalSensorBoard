@@ -81,13 +81,13 @@ Sensirion MEMS sensor consumes 3mA to measure VOC and NOX. It takes 10 seconds t
 - **SGP41 sensor**, VOC Index 1-500, NOX Index 1-500, $8.96 [datasheet](Airquality\datasheets\Sensirion_Gas_Sensors_Datasheet_SGP41.pdf)
 
 ## Carbon Monoxide, Amonia, Nitrogenoxide
-Its difficult to find accurate and inexpensive Carbon Monoxide sensor. It possible to calibrate in house by measuring known levels. For example outside there should be no Carbon Monoxide in the atmosphere.
+Its difficult to find accurate and inexpensive Carbon Monoxide sensors. It is possible to calibrate it in house by measuring known levels. For example, there should be no Carbon Monoxide in the atmosphere.
 
 - **Amphenol SGX Sensortech, MiCS-6814 MEMS sensor** $13
 [datasheet](Airquality\datasheets\1143_Datasheet-MiCS-6814-rev-8,pdf)
 
-This sensor has 3 elements each being heated and consuming approximately 30mA. The sensor's resistance is measured which relates to RED (CO), OX (NOx), NH3 concentration.
-Nominal resistance for NH3 is 10-1500kOhm, for NO2 0.8 to 20kOhm and CO 100 to 1500kOhm. Factory calibration is needed to measure absolute values.
+This sensor has 3 elements each being heated and consuming approximately 30mA. The sensor's resistance is measured and relates to RED (CO), OX (NOx), NH3 concentration.
+Nominal resistance for NH3 is 10-1500kOhm, for NO2 0.8 to 20kOhm and CO 100 to 1500kOhm. Factory calibration is needed to measure absolute values since the nominal resistance varies significantly.
 
 | Sensor | Nominal $R_{0_{min}} $ | Nominal $R_{0_{max}} $ | $C_{min}$ | $C_{max}$ | $R_S/R_0 min$ | $R_S/R_0 max$| low concentration
 |---|---|---|---|---|---|---|---|
@@ -95,11 +95,17 @@ Nominal resistance for NH3 is 10-1500kOhm, for NO2 0.8 to 20kOhm and CO 100 to 1
 | NH3| 10k| 1500lk| 1ppm | 300ppm| 0.08 | 30 | low resistance
 | NOx| 0.8k| 10k| 0.05ppm | 10ppm| 0.8 | 0.07 | high resistance
 
-Because of these variations its necessary to adjust voltage divider for each sensor so that the maximum sensitivity is achieved with a microcontroller's internal ADC. It usually is more important to detect low quantities than to measure accurately high levels of analyte. The ESP32 AD converter has an attenuator and minimum accurate measurement is 0.1V and maximum 2.4V.
+Because of these variations its necessary to adjust a voltage divider for each sensor so that the maximum sensitivity is achieved with a microcontroller's internal ADC. It usually is more important to detect low quantities than to measure accurately high levels of analyte. The ESP32 AD converter has an internal attenuator and the minimum accurate measurement is 0.1V and maximum 2.4V.
 
-The heater is usually operated at 5V but resistors could also be adjusted for 3.3V using the voltage levels specified in the data sheet.
+The example **heater** circuit in the datasheet is for a 5V supply design and puts the CO and NH3 heater in series. For 3.3V operation the heaters need to be connected independently, each with its own serial resistor. Current and nominal resistance of the heater can be obtained from the datasheet and the required serial resistor computed as following:
+
+| Gas | $I_{heat}$ [mA]| $R_{heat}$ [Ohm]| $V$ [V] | $R_{serial_{5V}}$ [Ohm]| $R_{serial_{3.3V}}$ [Ohm] |
+|---|---|---|---|---|---|
+| CO  | 32 | 74 | 2.4 | 82  | 29  |
+| NOx | 26 | 66 | 1.7 | 126 | 61  |
+| NH3 | 30 | 72 | 2.2 | 95  | 38  |
 
 ## Neopixel
-To indicate status we use RGB LEDs controlled with 800kpbs serial signal. These LEDs come in different form factor usually 5x5mm but 1x1 ans 2x2 are available with similar performance. Since each color can draw up to 5mA the current for one element is 15mA if white color is selected. With 12 LEDs and all emitting white, this would result in 200mA current consumption on the 5V supply line. Serial signal is likely 3.3V compliant.
+To indicate status we use RGB LEDs controlled with 800kpbs serial signal. These LEDs come in different form factor usually 5x5mm but 1x1 ans 2x2 are available with similar performance. Since each color can draw up to 5mA the current for one element is 15mA if white color is selected. With 12 LEDs and all emitting white, this would result in 200mA current consumption on the supply line. The serial signal is 3.3V compliant and the LED should work with 3.3V supply also, although 5V is recommended.
 [datasheet](Airquality\datasheets\2301111010_XINGLIGHT-XL-2020RGBC-WS2812B_C5349955.pdf)
 
