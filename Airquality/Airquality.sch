@@ -9172,6 +9172,8 @@ by exp-lbrs.ulp</description>
 <part name="GND20" library="SparkFun-PowerSymbols" library_urn="urn:adsk.eagle:library:530" deviceset="GND" device=""/>
 <part name="SUPPLY7" library="SparkFun-PowerSymbols" library_urn="urn:adsk.eagle:library:530" deviceset="VOUT" device=""/>
 <part name="SUPPLY3" library="SparkFun-PowerSymbols" library_urn="urn:adsk.eagle:library:530" deviceset="VOUT" device=""/>
+<part name="R15" library="SparkFun-Resistors" library_urn="urn:adsk.eagle:library:532" deviceset="10KOHM" device="-0603-1/10W-1%" package3d_urn="urn:adsk.eagle:package:39650/1" value="10k"/>
+<part name="FLG" library="SparkFun-Connectors" library_urn="urn:adsk.eagle:library:513" deviceset="TEST-POINT" device="3X4" package3d_urn="urn:adsk.eagle:package:38287/1"/>
 </parts>
 <sheets>
 <sheet>
@@ -9552,6 +9554,14 @@ Then close JP1,2,3.</text>
 </instance>
 <instance part="SUPPLY3" gate="G$1" x="-78.74" y="-48.26" smashed="yes">
 <attribute name="VALUE" x="-78.74" y="-45.466" size="1.778" layer="96" align="bottom-center"/>
+</instance>
+<instance part="R15" gate="G$1" x="25.4" y="58.42" smashed="yes">
+<attribute name="NAME" x="25.4" y="59.944" size="1.778" layer="95" font="vector" align="bottom-center"/>
+<attribute name="VALUE" x="25.4" y="56.896" size="1.778" layer="96" font="vector" align="top-center"/>
+</instance>
+<instance part="FLG" gate="G$1" x="30.48" y="76.2" smashed="yes" rot="R90">
+<attribute name="NAME" x="25.4" y="76.2" size="1.778" layer="95" font="vector"/>
+<attribute name="VALUE" x="33.02" y="73.66" size="1.778" layer="96" font="vector" rot="R90" display="off"/>
 </instance>
 </instances>
 <busses>
@@ -9954,6 +9964,9 @@ Then close JP1,2,3.</text>
 <wire x1="20.32" y1="71.12" x2="10.668" y2="71.12" width="0.1524" layer="91"/>
 <wire x1="20.32" y1="76.2" x2="20.32" y2="71.12" width="0.1524" layer="91"/>
 <pinref part="SUPPLY4" gate="G$1" pin="3.3V"/>
+<pinref part="R15" gate="G$1" pin="1"/>
+<wire x1="20.32" y1="66.04" x2="20.32" y2="58.42" width="0.1524" layer="91"/>
+<junction x="20.32" y="66.04"/>
 </segment>
 <segment>
 <pinref part="U5" gate="A" pin="VIN"/>
@@ -10128,15 +10141,6 @@ Then close JP1,2,3.</text>
 <junction x="-59.69" y="60.96"/>
 </segment>
 </net>
-<net name="N$9" class="0">
-<segment>
-<pinref part="U4" gate="G$1" pin="EN"/>
-<wire x1="20.32" y1="-2.54" x2="20.32" y2="60.96" width="0.1524" layer="91"/>
-<wire x1="33.02" y1="60.96" x2="20.32" y2="60.96" width="0.1524" layer="91"/>
-<pinref part="J4" gate="G$1" pin="2"/>
-<wire x1="15.24" y1="-2.54" x2="20.32" y2="-2.54" width="0.1524" layer="91"/>
-</segment>
-</net>
 <net name="N$13" class="0">
 <segment>
 <pinref part="R8" gate="G$1" pin="1"/>
@@ -10251,6 +10255,9 @@ Then close JP1,2,3.</text>
 <pinref part="R7" gate="G$1" pin="2"/>
 <pinref part="U4" gate="G$1" pin="FLG"/>
 <wire x1="30.48" y1="66.04" x2="33.02" y2="66.04" width="0.1524" layer="91"/>
+<wire x1="30.48" y1="66.04" x2="30.48" y2="76.2" width="0.1524" layer="91"/>
+<junction x="30.48" y="66.04"/>
+<pinref part="FLG" gate="G$1" pin="1"/>
 </segment>
 </net>
 <net name="N$10" class="0">
@@ -10480,6 +10487,20 @@ Then close JP1,2,3.</text>
 <junction x="106.68" y="-7.62"/>
 </segment>
 </net>
+<net name="N$32" class="0">
+<segment>
+<pinref part="R15" gate="G$1" pin="2"/>
+<wire x1="30.48" y1="58.42" x2="30.48" y2="60.96" width="0.1524" layer="91"/>
+<pinref part="U4" gate="G$1" pin="EN"/>
+<wire x1="30.48" y1="60.96" x2="33.02" y2="60.96" width="0.1524" layer="91"/>
+<wire x1="30.48" y1="58.42" x2="30.48" y2="53.34" width="0.1524" layer="91"/>
+<junction x="30.48" y="58.42"/>
+<wire x1="30.48" y1="53.34" x2="20.32" y2="53.34" width="0.1524" layer="91"/>
+<pinref part="J4" gate="G$1" pin="2"/>
+<wire x1="15.24" y1="-2.54" x2="20.32" y2="-2.54" width="0.1524" layer="91"/>
+<wire x1="20.32" y1="53.34" x2="20.32" y2="-2.54" width="0.1524" layer="91"/>
+</segment>
+</net>
 </nets>
 </sheet>
 </sheets>
@@ -10488,31 +10509,9 @@ Then close JP1,2,3.</text>
 <approved hash="104,1,-20.32,17.78,U1,VDD,N$4,,,"/>
 <approved hash="104,1,-20.32,15.24,U1,VDDH,3.3V,,,"/>
 <approved hash="104,1,-20.32,5.08,U1,EXP,GND,,,"/>
-<approved hash="104,1,-88.9,-66.04,LED0,VDD,5V,,,"/>
-<approved hash="104,1,-60.96,-66.04,LED1,VDD,5V,,,"/>
-<approved hash="104,1,-33.02,-66.04,LED2,VDD,5V,,,"/>
-<approved hash="104,1,-5.08,-66.04,LED3,VDD,5V,,,"/>
-<approved hash="104,1,27.94,-35.56,LED4,VDD,5V,,,"/>
-<approved hash="104,1,55.88,-35.56,LED5,VDD,5V,,,"/>
-<approved hash="104,1,83.82,-35.56,LED6,VDD,5V,,,"/>
-<approved hash="104,1,111.76,-35.56,LED7,VDD,5V,,,"/>
-<approved hash="104,1,106.68,-7.62,LED11,VDD,5V,,,"/>
-<approved hash="104,1,78.74,-7.62,LED10,VDD,5V,,,"/>
-<approved hash="104,1,50.8,-7.62,LED9,VDD,5V,,,"/>
-<approved hash="104,1,22.86,-7.62,LED8,VDD,5V,,,"/>
 <approved hash="104,1,-111.76,53.34,SHT45,VDD,3.3V,,,"/>
 <approved hash="104,1,-111.76,63.5,SHT45,VSS,GND,,,"/>
-<approved hash="208,1,-78.74,-48.26,5V,sup,,,,"/>
-<approved hash="208,1,-109.22,-66.04,5V,sup,,,,"/>
-<approved hash="208,1,88.9,73.66,5V,out,,,,"/>
-<approved hash="208,1,78.74,76.2,5V,sup,,,,"/>
-<approved hash="111,1,1.27,-83.82,GND,,,,,"/>
-<approved hash="113,1,-99.2293,-17.6174,J1,,,,,"/>
-<approved hash="113,1,-99.7373,-56.9874,J3,,,,,"/>
 <approved hash="113,1,83.82,47.5869,U2,,,,,"/>
-<approved hash="113,1,12.0227,3.97256,J4,,,,,"/>
-<approved hash="113,1,-99.7373,-41.7474,J2,,,,,"/>
-<approved hash="113,1,-112.437,-72.2274,J5,,,,,"/>
 </errors>
 </schematic>
 </drawing>
