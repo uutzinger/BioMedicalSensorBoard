@@ -97,7 +97,7 @@ In this project we developed measurement board for the following categories:
 - [Pressure](pressure.md) Pressure Sensors Solutions
 - [SpO<sub>2</sub>](spo2.md) Pulse Oximeter Solutions
 - [Airquality](airquality.md) Pulse Oximeter Solutions
-- [Inetrial Measurement Unit](imu.md) Acceleration, Gyration, Compass and Pressure Solution
+- [Inertial Measurement Unit](imu.md) Acceleration, Gyration, Compass and Pressure Solution
 
 We used the following micro controllers and manufacturing techniques:
 
