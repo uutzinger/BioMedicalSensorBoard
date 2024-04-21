@@ -1,7 +1,7 @@
 {
     "Header": {
         "Comment": "All values are metric (mm)",
-        "CreationDate": "2024-04-08T01:54:01Z",
+        "CreationDate": "2024-04-18T14:46:31Z",
         "GenerationSoftware": {
             "Application": "EAGLE",
             "Vendor": "Autodesk",
@@ -15,7 +15,7 @@
         "Name": {
             "ProjectId": "Airquality"
         },
-        "Owner": "Urs Utzinger <utzinger@email.arizona.edu>",
+        "Owner": "Urs Utzinger <uutzinger@gmail.com>",
         "Size": {
             "X": 70,
             "Y": 70

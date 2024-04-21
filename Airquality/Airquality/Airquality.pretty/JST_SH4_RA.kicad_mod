@@ -1,0 +1,206 @@
+(footprint "JST_SH4_RA"
+	(version 20240108)
+	(generator "pcbnew")
+	(generator_version "8.0")
+	(layer "F.Cu")
+	(property "Reference" "REF**"
+		(at -4.6 -2.052 0)
+		(unlocked yes)
+		(layer "F.SilkS")
+		(uuid "58a7cd0b-95bd-41b9-a5ea-6abadd1d8ff2")
+		(effects
+			(font
+				(size 0.93472 0.93472)
+				(thickness 0.08128)
+			)
+			(justify left bottom)
+		)
+	)
+	(property "Value" "JST_SH4_RA"
+		(at -3.33 4.768 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(uuid "8414ee52-5c87-4968-b1c3-5aee3c33d4b2")
+		(effects
+			(font
+				(size 0.93472 0.93472)
+				(thickness 0.08128)
+			)
+			(justify left bottom)
+		)
+	)
+	(property "Footprint" ""
+		(at 0 0 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "ff07b04d-94a5-4a59-ac6b-fcf80b9fe857")
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+	)
+	(property "Datasheet" ""
+		(at 0 0 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "622b3e13-9d5e-465c-b1f4-3f7c269c63ed")
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+	)
+	(property "Description" ""
+		(at 0 0 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "b00bb3b5-523f-4aed-8cd7-9568fb76e26a")
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+	)
+	(fp_line
+		(start -3 -0.652)
+		(end -1.9 -0.652)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "0a190814-ccaa-411d-a5a3-05077958f782")
+	)
+	(fp_line
+		(start -3 0.548)
+		(end -3 -0.652)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "4ecf18af-0d48-40e2-8f2b-c0a29a2b8526")
+	)
+	(fp_line
+		(start -2.1 2.248)
+		(end 2.1 2.248)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "18e0cc56-9b59-415a-b919-f7327d04306b")
+	)
+	(fp_line
+		(start 1.9 -0.652)
+		(end 3.1 -0.652)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "25cbfa37-1a7c-4610-8eae-57e3dae82e87")
+	)
+	(fp_line
+		(start 3.1 -0.652)
+		(end 3.1 0.548)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "8e0a494d-10c3-482c-b2dc-5b37aedd25d8")
+	)
+	(fp_line
+		(start -3 -0.602)
+		(end 3.1 -0.602)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(layer "F.Fab")
+		(uuid "ee2072ee-7ed3-4234-b4af-f0fc9fc82c91")
+	)
+	(fp_line
+		(start -3 2.248)
+		(end -3 -0.602)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(layer "F.Fab")
+		(uuid "28ccc6fb-49f3-4a2d-8703-ffcc21d27d9b")
+	)
+	(fp_line
+		(start 3.1 -0.602)
+		(end 3.1 2.248)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(layer "F.Fab")
+		(uuid "ae68b7fa-2968-4838-b8a0-890e95526128")
+	)
+	(fp_line
+		(start 3.1 2.248)
+		(end -3 2.248)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(layer "F.Fab")
+		(uuid "cfcf9cb7-a4bf-4d89-839c-1e7acb85015e")
+	)
+	(pad "1" smd rect
+		(at 1.5 -0.924 270)
+		(size 1.55 0.6)
+		(layers "F.Cu" "F.Paste" "F.Mask")
+		(solder_mask_margin 0.1016)
+		(thermal_bridge_angle 0)
+		(uuid "fa417ffc-6542-4e44-a6dc-8033346bcaa6")
+	)
+	(pad "2" smd rect
+		(at 0.5 -0.924 270)
+		(size 1.55 0.6)
+		(layers "F.Cu" "F.Paste" "F.Mask")
+		(solder_mask_margin 0.1016)
+		(thermal_bridge_angle 0)
+		(uuid "45b3de2f-3353-4439-971c-b3eed29f46c2")
+	)
+	(pad "3" smd rect
+		(at -0.5 -0.924 270)
+		(size 1.55 0.6)
+		(layers "F.Cu" "F.Paste" "F.Mask")
+		(solder_mask_margin 0.1016)
+		(thermal_bridge_angle 0)
+		(uuid "223c3c3a-57ba-4185-88b4-fda923ae12ea")
+	)
+	(pad "4" smd rect
+		(at -1.5 -0.924 270)
+		(size 1.55 0.6)
+		(layers "F.Cu" "F.Paste" "F.Mask")
+		(solder_mask_margin 0.1016)
+		(thermal_bridge_angle 0)
+		(uuid "3ef7d80b-b7a7-4262-b9cb-c7ab20f138e2")
+	)
+	(pad "MT1" smd rect
+		(at -2.8 1.6242 90)
+		(size 1.8 1.2)
+		(layers "F.Cu" "F.Paste" "F.Mask")
+		(solder_mask_margin 0.1016)
+		(thermal_bridge_angle 0)
+		(uuid "adfb3361-8c62-4a7f-8494-ea3fdfb1d305")
+	)
+	(pad "MT2" smd rect
+		(at 2.8 1.6242 90)
+		(size 1.8 1.2)
+		(layers "F.Cu" "F.Paste" "F.Mask")
+		(solder_mask_margin 0.1016)
+		(thermal_bridge_angle 0)
+		(uuid "eb2d5c2e-7e09-4aba-9a39-e14f9b89c6b8")
+	)
+)

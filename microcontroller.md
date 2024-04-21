@@ -1,10 +1,13 @@
 # Microcontroller
-Code included with this project is using Arduino programming environment. Communication with base station uses ESPNow. Therefor code will only work with ESP base micro controller.
+Code included with this project is using the Arduino programming environment. Communication with base station uses ESPNow. Therefor code will only work with ESP based micro controllers.
 
-During development, Adafruit ESP32-S3 Feather was primarily used but also SparkFun Thing Plus to test older hardware version.
+During development, Adafruit ESP32-S3 Feather was primarily used but also SparkFun Thing Plus to test an older hardware version.
 
 ## Arduino ESP32
+
 Currently, the Arduino ESP32 supports the peripherals with Arduino APIs as listed here: https://docs.espressif.com/projects/arduino-esp32/en/latest/libraries.html
+
+## EPS32 Variants
 
 ### ESP 8266
 - released in 2014
@@ -54,7 +57,7 @@ Currently, the Arduino ESP32 supports the peripherals with Arduino APIs as liste
   
 ### ESP32-C6
 - released in 2023
-- Arduino IDE support expected
+- Arduino IDE support expected in ESP Arduino version 3.0
 - RISC-V dual core 32-bit 160MHz
 - WiFi 6
 - Bluetooth LE 5
@@ -64,7 +67,8 @@ Currently, the Arduino ESP32 supports the peripherals with Arduino APIs as liste
 - BLE Audio not supported currently
 - $10
 
-## Teensy
+## Teensy Variants
+
 ### Teensy 4.x based
 - ARM Cortex-M7 at 600 MHz
 - I2C, SPI, I2S, Ethernet
@@ -82,7 +86,7 @@ Currently, the Arduino ESP32 supports the peripherals with Arduino APIs as liste
 - 8Mbytes
 - $31.50
 
-## Boards
+## Development Boards
 
 ### SparkFun Thing Plus - ESP32 WROOM
 - USB type C  or micro

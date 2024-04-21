@@ -1,0 +1,65 @@
+(footprint "DUMMY"
+	(version 20240108)
+	(generator "pcbnew")
+	(generator_version "8.0")
+	(layer "F.Cu")
+	(descr "Dummy Footprint\n\nNOTHING HERE!!! For when you want a symbol with no package as an option against symbols with a package.\n\nDevices using:\n\n• BADGERHACK_LOGO\n• FRAME-LETTER")
+	(property "Reference" "REF**"
+		(at 0 0 0)
+		(unlocked yes)
+		(layer "F.SilkS")
+		(uuid "9d6e2a01-7d41-4518-9d93-066c20a4f61a")
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+	)
+	(property "Value" ""
+		(at 0 0 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(uuid "fbecb44c-4dd9-413f-ae6e-cce4f0430428")
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+	)
+	(property "Footprint" ""
+		(at 0 0 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "6802b53c-c945-48e3-8538-74fa2014c5a2")
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+	)
+	(property "Datasheet" ""
+		(at 0 0 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "eb91f202-eabd-4656-a298-3aedb42b2c6b")
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+	)
+	(property "Description" ""
+		(at 0 0 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "2fda458b-211d-4a74-bfe2-bb520ce84477")
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+	)
+)

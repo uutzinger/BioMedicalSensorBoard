@@ -1,0 +1,4 @@
+(sym_lib_table
+  (version 0)
+  (lib (name "Airquality-eagle-import")(type "KiCad")(uri "${KIPRJMOD}/Airquality-eagle-import.kicad_sym")(options "")(descr ""))
+)

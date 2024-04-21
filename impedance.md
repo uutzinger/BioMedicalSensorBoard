@@ -1,7 +1,7 @@
 # Tissue Impedance
 
 ## IEC 60601 
-IEC 60601 limits 10 µA maximum dc-leakage current through the body under normal conditions and 50 µA maximum under worst-case, single-fault conditions. An impedance circuit should not exceed that current.
+IEC 60601 limits 100 µA maximum dc-leakage current through the body under normal conditions and 500 µA maximum under worst-case, single-fault conditions. An impedance circuit should not exceed that current.
 
 ## Analog Devices AFE
 - [AD5933 12-bit impedance converter ($18)](https://www.analog.com/en/products/ad5933.html) evaluation kit available ($68)
@@ -162,7 +162,7 @@ A list of designs using the AD5933 used the following values for resistors and c
 
 ### Impedance Estimation
 
-Formula to compute impedance from measurements. Check evaluation board and Instructables.
+Formula to compute impedance from measurements: Description to be completed (check evaluation board and Instructables, also search PubMed).
 
 ### References
 
