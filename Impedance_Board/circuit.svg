@@ -7,7 +7,7 @@
    height="540"
    id="svg450"
    sodipodi:docname="circuit.svg"
-   inkscape:version="1.1 (c68e22c387, 2021-05-23)"
+   inkscape:version="1.1.2 (0a00cf5339, 2022-02-04)"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
@@ -23,13 +23,13 @@
      inkscape:pageopacity="0.0"
      inkscape:pagecheckerboard="0"
      showgrid="false"
-     inkscape:zoom="1.4142136"
-     inkscape:cx="331.98663"
-     inkscape:cy="100.76272"
-     inkscape:window-width="2560"
-     inkscape:window-height="1351"
-     inkscape:window-x="-9"
-     inkscape:window-y="-9"
+     inkscape:zoom="5.6568544"
+     inkscape:cx="759.8746"
+     inkscape:cy="106.77312"
+     inkscape:window-width="2048"
+     inkscape:window-height="1005"
+     inkscape:window-x="0"
+     inkscape:window-y="32"
      inkscape:window-maximized="1"
      inkscape:current-layer="svg450" />
   <rect
@@ -149,27 +149,6 @@
      style="fill-opacity:0;fill:rgb(0, 0, 0);stroke:rgb(0, 0, 0);stroke-linecap:square;stroke-width:2"
      id="path34" />
   <line
-     x1="720"
-     y1="50"
-     x2="730"
-     y2="50"
-     style="stroke:rgb(0, 0, 0);stroke-linecap:square;stroke-width:2"
-     id="line36" />
-  <line
-     x1="730"
-     y1="50"
-     x2="730"
-     y2="70"
-     style="stroke:rgb(0, 0, 0);stroke-linecap:square;stroke-width:2"
-     id="line38" />
-  <line
-     x1="730"
-     y1="80"
-     x2="730"
-     y2="100"
-     style="stroke:rgb(0, 0, 0);stroke-linecap:square;stroke-width:2"
-     id="line40" />
-  <line
      x1="730"
      y1="100"
      x2="730"
@@ -185,71 +164,11 @@
      id="line44" />
   <line
      x1="730"
-     y1="160"
-     x2="730"
-     y2="180"
-     style="stroke:rgb(0, 0, 0);stroke-linecap:square;stroke-width:2"
-     id="line46" />
-  <line
-     x1="730"
-     y1="190"
-     x2="730"
-     y2="210"
-     style="stroke:rgb(0, 0, 0);stroke-linecap:square;stroke-width:2"
-     id="line48" />
-  <line
-     x1="730"
-     y1="220"
-     x2="730"
-     y2="240"
-     style="stroke:rgb(0, 0, 0);stroke-linecap:square;stroke-width:2"
-     id="line50" />
-  <line
-     x1="730"
-     y1="250"
-     x2="730"
-     y2="270"
-     style="stroke:rgb(0, 0, 0);stroke-linecap:square;stroke-width:2"
-     id="line52" />
-  <line
-     x1="730"
      y1="280"
      x2="730"
      y2="300"
      style="stroke:rgb(0, 0, 0);stroke-linecap:square;stroke-width:2"
      id="line54" />
-  <line
-     x1="710"
-     y1="50"
-     x2="720"
-     y2="50"
-     style="stroke:rgb(0, 0, 0);stroke-linecap:square;stroke-width:2"
-     id="line56" />
-  <line
-     x1="710"
-     y1="50"
-     x2="710"
-     y2="60"
-     style="stroke:rgb(0, 0, 0);stroke-linecap:square;stroke-width:2"
-     id="line58" />
-  <line
-     x1="710"
-     y1="60"
-     x2="710"
-     y2="60"
-     style="stroke:rgb(0, 0, 0);stroke-linecap:square;stroke-width:2"
-     id="line60" />
-  <line
-     x1="710"
-     y1="60"
-     x2="710"
-     y2="68"
-     style="stroke:rgb(0, 0, 0);stroke-linecap:square;stroke-width:2"
-     id="line62" />
-  <path
-     d="M 702,68 L 718,68 L 710,76 L 702,68"
-     style="fill-opacity:0;fill:rgb(0, 0, 0);stroke:rgb(0, 0, 0);stroke-linecap:square;stroke-width:2"
-     id="path64" />
   <line
      x1="820"
      y1="100"
@@ -1413,13 +1332,6 @@
      style="fill-opacity:1;fill:rgb(0, 0, 0);stroke:rgb(0, 0, 0);stroke-width:2"
      id="ellipse414" />
   <ellipse
-     cx="730"
-     cy="100"
-     rx="2"
-     ry="2"
-     style="fill-opacity:1;fill:rgb(0, 0, 0);stroke:rgb(0, 0, 0);stroke-width:2"
-     id="ellipse416" />
-  <ellipse
      cx="600"
      cy="300"
      rx="2"
@@ -1682,25 +1594,16 @@
      y2="300"
      style="stroke:#000000;stroke-width:2;stroke-linecap:square"
      id="line1401" />
-  <line
-     x1="672"
-     y1="300"
-     x2="692"
-     y2="300"
-     style="stroke:#000000;stroke-width:2;stroke-linecap:square"
-     id="line1403" />
-  <line
-     x1="636"
-     y1="300"
-     x2="656"
-     y2="300"
-     style="stroke:#000000;stroke-width:2;stroke-linecap:square"
-     id="line1405" />
-  <line
-     x1="600"
-     y1="300"
-     x2="620"
-     y2="300"
-     style="stroke:#000000;stroke-width:2;stroke-linecap:square"
-     id="line1407" />
+  <path
+     style="fill:none;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none"
+     d="M 710,300 H 600"
+     id="path1548" />
+  <path
+     style="fill:none;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none"
+     d="M 730,280 V 150"
+     id="path2478" />
+  <path
+     style="fill:none;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none"
+     d="M 730,120 V 110"
+     id="path1093" />
 </svg>

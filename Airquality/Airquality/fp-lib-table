@@ -1,4 +1,0 @@
-(fp_lib_table
-  (version 7)
-  (lib (name "Airquality")(type "KiCad")(uri "$(KIPRJMOD)/Airquality.pretty")(options "")(descr ""))
-)

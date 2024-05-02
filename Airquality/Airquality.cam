@@ -1,12 +1,12 @@
 {
     "author": {
-        "email": "utzinger@email.arizona.edu",
+        "email": "uutzinger@gmail.com",
         "name": "Urs Utzinger"
     },
     "description": {
         "EN": "EAGLE default 2 layer CAM job."
     },
-    "output_type": "directory",
+    "output_type": "zip",
     "outputs": [
         {
             "filename_prefix": "CAMOutputs/GerberFiles",
@@ -263,7 +263,7 @@
                 {
                     "filename_format": "%ASSEMBLYPREFIX/PnP_%N_%BOARDSIDE",
                     "name": "Pick and Place",
-                    "output_format": "txt",
+                    "output_format": "csv",
                     "type": "pick_and_place"
                 }
             ]
@@ -275,7 +275,7 @@
             ]
         }
     ],
-    "timestamp": "2024-03-29T11:44:35",
+    "timestamp": "2024-04-25T09:40:38",
     "type": "EAGLE CAM job",
     "units": "metric",
     "version": "9.2.0"

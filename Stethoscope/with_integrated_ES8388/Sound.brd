@@ -3,7 +3,7 @@
 <eagle version="9.6.2">
 <drawing>
 <settings>
-<setting alwaysvectorfont="yes"/>
+<setting alwaysvectorfont="no"/>
 <setting verticaltext="up"/>
 </settings>
 <grid distance="1" unitdist="mm" unit="mm" style="lines" multiple="1" display="yes" altdistance="0.1" altunitdist="mm" altunit="mm"/>
@@ -192,15 +192,15 @@ MediBrick2000</text>
 <wire x1="0" y1="70" x2="70" y2="70" width="0.1524" layer="20"/>
 <wire x1="70" y1="70" x2="70" y2="0" width="0.1524" layer="20"/>
 <wire x1="70" y1="0" x2="0" y2="0" width="0.1524" layer="20"/>
-<text x="12.75" y="64.25" size="0.6096" layer="25" font="vector" ratio="20">3.3V</text>
-<text x="10.25" y="64.25" size="0.6096" layer="25" font="vector" ratio="20">GND</text>
-<text x="15.25" y="64.25" size="0.6096" layer="25" font="vector" ratio="20">SDA</text>
-<text x="18" y="64.25" size="0.6096" layer="25" font="vector" ratio="20">SCL</text>
-<text x="27.75" y="64.25" size="0.6096" layer="25" font="vector" ratio="20">SCLK</text>
-<text x="25.45" y="64.25" size="0.6096" layer="25" font="vector" ratio="20">DIN</text>
-<text x="30.2" y="64.25" size="0.6096" layer="25" font="vector" ratio="20">MCLK</text>
-<text x="22.45" y="64.25" size="0.6096" layer="25" font="vector" ratio="20">LRCLK</text>
-<text x="20" y="64.25" size="0.6096" layer="25" font="vector" ratio="20">DOUT</text>
+<text x="12.75" y="64.25" size="0.6096" layer="25" font="vector" ratio="12">3.3V</text>
+<text x="10.25" y="64.25" size="0.6096" layer="25" font="vector" ratio="12">GND</text>
+<text x="15.25" y="64.25" size="0.6096" layer="25" font="vector" ratio="12">SDA</text>
+<text x="18" y="64.25" size="0.6096" layer="25" font="vector" ratio="12">SCL</text>
+<text x="27.75" y="64.25" size="0.6096" layer="25" font="vector" ratio="12">SCLK</text>
+<text x="25.45" y="64.25" size="0.6096" layer="25" font="vector" ratio="12">DIN</text>
+<text x="30.2" y="64.25" size="0.6096" layer="25" font="vector" ratio="12">MCLK</text>
+<text x="22.45" y="64.25" size="0.6096" layer="25" font="vector" ratio="12">LRCLK</text>
+<text x="20" y="64.25" size="0.6096" layer="25" font="vector" ratio="12">DOUT</text>
 <hole x="47.25" y="14" drill="3.25" grouprefs="MEMSMIC"/>
 <hole x="57.25" y="14" drill="3.25" grouprefs="MEMSMIC"/>
 <hole x="57.25" y="34.5" drill="3.25" grouprefs="MEMSMIC"/>
@@ -209,7 +209,7 @@ MediBrick2000</text>
 <wire x1="55" y1="29" x2="55" y2="16" width="0.254" layer="25" grouprefs="MEMSMIC"/>
 <wire x1="55" y1="16" x2="49.5" y2="16" width="0.254" layer="25" grouprefs="MEMSMIC"/>
 <wire x1="49.5" y1="16" x2="49.5" y2="29" width="0.254" layer="25" grouprefs="MEMSMIC"/>
-<text x="33.5" y="64.25" size="0.6096" layer="25" font="vector" ratio="20">NC</text>
+<text x="33.1" y="64.25" size="0.6096" layer="25" font="vector" ratio="12">3.3V</text>
 <text x="3.05" y="28.05" size="1.27" layer="25" font="vector" rot="R90">Utzinger</text>
 <wire x1="0.95" y1="27.5" x2="0.95" y2="35.5" width="0.1524" layer="25"/>
 <wire x1="0.95" y1="35.5" x2="3.7" y2="35.5" width="0.1524" layer="25"/>
@@ -1149,22 +1149,22 @@ design rules under a new name.</description>
 <attribute name="VALUE" x="24.5" y="17.938" size="0.6096" layer="27" font="vector" ratio="20" align="top-center"/>
 </element>
 <element name="C12" library="SparkFun-Capacitors" library_urn="urn:adsk.eagle:library:510" package="0603" package3d_urn="urn:adsk.eagle:package:37414/1" value="0.1uF" x="24.55" y="27.35" smashed="yes">
-<attribute name="NAME" x="27.15" y="27.112" size="0.6096" layer="25" font="vector" ratio="20" align="bottom-center"/>
+<attribute name="NAME" x="29.05" y="27.212" size="0.6096" layer="25" font="vector" ratio="20" align="bottom-center"/>
 <attribute name="PROD_ID" value="CAP-08604" x="24.55" y="27.35" size="1.778" layer="27" display="off"/>
 <attribute name="VALUE" x="24.55" y="27.588" size="0.6096" layer="27" font="vector" ratio="20" align="top-center"/>
 </element>
 <element name="C13" library="SparkFun-Capacitors" library_urn="urn:adsk.eagle:library:510" package="0603" package3d_urn="urn:adsk.eagle:package:37414/1" value="0.1uF" x="21.25" y="27.35" smashed="yes">
-<attribute name="NAME" x="21.35" y="32.612" size="0.6096" layer="25" font="vector" ratio="20" align="bottom-center"/>
+<attribute name="NAME" x="27.25" y="27.112" size="0.6096" layer="25" font="vector" ratio="20" align="bottom-center"/>
 <attribute name="PROD_ID" value="CAP-08604" x="21.25" y="27.35" size="1.778" layer="27" display="off"/>
 <attribute name="VALUE" x="21.25" y="27.588" size="0.6096" layer="27" font="vector" ratio="20" align="top-center"/>
 </element>
 <element name="C14" library="SparkFun-Capacitors" library_urn="urn:adsk.eagle:library:510" package="0603" package3d_urn="urn:adsk.eagle:package:37414/1" value="10uF" x="21.25" y="29" smashed="yes">
-<attribute name="NAME" x="21.35" y="33.362" size="0.6096" layer="25" font="vector" ratio="20" align="bottom-center"/>
+<attribute name="NAME" x="27.15" y="29.062" size="0.6096" layer="25" font="vector" ratio="20" align="bottom-center"/>
 <attribute name="PROD_ID" value="CAP-11015" x="21.25" y="29" size="1.778" layer="27" display="off"/>
 <attribute name="VALUE" x="21.35" y="29.338" size="0.6096" layer="27" font="vector" ratio="20" align="top-center"/>
 </element>
 <element name="C15" library="SparkFun-Capacitors" library_urn="urn:adsk.eagle:library:510" package="0603" package3d_urn="urn:adsk.eagle:package:37414/1" value="10uF" x="24.55" y="29" smashed="yes">
-<attribute name="NAME" x="27.05" y="28.862" size="0.6096" layer="25" font="vector" ratio="20" align="bottom-center"/>
+<attribute name="NAME" x="28.95" y="29.062" size="0.6096" layer="25" font="vector" ratio="20" align="bottom-center"/>
 <attribute name="PROD_ID" value="CAP-11015" x="24.55" y="29" size="1.778" layer="27" display="off"/>
 <attribute name="VALUE" x="24.45" y="29.338" size="0.6096" layer="27" font="vector" ratio="20" align="top-center"/>
 </element>
@@ -1295,23 +1295,7 @@ design rules under a new name.</description>
 </elements>
 <signals>
 <signal name="3.3V">
-<contactref element="R16" pad="2"/>
-<contactref element="R2" pad="2"/>
-<wire x1="52.25" y1="28.25" x2="47.5" y2="28.25" width="0.254" layer="1" grouprefs="MEMSMIC"/>
-<wire x1="52.25" y1="28.25" x2="52.75" y2="28.25" width="0.508" layer="1" grouprefs="MEMSMIC"/>
-<wire x1="52.75" y1="28.75" x2="52.25" y2="28.25" width="0.508" layer="1" grouprefs="MEMSMIC"/>
-<wire x1="45" y1="28.8" x2="46.95" y2="28.8" width="0.254" layer="1" grouprefs="MEMSMIC"/>
-<wire x1="47.5" y1="28.25" x2="46.95" y2="28.8" width="0.254" layer="1" grouprefs="MEMSMIC"/>
 <contactref element="J2" pad="2"/>
-<contactref element="C2" pad="1"/>
-<contactref element="C3" pad="1"/>
-<contactref element="LS1" pad="4"/>
-<contactref element="LS2" pad="4"/>
-<wire x1="52.775" y1="21.525" x2="53.75" y2="22.5" width="0.254" layer="1" grouprefs="MEMSMIC"/>
-<wire x1="53.75" y1="26.6" x2="53.135" y2="27.215" width="0.508" layer="1" grouprefs="MEMSMIC"/>
-<wire x1="53.135" y1="27.215" x2="52.775" y2="27.215" width="0.508" layer="1" grouprefs="MEMSMIC"/>
-<wire x1="53.75" y1="22.5" x2="53.75" y2="23.25" width="0.254" layer="1" grouprefs="MEMSMIC"/>
-<contactref element="IC2" pad="8"/>
 <contactref element="C14" pad="1"/>
 <contactref element="C13" pad="1"/>
 <contactref element="IC1" pad="3"/>
@@ -1323,7 +1307,6 @@ design rules under a new name.</description>
 <contactref element="IC1" pad="16"/>
 <contactref element="C10" pad="1"/>
 <contactref element="C16" pad="1"/>
-<wire x1="53.75" y1="23.25" x2="53.75" y2="26.6" width="0.508" layer="1" grouprefs="MEMSMIC"/>
 <wire x1="16.9" y1="17.6" x2="16.9" y2="16" width="0.254" layer="1"/>
 <wire x1="16.9" y1="17.6" x2="18.6" y2="18.85" width="0.254" layer="1"/>
 <wire x1="19.05" y1="19.3" x2="19.05" y2="20.55" width="0.254" layer="1"/>
@@ -1367,26 +1350,6 @@ design rules under a new name.</description>
 <wire x1="20.45" y1="64.75" x2="20.45" y2="31.1" width="0.508" layer="16"/>
 <wire x1="9.5" y1="62.25" x2="12" y2="64.75" width="0.508" layer="16"/>
 <wire x1="12" y1="64.75" x2="13.61" y2="64.75" width="0.508" layer="16"/>
-<wire x1="20.45" y1="64.75" x2="47.25" y2="64.75" width="0.508" layer="16"/>
-<via x="47.25" y="64.75" extent="1-16" drill="0.35"/>
-<wire x1="52.75" y1="29.85" x2="52.75" y2="28.75" width="0.508" layer="1" grouprefs="MEMSMIC"/>
-<wire x1="52.75" y1="29.85" x2="52.75" y2="31.4" width="0.508" layer="1" grouprefs="MEMSMIC"/>
-<wire x1="52.75" y1="61.65" x2="52.75" y2="63.75" width="0.508" layer="1"/>
-<wire x1="52.75" y1="63.75" x2="51.75" y2="64.75" width="0.508" layer="1"/>
-<wire x1="51.75" y1="64.75" x2="47.25" y2="64.75" width="0.508" layer="1"/>
-<wire x1="52.75" y1="31.4" x2="52.75" y2="61.65" width="0.508" layer="1" grouprefs="MEMSMIC"/>
-<wire x1="61.5" y1="61.65" x2="52.75" y2="61.65" width="0.254" layer="1"/>
-<wire x1="52.775" y1="21.525" x2="52.775" y2="20.715" width="0.254" layer="1" grouprefs="MEMSMIC"/>
-<wire x1="52.75" y1="28.25" x2="52.75" y2="27.75" width="0.508" layer="1" grouprefs="MEMSMIC"/>
-<wire x1="52.75" y1="27.75" x2="52.775" y2="27.215" width="0.508" layer="1" grouprefs="MEMSMIC"/>
-<wire x1="52.75" y1="28.25" x2="52.75" y2="28.75" width="0.508" layer="1" grouprefs="MEMSMIC"/>
-<wire x1="52.25" y1="28.25" x2="52.75" y2="27.75" width="0.508" layer="1" grouprefs="MEMSMIC"/>
-<wire x1="43.275" y1="24" x2="42.5" y2="24" width="0.508" layer="1" grouprefs="MEMSMIC"/>
-<via x="42.5" y="24" extent="1-16" drill="0.35" grouprefs="MEMSMIC"/>
-<via x="53.75" y="23.25" extent="1-16" drill="0.35" grouprefs="MEMSMIC"/>
-<wire x1="42.5" y1="24" x2="48.25" y2="24" width="0.508" layer="16" grouprefs="MEMSMIC"/>
-<wire x1="48.25" y1="24" x2="49" y2="23.25" width="0.508" layer="16" grouprefs="MEMSMIC"/>
-<wire x1="49" y1="23.25" x2="53.75" y2="23.25" width="0.508" layer="16" grouprefs="MEMSMIC"/>
 <wire x1="13.61" y1="64.75" x2="20.45" y2="64.75" width="0.508" layer="16"/>
 <wire x1="13.15" y1="61.75" x2="13.15" y2="63.25" width="0.254" layer="1"/>
 <wire x1="13.15" y1="63.25" x2="13.45" y2="63.55" width="0.254" layer="1"/>
@@ -1441,9 +1404,9 @@ design rules under a new name.</description>
 <contactref element="LS2" pad="3"/>
 <contactref element="LS2" pad="2"/>
 <via x="37.5" y="21.5" extent="1-16" drill="0.35"/>
-<via x="37.5" y="23.15" extent="1-16" drill="0.35"/>
+<via x="37.5" y="23.05" extent="1-16" drill="0.35"/>
 <via x="47.6" y="30.75" extent="1-16" drill="0.35" grouprefs="MEMSMIC"/>
-<via x="37.5" y="19.8" extent="1-16" drill="0.35"/>
+<via x="37.5" y="19.9" extent="1-16" drill="0.35"/>
 <via x="37.75" y="50.25" extent="1-16" drill="0.35"/>
 <via x="37.75" y="37" extent="1-16" drill="0.35"/>
 <via x="37" y="65.75" extent="1-16" drill="0.35"/>
@@ -1544,8 +1507,8 @@ design rules under a new name.</description>
 <via x="14.65" y="32.05" extent="1-16" drill="0.35"/>
 <via x="21.75" y="32.15" extent="1-16" drill="0.35"/>
 <via x="27.15" y="28.25" extent="1-16" drill="0.35"/>
-<via x="29.15" y="19.25" extent="1-16" drill="0.35"/>
-<via x="21.85" y="10.25" extent="1-16" drill="0.35"/>
+<via x="28.95" y="19.9" extent="1-16" drill="0.35"/>
+<via x="21.95" y="12.65" extent="1-16" drill="0.35"/>
 <via x="18.15" y="10.25" extent="1-16" drill="0.35"/>
 <via x="5.95" y="10.25" extent="1-16" drill="0.35"/>
 <via x="18.15" y="3.25" extent="1-16" drill="0.35"/>
@@ -1580,6 +1543,23 @@ design rules under a new name.</description>
 <via x="27.85" y="21.55" extent="1-16" drill="0.35"/>
 <via x="41.9" y="24.8" extent="1-16" drill="0.35"/>
 <via x="41.9" y="20.6" extent="1-16" drill="0.35"/>
+<via x="32.35" y="19.9" extent="1-16" drill="0.35"/>
+<via x="34.95" y="19.9" extent="1-16" drill="0.35"/>
+<via x="35.05" y="23.05" extent="1-16" drill="0.35"/>
+<via x="32.45" y="23.05" extent="1-16" drill="0.35"/>
+<via x="40.5" y="22.5" extent="1-16" drill="0.35"/>
+<via x="39.9" y="26.25" extent="1-16" drill="0.35"/>
+<via x="40" y="19.9" extent="1-16" drill="0.35"/>
+<via x="5.95" y="14.25" extent="1-16" drill="0.35"/>
+<via x="8.95" y="14.25" extent="1-16" drill="0.35"/>
+<via x="27.55" y="13.25" extent="1-16" drill="0.35"/>
+<via x="27.95" y="18.85" extent="1-16" drill="0.35"/>
+<via x="27.95" y="16.05" extent="1-16" drill="0.35"/>
+<via x="24.65" y="12.65" extent="1-16" drill="0.35"/>
+<via x="19.55" y="12.65" extent="1-16" drill="0.35"/>
+<via x="20.95" y="14.25" extent="1-16" drill="0.35"/>
+<via x="24.65" y="14.25" extent="1-16" drill="0.35"/>
+<via x="26.3" y="16.8" extent="1-16" drill="0.35"/>
 </signal>
 <signal name="N$26">
 <contactref element="R16" pad="1"/>
@@ -1956,6 +1936,46 @@ design rules under a new name.</description>
 <wire x1="40.25" y1="25" x2="40.25" y2="23.5" width="0.254" layer="16" grouprefs="MEMSMIC"/>
 <wire x1="39" y1="22.25" x2="27" y2="22.25" width="0.254" layer="16" grouprefs="MEMSMIC"/>
 </signal>
+<signal name="A_3.3V">
+<contactref element="J2" pad="10"/>
+<contactref element="R2" pad="2"/>
+<contactref element="C2" pad="1"/>
+<contactref element="C3" pad="1"/>
+<contactref element="LS1" pad="4"/>
+<contactref element="LS2" pad="4"/>
+<contactref element="IC2" pad="8"/>
+<wire x1="52.25" y1="28.25" x2="47.5" y2="28.25" width="0.254" layer="1" grouprefs="MEMSMIC"/>
+<wire x1="52.25" y1="28.25" x2="52.75" y2="28.25" width="0.508" layer="1" grouprefs="MEMSMIC"/>
+<wire x1="52.75" y1="28.75" x2="52.25" y2="28.25" width="0.508" layer="1" grouprefs="MEMSMIC"/>
+<wire x1="45" y1="28.8" x2="46.95" y2="28.8" width="0.254" layer="1" grouprefs="MEMSMIC"/>
+<wire x1="47.5" y1="28.25" x2="46.95" y2="28.8" width="0.254" layer="1" grouprefs="MEMSMIC"/>
+<wire x1="52.775" y1="21.525" x2="53.75" y2="22.5" width="0.254" layer="1" grouprefs="MEMSMIC"/>
+<wire x1="53.75" y1="26.6" x2="53.135" y2="27.215" width="0.508" layer="1" grouprefs="MEMSMIC"/>
+<wire x1="53.135" y1="27.215" x2="52.775" y2="27.215" width="0.508" layer="1" grouprefs="MEMSMIC"/>
+<wire x1="53.75" y1="22.5" x2="53.75" y2="23.25" width="0.254" layer="1" grouprefs="MEMSMIC"/>
+<wire x1="53.75" y1="23.25" x2="53.75" y2="26.6" width="0.508" layer="1" grouprefs="MEMSMIC"/>
+<wire x1="52.75" y1="29.85" x2="52.75" y2="28.75" width="0.508" layer="1" grouprefs="MEMSMIC"/>
+<wire x1="52.75" y1="29.85" x2="52.75" y2="31.4" width="0.508" layer="1" grouprefs="MEMSMIC"/>
+<wire x1="52.775" y1="21.525" x2="52.775" y2="20.715" width="0.254" layer="1" grouprefs="MEMSMIC"/>
+<wire x1="52.75" y1="28.25" x2="52.75" y2="27.75" width="0.508" layer="1" grouprefs="MEMSMIC"/>
+<wire x1="52.75" y1="27.75" x2="52.775" y2="27.215" width="0.508" layer="1" grouprefs="MEMSMIC"/>
+<wire x1="52.75" y1="28.25" x2="52.75" y2="28.75" width="0.508" layer="1" grouprefs="MEMSMIC"/>
+<wire x1="52.25" y1="28.25" x2="52.75" y2="27.75" width="0.508" layer="1" grouprefs="MEMSMIC"/>
+<wire x1="43.275" y1="24" x2="42.5" y2="24" width="0.508" layer="1" grouprefs="MEMSMIC"/>
+<via x="42.5" y="24" extent="1-16" drill="0.35" grouprefs="MEMSMIC"/>
+<via x="53.75" y="23.25" extent="1-16" drill="0.35" grouprefs="MEMSMIC"/>
+<wire x1="42.5" y1="24" x2="48.25" y2="24" width="0.508" layer="16" grouprefs="MEMSMIC"/>
+<wire x1="48.25" y1="24" x2="49" y2="23.25" width="0.508" layer="16" grouprefs="MEMSMIC"/>
+<wire x1="49" y1="23.25" x2="53.75" y2="23.25" width="0.508" layer="16" grouprefs="MEMSMIC"/>
+<wire x1="33.75" y1="67.8" x2="33.95" y2="68" width="0.508" layer="1"/>
+<wire x1="50" y1="68" x2="52.75" y2="65.25" width="0.508" layer="1"/>
+<wire x1="52.75" y1="65.25" x2="52.75" y2="61.6" width="0.508" layer="1"/>
+<wire x1="52.75" y1="61.6" x2="52.75" y2="31.4" width="0.508" layer="1"/>
+<wire x1="33.95" y1="68" x2="50" y2="68" width="0.508" layer="1"/>
+<contactref element="R16" pad="2"/>
+<wire x1="52.8" y1="61.65" x2="52.75" y2="61.6" width="0.254" layer="1"/>
+<wire x1="61.5" y1="61.65" x2="52.8" y2="61.65" width="0.254" layer="1"/>
+</signal>
 </signals>
 <mfgpreviewcolors>
 <mfgpreviewcolor name="soldermaskcolor" color="0xC8008000"/>
@@ -1976,6 +1996,8 @@ design rules under a new name.</description>
 <approved hash="19,1,4a556b877e16a934"/>
 <approved hash="19,1,714c71b111bd1140"/>
 <approved hash="19,1,213228b007a40554"/>
+<approved hash="5,1,98681d1f4eea5df6"/>
+<approved hash="5,1,fafa4c9664044385"/>
 </errors>
 </board>
 </drawing>

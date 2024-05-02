@@ -3,7 +3,7 @@
 <eagle version="9.6.2">
 <drawing>
 <settings>
-<setting alwaysvectorfont="yes"/>
+<setting alwaysvectorfont="no"/>
 <setting verticaltext="up"/>
 </settings>
 <grid distance="0.1" unitdist="inch" unit="inch" style="lines" multiple="1" display="no" altdistance="0.01" altunitdist="inch" altunit="inch"/>
@@ -3672,39 +3672,6 @@ Source: &lt;a href="https://www.ti.com/lit/gpn/TLV9002"&gt; Datasheet &lt;/a&gt;
 </net>
 <net name="3.3V" class="0">
 <segment>
-<wire x1="283.718" y1="83.82" x2="281.178" y2="83.82" width="0.1524" layer="91"/>
-<label x="283.718" y="83.82" size="1.27" layer="95" xref="yes"/>
-<pinref part="R16" gate="G$1" pin="2"/>
-</segment>
-<segment>
-<pinref part="R2" gate="G$1" pin="2"/>
-<wire x1="243.84" y1="134.62" x2="243.84" y2="137.16" width="0.1524" layer="91"/>
-<pinref part="LS2" gate="G$1" pin="VDD"/>
-<pinref part="LS1" gate="G$1" pin="VDD"/>
-<wire x1="203.2" y1="175.26" x2="203.2" y2="167.64" width="0.1524" layer="91"/>
-<wire x1="203.2" y1="175.26" x2="199.39" y2="175.26" width="0.1524" layer="91"/>
-<wire x1="182.88" y1="175.26" x2="175.26" y2="175.26" width="0.1524" layer="91"/>
-<pinref part="C3" gate="G$1" pin="1"/>
-<wire x1="182.88" y1="172.72" x2="182.88" y2="175.26" width="0.1524" layer="91"/>
-<junction x="182.88" y="175.26"/>
-<pinref part="C2" gate="G$1" pin="1"/>
-<wire x1="190.5" y1="172.72" x2="190.5" y2="175.26" width="0.1524" layer="91"/>
-<wire x1="190.5" y1="175.26" x2="182.88" y2="175.26" width="0.1524" layer="91"/>
-<junction x="190.5" y="175.26"/>
-<wire x1="190.5" y1="175.26" x2="199.39" y2="175.26" width="0.1524" layer="91"/>
-<wire x1="199.39" y1="175.26" x2="199.39" y2="149.86" width="0.1524" layer="91"/>
-<wire x1="199.39" y1="149.86" x2="203.2" y2="149.86" width="0.1524" layer="91"/>
-<label x="175.26" y="175.26" size="1.778" layer="95" rot="R180" xref="yes"/>
-<wire x1="243.84" y1="137.16" x2="199.39" y2="137.16" width="0.1524" layer="91"/>
-<wire x1="199.39" y1="137.16" x2="199.39" y2="149.86" width="0.1524" layer="91"/>
-<junction x="199.39" y="149.86"/>
-<wire x1="243.84" y1="137.16" x2="302.26" y2="137.16" width="0.1524" layer="91"/>
-<junction x="243.84" y="137.16"/>
-<wire x1="302.26" y1="137.16" x2="302.26" y2="119.38" width="0.1524" layer="91"/>
-<pinref part="IC2" gate="G$1" pin="V+"/>
-<wire x1="302.26" y1="119.38" x2="294.64" y2="119.38" width="0.1524" layer="91"/>
-</segment>
-<segment>
 <pinref part="J2" gate="G$1" pin="2"/>
 <wire x1="81.28" y1="160.02" x2="74.422" y2="160.02" width="0.1524" layer="91"/>
 <wire x1="81.28" y1="160.02" x2="81.28" y2="170.18" width="0.1524" layer="91"/>
@@ -4168,6 +4135,47 @@ Source: &lt;a href="https://www.ti.com/lit/gpn/TLV9002"&gt; Datasheet &lt;/a&gt;
 <wire x1="299.72" y1="167.64" x2="299.72" y2="187.96" width="0.1524" layer="91"/>
 <wire x1="274.32" y1="167.64" x2="299.72" y2="167.64" width="0.1524" layer="91"/>
 <junction x="299.72" y="167.64"/>
+</segment>
+</net>
+<net name="A_3.3V" class="0">
+<segment>
+<pinref part="J2" gate="G$1" pin="10"/>
+<wire x1="101.6" y1="170.18" x2="101.6" y2="165.1" width="0.1524" layer="91"/>
+<wire x1="101.6" y1="165.1" x2="106.68" y2="165.1" width="0.1524" layer="91"/>
+<label x="106.68" y="165.1" size="1.778" layer="95" xref="yes"/>
+</segment>
+<segment>
+<pinref part="R2" gate="G$1" pin="2"/>
+<wire x1="243.84" y1="134.62" x2="243.84" y2="137.16" width="0.1524" layer="91"/>
+<pinref part="LS2" gate="G$1" pin="VDD"/>
+<pinref part="LS1" gate="G$1" pin="VDD"/>
+<wire x1="203.2" y1="175.26" x2="203.2" y2="167.64" width="0.1524" layer="91"/>
+<wire x1="203.2" y1="175.26" x2="199.39" y2="175.26" width="0.1524" layer="91"/>
+<wire x1="182.88" y1="175.26" x2="175.26" y2="175.26" width="0.1524" layer="91"/>
+<pinref part="C3" gate="G$1" pin="1"/>
+<wire x1="182.88" y1="172.72" x2="182.88" y2="175.26" width="0.1524" layer="91"/>
+<junction x="182.88" y="175.26"/>
+<pinref part="C2" gate="G$1" pin="1"/>
+<wire x1="190.5" y1="172.72" x2="190.5" y2="175.26" width="0.1524" layer="91"/>
+<wire x1="190.5" y1="175.26" x2="182.88" y2="175.26" width="0.1524" layer="91"/>
+<junction x="190.5" y="175.26"/>
+<wire x1="190.5" y1="175.26" x2="199.39" y2="175.26" width="0.1524" layer="91"/>
+<wire x1="199.39" y1="175.26" x2="199.39" y2="149.86" width="0.1524" layer="91"/>
+<wire x1="199.39" y1="149.86" x2="203.2" y2="149.86" width="0.1524" layer="91"/>
+<label x="175.26" y="175.26" size="1.778" layer="95" rot="R180" xref="yes"/>
+<wire x1="243.84" y1="137.16" x2="199.39" y2="137.16" width="0.1524" layer="91"/>
+<wire x1="199.39" y1="137.16" x2="199.39" y2="149.86" width="0.1524" layer="91"/>
+<junction x="199.39" y="149.86"/>
+<wire x1="243.84" y1="137.16" x2="302.26" y2="137.16" width="0.1524" layer="91"/>
+<junction x="243.84" y="137.16"/>
+<wire x1="302.26" y1="137.16" x2="302.26" y2="119.38" width="0.1524" layer="91"/>
+<pinref part="IC2" gate="G$1" pin="V+"/>
+<wire x1="302.26" y1="119.38" x2="294.64" y2="119.38" width="0.1524" layer="91"/>
+</segment>
+<segment>
+<wire x1="283.718" y1="83.82" x2="281.178" y2="83.82" width="0.1524" layer="91"/>
+<label x="283.718" y="83.82" size="1.27" layer="95" xref="yes"/>
+<pinref part="R16" gate="G$1" pin="2"/>
 </segment>
 </net>
 </nets>
