@@ -22,4 +22,4 @@ DIAG_E  | Diagnostics End, Output   | 11   GPIO27 | 11
 PWDN    | Power Down, active low    | A1   GPIO25 | 5
 GND     | Power                     | GND         | GND
 
-Pin 10 is reserced for button.
+Pin 10 is reserved for system button.
