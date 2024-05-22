@@ -17,8 +17,9 @@ MOSI    | Master Out Slave In       | PICO GPIO23 | MO
 MISO    | Master In Salve Out       | POCI GPIO19 | MI
 SCK     | Serial Clokc              | SCK  GPIO18 | SCK
 D ALM   | Photo Diode Fault, Output | 08   GPIO15 | 12
-LED ALM | LED Cable Fault, Output   | 10   GPIO33 | 10
+LED ALM | LED Cable Fault, Output   | A0   GPIO26 | 9
 DIAG_E  | Diagnostics End, Output   | 11   GPIO27 | 11
 PWDN    | Power Down, active low    | A1   GPIO25 | 5
 GND     | Power                     | GND         | GND
 
+Pin 10 is reserced for button.
