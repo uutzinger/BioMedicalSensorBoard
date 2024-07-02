@@ -1,0 +1,30 @@
+t0,Start of pulse repetition periodNo register control,0
+t1,Start of sample LED2 pulseSample LED2 start count (bits 15-0 of register 01h),6050
+t2,End of sample LED2 pulseSample LED2 end count (bits 15-0 of register 02h),7998
+t3,Start of LED2 pulseLED2 start count (bits 15-0 of register 03h),6000
+t4,End of LED2 pulseLED2 end count (bits 15-0 of register 04h),7999
+t5,Start of sample LED2 ambient pulseSample ambient LED2 start count (bits 15-0 of register 05h),50
+t6,End of sample LED2 ambient pulseSample ambient LED2 end count (bits 15-0 of register 06h),1998
+t7,Start of sample LED1 pulseSample LED1 start count (bits 15-0 of register 07h),2050
+t8,End of sample LED1 pulseSample LED1 end count (bits 15-0 of register 08h),3998
+t9,Start of LED1 pulseLED1 start count (bits 15-0 of register 09h),2000
+t10,End of LED1 pulseLED1 end count (bits 15-0 of register 0Ah),3999
+t11,Start of sample LED1 ambient pulseSample ambient LED1 start count (bits 15-0 of register 0Bh),4050
+t12,End of sample LED1 ambient pulseSample ambient LED1 end count (bits 15-0 of register 0Ch),5998
+t13,Start of convert LED2 pulseLED2 convert start count (bits 15-0 of register 0Dh)Must start one AFE clock cycle after the ADC reset pulse ends.,4
+t14,End of convert LED2 pulseLED2 convert end count (bits 15-0 of register 0Eh),1999
+t15,Start of convert LED2 ambient pulseLED2 ambient convert start count (bits 15-0 of register 0Fh) Must start one AFE clock cycle after the ADC reset pulse ends.,2004
+t16,End of convert LED2 ambient pulseLED2 ambient convert end count (bits 15-0 of register 10h),3999
+t17,Start of convert LED1 pulseLED1 convert start count (bits 15-0 of register 11h) Must start one AFE clock cycle after the ADC reset pulse ends.,4004
+t18,End of convert LED1 pulseLED1 convert end count (bits 15-0 of register 12h),5999
+t19,Start of convert LED1 ambient pulseLED1 ambient convert start count (bits 15-0 of register 13h)Must start one AFE clock cycle after the ADC reset pulse ends.,6004
+t20,End of convert LED1 ambient pulseLED1 ambient convert end count (bits 15-0 of register 14h),7999
+t21,Start of first ADC conversion reset pulseADC reset 0 start count (bits 15-0 of register 15h),0
+t22,End of first ADC conversion reset pulseADC reset 0 end count (bits 15-0 of register 16h),3
+t23,Start of second ADC conversion reset pulseADC reset 1 start count (bits 15-0 of register 17h),2000
+t24,End of second ADC conversion reset pulse (2) ADC reset 1 end count (bits 15-0 of register 18h),2003
+t25,Start of third ADC conversion reset pulseADC reset 2 start count (bits 15-0 of register 19h),4000
+t26,End of third ADC conversion reset pulse (2)ADC reset 2 end count (bits 15-0 of register 1Ah),4003
+t27,Start of fourth ADC conversion reset pulseADC reset 3 start count (bits 15-0 of register 1Bh),6000
+t28,End of fourth ADC conversion reset pulse (2)ADC reset 3 end count (bits 15-0 of register 1Ch),6003
+t29,End of pulse repetition periodPulse repetition period count (bits 15-0 of register 1Dh),7999

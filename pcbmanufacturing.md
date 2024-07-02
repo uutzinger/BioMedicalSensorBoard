@@ -11,15 +11,74 @@
 - [JLPCP](https://jlcpcb.com/)
 - [JLPCB Part List](https://jlcpcb.com/parts)
 
+## Eagle CAD settings
+
+### Grid
+-Size: 1mm
+-Alt: 0.1mm
+
+### DRC
+Units are mil, second value is for WLP
+
+- Layers: C ore 1.5mm
+- Clearance: Different Signals: Wire-Wire:6, Wire-Pad:6/3. Wire-Via:6/3, Pad-Pad:6, Pad-Via:6/3, Via-Via:6/3
+- Clearance: Same Signals: Smd-Smd:6/3, Pad-Smd:6/3,Via-Smd:6/0
+- Distance: Copper/Dimension:40, Drill-Hole:6
+- Sizes: Min:6/4, Drill:0.35/0.1mm, MicroVia:9.99/0.1mm, BlineViaRatio:0.5/0.05
+- Annular Ring: Pads Top:10/3,25%,20 Inner:20/3.25%.20 Bottom:10/3,25%,20
+- Annular Ring: Vias: Outer:8/2,25%,20 Inner:8/2,25%,20
+- Annular Ring: MicroVias: Outer:4/3,25%,20 Inner:4/3,25%,20
+- Shapes Smds Roundness 0,0%,0
+- Shapes Pads Top:as in lib, Bottom:as in lib, First: not special, Elongation 100,100
+- Supply: Termal isolation:10
+- Masks: Stop:4/3,100%.4 Cream:0,0,0 Limit 15
+- Misc: Check font, check restrict, check names, check stubs, differential pairs 10mm, gap gactor 2.5
+
 ## Steps in Eagle CAD for Computer Aided Manufacturing
+
+The BOM needs to matches the manufacturers requirement. 
+Your design needs to match manufacturing tolerances. 
+For micro vias or WLP you likely need to select advanced manufacturing settings at the manufacturers website.
 
 1) Make sure your board has no errors (Tools->Errors)
 2) Check on Manufacturing Tab the graphical representation of your manufactured board
 3) CAM Processor -> Local CAM Jobs -> examples -> example_2_layer.cam
     Enable ZIP (this creates Gerber file archive)
-4) In schematic run ULP -> Browse for eagle_bom.ulp in this GIT repository -> CSV export and comma separator, not semi colon (this creates bill of materials)
-5) In board run ULP -> Browse for eagle_smt.ulp (this creates part placement instructions)
-6) Edit BOM and adjust it to PCBWay example, choose manufacturers and part numbers, check availability and make sure foot print matches. Save as XLSX
-7) Upload to PCBWay. 
+4) Upload. 
 
-For an other preferred manufacturer make sure BOM matches their requirement. Also make sure the manufacturing tolerances are in line with your design.
+## Costs PCB Way
+
+Minimum number of PCBs is 5. $45.18
+Minimum number for assempty is 1 and costs $88
+Assembly of 20 costs also $88
+Assembly of 50 costs $154
+Parts costs are separate.
+Through hole component costs exta.
+Shipping costs are often equivalent to a discount you receive with your order.
+
+## PCB Way Assembly Service Settings
+- Turnkey
+- Single pieces
+- Top Side board
+- Quantity (assembled) e.g. 2
+- Contains sensitive components: No
+- Number of unique parts: See Bill of Materials (number of individual lines)
+- Number of SMD parts: Total number of parts
+- Number of BGA/QFP: Parts with very small pads
+- Through hole parts: You can solder yourself
+- Board type: single pieces
+- Different designs: 1
+- Size: 70x70 (all boards in this project)
+- Quantity 5
+- Layers: 2
+- Material: FR-4, TG 150-60
+- Thickness 1.6
+- Min spacing 6mil
+- Min hole size 0.3, except for micro via boards
+- Soldermark: choose your color
+- Edge connector: No
+- Surface finish: Immersion Gold
+- Thickness of immersion: 1U
+- Via process: tenting
+- Finished copper: 1 oz
+- Remove product #: No or pay extra
