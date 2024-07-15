@@ -14,7 +14,7 @@ For a wide adoption, such equipment should be cost effective and repairable in-h
 Therefore, it should take advantage of existing components that are open source and distributed through domestic channels.
 While there are commercial systems available [^fn1] [^fn2], there is no unifying approach that takes advantage of existing third party hardware, gives option to expand functionality at later time and uses open source software. 
 
-If there were well documented inexpensive measurement modules, they could also be readily incorporated into academic research projects.
+If there were well documented, inexpensive measurement modules, they could also be readily incorporated into academic research projects.
 
 [^fn1]: Bioradio, https://staging.glneurotech.com/product-category/bioradio-all
 [^fn2]: Protocentral https://protocentral.com
@@ -27,11 +27,11 @@ An expandable, low-costs, open-design system is needed that measures physiologic
 
 ### Common Physiologic Paramters
 
-**Biopotentials** are created by electric fields due to ion gradients primarily over muscle cells and neurons. Skin resistance is attenuating the measurable signal, requiring electrical amplification.
+**Biopotentials** are created by electric fields due to ion gradients primarily over muscle cells and neurons. Skin resistance is attenuating the measurable signal requiring electrical amplification.
 
 **Bioimpedance** measures body and tissue impedance by injecting oscillating current through electrodes and measuring the resulting voltage. The frequency response is indicative of electrical tissue composition.
 
-**Optical Absorption** is measured with light passing through the body and tissue at different optical wavelengths extracting optical absorption properties of tissue constituents such as hemoglobin. Variation in concentration occurs during blood pressure propagation. Background such as melanin and scattering affect these readings and can reduce signal strength. When measuring with more than two wavelenghts, additional Hemoglibin species can be detected however most common sensor elements support two wavelenghts.
+**Optical Absorption** is measured with light passing through the body and tissue at different optical wavelengths extracting optical absorption properties of tissue constituents such as hemoglobin. Variation in concentration occurs during blood pressure propagation. Background such as melanin and scattering affect these readings and can reduce signal strength. When measuring with more than two wavelenghts, additional Hemoglibin species can be detected, however most common sensor elements support two wavelenghts.
 
 **Temperature** is a simple measurement for increased metabolism which can be caused through viral or bacterial load as a defense mechanism to lower viral replication but also due to hyperactivity of cancer or exercise.
 
