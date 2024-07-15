@@ -9,7 +9,7 @@
 ## Problem Description
 
 Biomedical engineering students need to practice measuring signals from living systems.
-Measurement equipment is needed for classroom laboratories that can safely record common physiological signals.
+Measurement equipment is needed for classroom laboratories that can safely record common physiological parameters.
 For a wide adoption, such equipment should be cost effective and repairable in-house.
 Therefore, it should take advantage of existing components that are open source and distributed through domestic channels.
 While there are commercial systems available [^fn1] [^fn2], there is no unifying approach that takes advantage of existing third party hardware, gives option to expand functionality at later time and uses open source software. 
