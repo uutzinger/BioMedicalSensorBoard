@@ -1,60 +1,24 @@
 /******************************************************************************************************/
-// Driver for the AFE44XX Pulse Oximeter Analog Front End from Texas Instruments.
+// Driver for the MAX30001G Potential and Impednace Front End from MAXIM/Analog.
 //
-// This is a comprehensive driver allowing to change most configuration settings.
-//
-// It is expected that the 
-//   - SPI interface is wired correctly.
-//   - Chip select line is wired
-//   - Dataready signal is wired
-//   - Power Down signal is wired
-// Other signals are optional.
-//
-// Functions are privided to:
-//  - Set the Photo Diode Amplifier settings
-//  - Set the Transmitter LED current and voltage
-//  - Set the digital IO
-//  - Set the measurement timing
-//
-// Urs Utzinger, May/June 2024
-// ChatGPT, May/June 2024
+// Urs Utzinger, July 2024
+// ChatGPT, July 2024
 /******************************************************************************************************/
-#include "afe44xx.h"
+#include "max3001g.h"
 #include "logger.h"
 
 // SPI Settings
-SPISettings SPI_SETTINGS(AFE44XX_SPI_SPEED, MSBFIRST, SPI_MODE0); 
-
-volatile boolean AFE44XX::afe44xx_data_ready = false;
+SPISettings SPI_SETTINGS(MAX30001_SPI_SPEED, MSBFIRST, SPI_MODE0); 
 
 // The AFE device
-AFE44XX::AFE44XX(int csPin, int pwdnPin, int drdyPin)
-    : _csPin(csPin), _pwdnPin(pwdnPin), _drdyPin(drdyPin) { // assing pins
-    }
+MAX30001G::MAX30001G(int csPin, )
+    : _csPin(csPin) { // assing pins
+}
 
-/******************************************************************************************************/
-// Driver startup
-/******************************************************************************************************/
-
-void AFE44XX::begin() {
-/*
-  Configure the necessary input/output digital pins.
-  Toggles power to device.
-  Initialized SPI and turns on SPI read bit in the AFE.
-*/
-
+void MAX30001G::begin() {
   // Define I/O
-  LOGD("AFE: Pins DRDY(input): %u, CS,PWDN(ouptut): %u, %u", _drdyPin, _csPin, _pwdnPin);
-
-  pinMode(_drdyPin,INPUT_PULLUP); // data ready, activate pull up resistor
+  LOGD("AFE: Pins CS, %u", _csPin);
   pinMode(_csPin,  OUTPUT);       // chip select
-  pinMode(_pwdnPin,OUTPUT);       // power down
-
-  LOGD("AFE: Power Cycle");
-  digitalWrite(_pwdnPin, LOW);    // power down
-  delay(100);                     // give time
-  digitalWrite(_pwdnPin, HIGH);   // power up
-  delay(500);                     // give time
 
   LOGD("AFE: CS pin HIGH/Float");
   digitalWrite(_csPin,HIGH);      // CS float
@@ -62,299 +26,2723 @@ void AFE44XX::begin() {
   // SPI
   LOGD("AFE: SPI start");
   SPI.begin();
-
-  // Reset CONTROL0 register
-  LOGD("AFE: Reset Control0 register");
-  writeRegister(CONTROL0, CLEAR);
-
 }
 
 /******************************************************************************************************/
 // SPI service functions
 /******************************************************************************************************/
 
-void AFE44XX::enableSPIread() {
-  spiWrite(CONTROL0, SPI_READ_ENABLE);
+void MAX30001G::writeRegister(uint8_t address, uint32_t data) {
+  /*
+  Service routine to write to register with SPI
+  */
+  LOGD("SPI write %3u, %3u", address, data);
+  SPI.beginTransaction(SPI_SETTINGS);
+  digitalWrite(_csPin, LOW);
+  delay(2);
+  SPI.transfer((address << 1) | 0x00); // write command 
+  SPI.transfer((data >> 16) & 0xFF);   // top 8 bits
+  SPI.transfer((data >> 8)  & 0xFF);   // middle 8 bits
+  SPI.transfer(data         & 0xFF);   // low 8 bits
+  delay(2);
+  digitalWrite(_csPin, HIGH);
+  SPI.endTransaction();
 }
 
-void AFE44XX::disableSPIread() {
-  spiWrite(CONTROL0, CLEAR);
-}
-
-void AFE44XX::writeRegister(uint8_t address, uint32_t data) {
-  spiWrite(address, data);
-}
-
-uint32_t AFE44XX::readRegister(uint8_t address) {
-  spiWrite(CONTROL0, SPI_READ_ENABLE);
-  uint32_t data = spiRead(address);
-  spiWrite(CONTROL0, CLEAR);
+uint32_t MAX30001G::readRegister(uint8_t address) {
+  /*
+  Serrvice routine to read data through SPI
+  */
+  uint32_t data;
+  SPI.beginTransaction(SPI_SETTINGS);
+  digitalWrite(_csPin, LOW);
+  SPI.transfer((address << 1) | 0x01);
+  data  = ((uint32_t)SPI.transfer(0xff) << 16); // top 8 bits
+  data |= ((uint32_t)SPI.transfer(0xff) << 8);  // middle 8 bits
+  data |=  (uint32_t)SPI.transfer(0xff);        // low 8 bits
+  digitalWrite(_csPin, HIGH);
+  SPI.endTransaction();
+  LOGD("SPI read  %3u, %3u", address, data);
   return data;
 }
 
-void AFE44XX::spiWrite(uint8_t address, uint32_t data) {
-/*
-  Service routine to write FE register with SPI
-*/
-    LOGD("SPI write %3u, %3u", address, data);
-    SPI.beginTransaction(SPI_SETTINGS);
-    digitalWrite(_csPin, LOW);
-    SPI.transfer(address); 
-    SPI.transfer((data >> 16) & 0xFF);   // top 8 bits
-    SPI.transfer((data >> 8)  & 0xFF);   // middle 8 bits
-    SPI.transfer(data         & 0xFF);   // low 8 bits
-    digitalWrite(_csPin, HIGH);
-    SPI.endTransaction();
-}
-
-uint32_t AFE44XX::spiRead(uint8_t address) {
-/*
-  Servcice routine to read 24 bit AFE register with SPI
-*/
-    uint32_t data = 0;
-    SPI.beginTransaction(SPI_SETTINGS);
-    digitalWrite(_csPin, LOW);
-    SPI.transfer(address);
-    data |= ((uint32_t)SPI.transfer(0x00) << 16); // top 8 bits
-    data |= ((uint32_t)SPI.transfer(0x00) << 8);  // middle 8 bits
-    data |=  (uint32_t)SPI.transfer(0x00);        // low 8 bits
-    digitalWrite(_csPin, HIGH);
-    SPI.endTransaction();
-    LOGD("SPI read  %3u, %3u", address, data);
-    return data;
-}
-
-/******************************************************************************************************/
-// Interrupt service routine
-/******************************************************************************************************/
-
-void AFE44XX::dataReadyISR() {
-  /* short indicator */
-  afe44xx_data_ready = true;
+uint8_t MAX30001G::readRegister(uint8_t address) {
+  /*
+  Service routine to read one byte through SPI
+  */
+  SPI.beginTransaction(SPI_SETTINGS);
+  digitalWrite(_csPin, LOW);
+  SPI.transfer(address << 1 | 0x01);
+  uint8_t data =  (uint8_t)SPI.transfer(0xff);        // 8 bits
+  digitalWrite(_csPin, HIGH);
+  SPI.endTransaction();
+  LOGD("SPI read  %3u, %3u", address, data);
+  return data;
 }
 
 /******************************************************************************************************/
 // Accessing readings
 /******************************************************************************************************/
 
-void AFE44XX::getData(int32_t &irRawValue,     int32_t &redRawValue, 
-                      int32_t &irAmbientValue, int32_t &redAmbientValue,
-                      int32_t &irValue,        int32_t &redValue) {
-  afe44xx_data_ready = false;
-  enableSPIread();
-  irRawValue      = convert22Int(spiRead(LED1VAL));
-  redRawValue     = convert22Int(spiRead(LED2VAL));
-  irAmbientValue  = convert22Int(spiRead(ALED1VAL));
-  redAmbientValue = convert22Int(spiRead(ALED2VAL));
-  irValue         = convert22Int(spiRead(LED1ABSVAL));
-  redValue        = convert22Int(spiRead(LED2ABSVAL));
-  disableSPIread();
+void MAX30001G::readECG_FIFO(void) {
+  /*
+  Burst read the ECG FIFO
+  Call this routine if ECG FIFO interrupt occured
+  */
+
+  max30001_mngr_int_t mngr_int;
+  mngr_int.all = readRegister(MNGR_INT);
+  uint8_t  num_samples = (mngr_int.e_fit +1)
+  
+  max3001_ecg_burst_t ecg_burst;
+
+  uint32_t data;
+  int32_t sdata;
+
+  // Burst read FIFO register
+  SPI.beginTransaction(SPI_SETTINGS);
+  digitalWrite(_csPin, LOW);
+  SPI.transfer((ECG_FIFO_BURST << 1) | 0x01);
+  for (int i = 0; i < num_samples; i++) {
+    data  = ((uint32_t)SPI.transfer(0x00) << 16);  // top 8 bits
+    data |= ((uint32_t)SPI.transfer(0x00) << 8);  // middle 8 bits
+    data |=  (uint32_t)SPI.transfer(0x00);        // low 8 bits
+    _bufferECG[i] = data;
+  }
+  digitalWrite(_csPin, HIGH);
+  SPI.endTransaction();
+
+  // Copy to the ECG data buffer
+  ecg_counter = 0;
+  for (int i = 0; i < num_samples; i ++) {
+    ecg_burst.all = _bufferECG[i]; 
+    uint8_t ecg_etag = ecg_burst.bit.etag;
+    LOGD("ECG Tag: %3u", ecg_etag);
+    if (ecg_etag == 0x00) { 
+      // Valid sample
+      // data is signed 18bit signed at position 6..23 in uint32
+      sdata = (int32_t)(ecg_burst.data << (32 - 18)) >> (32 - 18); // need to shift left to get the sign bit
+      // Fill the buffer with calibrated value
+      // V_ECG (mV) = ADC x VREF / (2^17 x ECG_GAIN)
+      ECG_data[ecg_counter++] = float(sdata * V_ref) / float(131072 * ECG_gain); // in [mV]
+      LOGD("ECG Sample: %.2f [mV] %d", ECG_data[ecg_counter-1], sdata)
+    }
+    else if (ecg_etag == 0x07) { 
+      // FIFO Overflow
+      FIFOReset();
+    }
+  }
+
+  LOGD("Read %3u samples from ECG FIFO ", ecg_counter);
+  ecgSamplesAvailable = ecg_counter;
 }
 
-int32_t AFE44XX::convert22Int(uint32_t number) {
-  // AFE ADC produces 22bit twos complement, convert this to singed integer
-  number = number << 10;            // Extract the lower 22 bits, keep sign bit and place it to MSB
-  return (((int32_t)number) >> 10); // Convert to integer and shift number back to lower 22 bit
+void MAX30001G::readBIOZ_FIFO(void) {
+  /*
+  Burst read the BIOZ FIFO
+  Call this routine if BIOZ FIFO interrupt occured
+  */
+
+  max30001_mngr_int_t mngr_int;
+  mngr_int.all = readRegister(MNGR_INT);
+  uint8_t  num_samples = (mngr_int.e_fit +1)
+
+  max3001_bioz_burst_t bioz_burst;
+
+  uint32_t data;
+  int32_t sdata;
+
+  // Burst read FIFO register
+  SPI.beginTransaction(SPI_SETTINGS);
+  digitalWrite(_csPin, LOW);
+  SPI.transfer((BIOZ_FIFO_BURST << 1) | 0x01);
+  for (int i = 0; i < num_samples; i++) {
+    data  = ((uint32_t)SPI.transfer(0x00) << 16); // top 8 bits
+    data |= ((uint32_t)SPI.transfer(0x00) << 8);  // middle 8 bits
+    data |=  (uint32_t)SPI.transfer(0x00);        // low 8 bits
+    _bufferBIOZ[i] = data;
+  }
+  digitalWrite(_csPin, HIGH);
+  SPI.endTransaction();
+
+  // Copy to the BIOZ data buffer
+  bioz_counter = 0;
+  for (int i = 0; i < num_bytes; i += 3) {
+    uint8_t bioz_etag = ((((uint8_t)_bufferBIOZ[i + 2]) & 0x38) >> 3);
+    LOGD("BIOZ Tag: %3u", bioz_etag);
+    if (bioz_etag == 0x00) { 
+      // Valid sample
+      data | = ((uint32_t)_bufferBIOZ[i]   << 16); 
+      data | = ((uint32_t)_bufferBIOZ[i+1] << 8); 
+      data | = ((uint32_t)_bufferBIOZ[i+2] & 0xC0);
+      data = (data << 8);
+      // convert the singed data
+      sdata = (int32_t)data;
+      sdata = (int32_t)sdata >> 8;
+      // Fill the buffer
+      BIOZ_data[bioz_counter++] = sdata;
+    }
+    else if (bioz_etag == 0x07) { 
+      // FIFO Overflow
+      FIFOReset();
+    }
+  }
+
+  // Copy to the ECG data buffer
+  bioz_counter = 0;
+  for (int i = 0; i < num_samples; i ++) {
+    bioz_burst.all = _bufferBIOZ[i]; 
+    uint8_t bioz_etag = bioz_burst.bit.etag;
+    LOGD("BIOZ Tag: %3u", bioz_etag);
+    if (ecg_etag == 0x00) { 
+      // Valid sample
+      // data is signed 20bit signed at position 4..23 in uint32
+      sdata = (int32_t)(bioz_burst.data << (32 - 20)) >> (32 - 20); // need to shift left to get the sign bit
+      // Fill the buffer with calibrated value
+      // BioZ (Ω) = ADC x VREF / (2^19 x BIOZ_CGMAG x BIOZ_GAIN)
+      // BIOZ_CGMAG is 50 x 10-9 to 96 x 10-6 A, set by CNFG_BIOZ and CNFG_BIOZ_LC 
+      // BIOZ_GAIN = 10V/V, 20V/V, 40V/V, or 80V/V. BIOZ_GAIN are set in CNFG_BIOZ (0x18).
+
+      BIOZ_data[bioz_counter++] = float(sdata * V_ref) / float(524288* BIOZ_cgmag * BIOZ_gain); // in [Ohm]
+      LOGD("BIOZ Sample: %.2f [Ohm] %d", BIOZ_data[bioz_counter-1], sdata)
+    }
+    else if (ecg_etag == 0x07) { 
+      // FIFO Overflow
+      FIFOReset();
+    }
+  }
+
+  LOGD("Read %3u samples from BIOZ FIFO ", bioz_counter);
+  biozSamplesAvailable = bioz_counter;
+}
+
+void MAX30001G::readHRandRR(void) {
+  /*
+  Read the RTOR register to calculate the heart rate and RR interval
+  Call this routine if RTOR interrupt occured
+  */
+  uint32_t rtor = readRegister(RTOR);
+  rr_interval = (float)(rtor >> 10) * RtoR_resolution; // in [ms]
+  heart_rate = 60000./rr_interval; // in beats per minute 
+}
+
+/******************************************************************************************************/
+// Interrupt service routine
+/******************************************************************************************************/
+
+void MAX30001G::serviceAllInterrupts() {
+  /*
+  Service routine to read the interrupt status register
+  */
+  max30001_status_t status; 
+
+  status.all = readRegister(STATUS);
+  
+  LOGD("Interrupt Status: %s", intToBinaryString(status));
+
+  if (status.bit.eint == 1) {
+    // ECG FIFO interrupt
+    LOGD("ECG FIFO interrupt");
+    ecg_available = true;
+  }
+
+  if (status.bit.bint == 1) {
+    // BIOZ FIFO interrupt
+    LOGD("BIOZ FIFO interrupt");
+    bioz_available = true;
+  }
+
+  if (status.bit.print == 1) {
+    // R to R interrupt
+    LOGD("R to R interrupt");
+    rtor_available = true;
+  }
+
+  if (status.dcloffint == 1) {
+    // ECG lead off interrupt
+    LOGD("ECG lead off interrupt");
+  }
+
+  if (status.bit.eovf == 1) {
+    // ECG overflow detection interrupt
+    LOGD("ECG overflow detection interrupt");
+  }
+
+  if (status.bit.bcgmon == 1) {
+    // BIOZ current generator monitor interrupt
+    LOGD("BIOZ current generator monitor interrupt");
+  }
+
+  if (status.bit.bundr == 1) {
+    // BIOZ undervoltage interrupt
+    LOGD("BIOZ under voltage interrupt");
+  }
+
+  if (status.bit.bover == 1) {
+    // BIOZ overcurrent interrupt
+    LOGD("BIOZ over voltage interrupt");
+  }
+
+}
+
+/******************************************************************************************************/
+// Initialize
+/******************************************************************************************************/
+
+// ECG Input Stage 
+// ---------------
+// EMI and ESD protection is built in
+//
+
+// DC Lead Off
+//  uses programmable current sources to detect lead off conditions. 
+//    0,5,10,20,50,100nA are selectable
+//  if voltage on lead is above or below threshold, lead off is detected 
+//    VMID +/- 300 (default),400,450, 500 mV options
+
+// Lead On check
+//  ECGN is pulled high and ECGP is pulled low with pull up/down resistor, comparator checks if both electrodes are attached
+
+// Polarity
+//  ECGN and ECGP polarity can be switched internally
+//  ECGN and ECGP can be connected to subject
+
+// Lead Bias to VMID
+//  internal or external lead bias can be enabled 500, 100, 200 MOhm to meet common mode range requirements
+
+// Calibration Generator
+//  +/- 0.25, 0.5 mV uni or bi polar, 1/64 to 256 Hz 
+
+// Amplifier
+//  ECG external filter for differential DC rejection is 10microF resoluting in corner frequency of 0.05Hz allowing best ECG quality but has motion artifacts
+//  20,40,80,160V/V over all gain selectable
+
+// Filters
+// ...
+
+// We have external RC on ECG N and ECG P 47nF and 51k.
+// We have external RC on VCM 47nF and 51k
+// We might want to exchange external resistor on VCM to 200k
+// We have external capacitor on CAPN/P of 10uF, therfore our high pass filter is 0.05Hz
+
+
+// BIOZ Driver and Impedance Stage
+// READ DOCUMENTATION AND WRITE UP HERE
+//
+//
+// We have external RBIAS of 324k and therfore should enable EXT_RBIAS in CNFG_BIOZ
+
+void MAX30001G::beginECG(){
+  /* 
+  Enables ECG
+  */
+
+  max30001_cnfg_gen_t   cnfg_gen;
+  max30001_cnfg_cal_t   cnfg_cal;
+  max30001_cnfg_emux_t  cnfg_emux;
+  max30001_cnfg_ecg_t   cnfg_ecg;
+  max30001_en_int_t     en_int;
+    
+  cnfg_gen.bit.rbiasn =        1; // ECGN connected to VMID 
+  cnfg_gen.bit.rbiasp =        1; // ECGP connected to VMID
+  cnfg_gen.bit.rbiasv =     0b01; // 100 MOhm
+  cnfg_gen.bit.en_rbias =   0b00; // resistive bias disabled
+  cnfg_gen.bit.vth =        0b00; // VMID +/-300mV
+  cnfg_gen.bit.imag =      0b000; // 0nA, disconnect current sources
+  cnfg_gen.bit.ipol =          0; // ECGP pullup, ECGN pull down (not inverted)
+  cnfg_gen.bit.en_dcloff =  0b01; // DC lead off detection enabled on ECG N and P
+  cnfg_gen.bit.en_bloff =   0b00; // BIOZ lead off detection disabled
+  cnfg_gen.bit.en_pace =       0; // pace detection disabled
+  cnfg_gen.bit.en_bioz =       0; // BIOZ disabled
+  cnfg_gen.bit.en_ecg =        1; // ECG enabled
+  cnfg_gen.bit.fmstr =      0b00; // 32768 Hz
+  cnfg_gen.bit.en_ulp_lon = 0b00; // ULP lead detection disabled
+
+
+  cnfg_cal.bit.thigh = 0b00000000000; // thig x CAL_RES
+  cnfg_cal.bit.fifty = 0b0;           // Use thigh to select time high for VCALP and VCALN
+  cnfg_cal.bit.fcal =  0b000;         // FMSTR/128
+  cnfg_cal.bit.vmag =  0b1;           // 0.5mV
+  cnfg_cal.bit.vmode = 0b1;           // bipolar
+  cnfg_cal.bit.vcal =  0b1;           // calibration sources and modes enabled
+
+  cnfg_emux.bit.caln_sel = 0b11; // ECGN connected to CALN
+  cnfg_emux.bit.calp_sel = 0b10; // ECGP connected to CALP
+  cnfg_emux.bit.openn =     0b0; // ECGN connected to ECGN AFE Channel
+  cnfg_emux.bit.openp =     0b0; // ECGP connected to ECGP AFE Channel
+  cnfg_emux.bit.pol =       0b0; // Non inverted polarity
+
+  cnfg_ecg.bit.dlpf = 0b01; // 40z
+  cnfg_ecg.bit.dhpf = 0b1;  // 0.5 Hz
+  cnfg_ecg.bit.gain = 0b10; // 80 V/V
+  cnfg_ecg.bit.rate = 0b10; // 128 sps
+
+  en_int.bit.intb_type = 0b01; // open drain
+  en_int.bit.en_pllint =  0b0; // PLL interrupt disabled
+  en_int.bit.en_samp   =  0b0; // sample interrupt disabled
+  en_int.bit.en_rrint  =  0b0; // R to R interrupt disabled
+  en_int.bit.en_lonint =  0b0; // lead off interrupt disabled
+  en_int.bit.en_bcgmon =  0b0; // BIOZ current generator monitor interrupt disabled
+  en_int.bit.en_bunder =  0b0; // BIOZ undervoltage interrupt disabled
+  en_int.bit.en_bover  =  0b0; // BIOZ overcurrent interrupt disabled
+  en_int.bit.en_bovf   =  0b0; // BIOZ overvoltage interrupt disabled
+  en_int.bit.en_bint   =  0b0; // BIOZ FIFO interrupt 
+  en_int.bit.en_dcloff =  0b0; // ECG lead off detection interrupt disabled
+  en_int.bit.en_eovf   =  0b0; // ECG overflow detection interrupt disabled
+  en_int.bit.en_eint   =  0b1; // ECG FIFO interrupt enabled
+
+  swReset(); // reset the AFE
+  delay(100); // wait for reset to complete
+  writeRegister(CNFG_GEN, cnfg_gen.all);
+  delay(100);
+  writeRegister(CNFG_CAL, cnfg_cal.all);  
+  delay(100);
+  writeRegister(CNFG_EMUX, cnfg_emux.all);
+  delay(100);
+  writeRegister(CNFG_ECG, cnfg_ecg.all);
+  delay(100);
+  writeRegister(CNFG_RTOR1, cnfg_rtor1.all);
+  delay(100); 
+  writeRegister(CNFG_RTOR2, cnfg_rtor2.all);
+  delay(100); 
+  writeRegister(EN_INT1,    en_int.all);
+  delay(100); 
+  sync(); // synchronize the AFE
+  delay(100); 
+} // initialize driver for ECG
+
+void MAX30001G::beginECGcalibration(){
+  /* 
+  Enables ECG, calibrates it and enables R to R detection
+  */
+
+  max30001_cnfg_gen_t   cnfg_gen;
+  max30001_cnfg_cal_t   cnfg_cal;
+  max30001_cnfg_emux_t  cnfg_emux;
+  max30001_cnfg_ecg_t   cnfg_ecg;
+  max30001_cnfg_rtor1_t cnfg_rtor1;
+  max30001_cnfg_rtor2_t cnfg_rtor2;
+  max30001_en_int_t     en_int;
+    
+  cnfg_gen.bit.rbiasn    =     1; // ECGN connected to VMID 
+  cnfg_gen.bit.rbiasp    =     1; // ECGP connected to VMID
+  cnfg_gen.bit.rbiasv    =  0b01; // 100 MOhm
+  cnfg_gen.bit.en_rbias  =  0b00; // resistive bias disabled
+  cnfg_gen.bit.vth       =  0b00; // VMID +/-300mV
+  cnfg_gen.bit.imag      = 0b000; // 0nA, disconnect current sources
+  cnfg_gen.bit.ipol      =     0; // ECGP pullup, ECGN pull down (not inverted)
+  cnfg_gen.bit.en_dcloff =  0b01; // DC lead off detection enabled on ECG N and P
+  cnfg_gen.bit.en_bloff  =  0b00; // BIOZ lead off detection disabled
+  cnfg_gen.bit.en_pace   =     0; // pace detection disabled
+  cnfg_gen.bit.en_bioz   =     0; // BIOZ disabled
+  cnfg_gen.bit.en_ecg    =     1; // ECG enabled
+  cnfg_gen.bit.fmstr     =  0b00; // 32768 Hz
+  cnfg_gen.bit.en_ulp_lon = 0b00; // ULP lead detection disabled
+
+
+  cnfg_cal.bit.thigh     = 0b00000000000; // thig x CAL_RES
+  cnfg_cal.bit.fifty     =    0b0; // Use thigh to select time high for VCALP and VCALN
+  cnfg_cal.bit.fcal      =  0b000; // FMSTR/128
+  cnfg_cal.bit.vmag      =    0b1; // 0.5mV
+  cnfg_cal.bit.vmode     =    0b1; // bipolar
+  cnfg_cal.bit.vcal      =    0b1; // calibration sources and modes enabled
+
+  cnfg_emux.bit.caln_sel =   0b11; // ECGN connected to CALN
+  cnfg_emux.bit.calp_sel =   0b10; // ECGP connected to CALP
+  cnfg_emux.bit.openn    =    0b0; // ECGN connected to ECGN AFE Channel
+  cnfg_emux.bit.openp    =    0b0; // ECGP connected to ECGP AFE Channel
+  cnfg_emux.bit.pol      =    0b0; // Non inverted polarity
+
+  cnfg_ecg.bit.dlpf      =   0b01; // 40z
+  cnfg_ecg.bit.dhpf      =    0b1; // 0.5 Hz
+  cnfg_ecg.bit.gain      =   0b10; // 80 V/V
+  cnfg_ecg.bit.rate      =   0b10; // 128 sps
+
+  cnfg_rtor1.bit.ptsf    = 0b0110; // (0b0110 + 1)/16
+  cnfg_rtor1.bit.pavg    =   0b00; // 2
+  cnfg_rtor1.bit.en_rtor =    0b1; // R to R detection enabled
+  cnfg_rtor1.bit.gain    = 0b1111; // autoscale
+  cnfg_rtor1.bit.wndw    = 0b0011; // 12 x RTOR resolution 
+
+  cnfg_rtor2.bit.rhsf    =  0b100; // 4/8 
+  cnfg_rtor2.bit.ravg    =   0b10; // 4 
+  cnfg_rtor2.bit.hoff    = 0b100000; // 32*T_RTOR
+
+  en_int.bit.intb_type   =   0b01; // open drain
+  en_int.bit.en_pllint   =    0b0; // PLL interrupt disabled
+  en_int.bit.en_samp     =    0b0; // sample interrupt disabled
+  en_int.bit.en_rrint    =    0b0; // R to R interrupt disabled
+  en_int.bit.en_lonint   =    0b0; // lead off interrupt disabled
+  en_int.bit.en_bcgmon   =    0b0; // BIOZ current generator monitor interrupt disabled
+  en_int.bit.en_bunder   =    0b0; // BIOZ undervoltage interrupt disabled
+  en_int.bit.en_bover    =    0b0; // BIOZ overcurrent interrupt disabled
+  en_int.bit.en_bovf     =    0b0; // BIOZ overvoltage interrupt disabled
+  en_int.bit.en_bint     =    0b0; // BIOZ FIFO interrupt 
+  en_int.bit.en_dcloff   =    0b0; // ECG lead off detection interrupt disabled
+  en_int.bit.en_eovf     =    0b0; // ECG overflow detection interrupt disabled
+  en_int.bit.en_eint     =    0b1; // ECG FIFO interrupt enabled
+
+  swReset(); // reset the AFE
+  delay(100); // wait for reset to complete
+  writeRegister(CNFG_GEN, cnfg_gen.all);
+  delay(100);
+  writeRegister(CNFG_CAL, cnfg_cal.all);  
+  delay(100);
+  writeRegister(CNFG_EMUX, cnfg_emux.all);
+  delay(100);
+  writeRegister(CNFG_ECG, cnfg_ecg.all);
+  delay(100);
+  writeRegister(CNFG_RTOR1, cnfg_rtor1.all);
+  delay(100);
+  writeRegister(CNFG_RTOR2, cnfg_rtor2.all);
+  delay(100);
+  writeRegister(EN_INT1,    en_int.all);
+  delay(100);
+  sync(); // synchronize the AFE
+  delay(100); 
+} // initialize driver for ECG
+
+void MAX30001G::beginRtoR(){
+  /* 
+  Enables ECG, and enables R to R detection
+  */
+
+  max30001_cnfg_gen_t   cnfg_gen;    // general
+  // max30001_cnfg_cal_t   cnfg_cal;
+  max30001_cnfg_emux_t  cnfg_emux;   // ECG multiplexer
+  max30001_cnfg_ecg_t   cnfg_ecg;    // ECG
+  max30001_cnfg_rtor1_t cnfg_rtor1;  // R to R detection
+  max30001_cnfg_rtor2_t cnfg_rtor2;  // R to R detection
+  max30001_en_int_t     en_int;      // Interrupts
+
+  need to set how RTOR interrupt is cleared
+    
+  cnfg_gen.bit.rbiasn =        0; // ECGN is not connected to VMID 
+  cnfg_gen.bit.rbiasp =        0; // ECGP is not connected to VMID
+  cnfg_gen.bit.rbiasv =     0b01; // 100 MOhm
+  cnfg_gen.bit.en_rbias =   0b00; // resistive bias disabled
+  cnfg_gen.bit.vth =        0b00; // VMID +/-300mV
+  cnfg_gen.bit.imag =      0b000; // 0nA, disconnect current sources
+  cnfg_gen.bit.ipol =          0; // ECGP pullup, ECGN pull down (not inverted)
+  cnfg_gen.bit.en_dcloff =  0b00; // DC lead off detection disabled on ECG N and P
+  cnfg_gen.bit.en_bloff =   0b00; // BIOZ lead off detection disabled
+  cnfg_gen.bit.en_pace =       0; // pace detection disabled
+  cnfg_gen.bit.en_bioz =       0; // BIOZ disabled
+  cnfg_gen.bit.en_ecg =        1; // ECG enabled
+  cnfg_gen.bit.fmstr =      0b00; // 32768 Hz
+  cnfg_gen.bit.en_ulp_lon = 0b00; // ULP lead detection disabled
+
+  cnfg_cal.bit.thigh = 0b00000000000; // thig x CAL_RES
+  cnfg_cal.bit.fifty =       0b0; // Use thigh to select time high for VCALP and VCALN
+  cnfg_cal.bit.fcal =      0b000; // FMSTR/128
+  cnfg_cal.bit.vmag =        0b1; // 0.5mV
+  cnfg_cal.bit.vmode =       0b1; // bipolar
+  cnfg_cal.bit.vcal =        0b0; // calibration sources and modes disabled
+
+  cnfg_emux.bit.caln_sel = 0b11; // ECGN connected to CALN
+  cnfg_emux.bit.calp_sel = 0b10; // ECGP connected to CALP
+  cnfg_emux.bit.openn =     0b0; // ECGN connected to ECGN AFE Channel
+  cnfg_emux.bit.openp =     0b0; // ECGP connected to ECGP AFE Channel
+  cnfg_emux.bit.pol =       0b0; // Non inverted polarity
+
+  cnfg_ecg.bit.dlpf =      0b01; // 40z
+  cnfg_ecg.bit.dhpf =       0b1; // 0.5 Hz
+  cnfg_ecg.bit.gain =      0b00; // 20 V/V
+  cnfg_ecg.bit.rate =      0b10; // 128 sps
+
+  cnfg_rtor1.bit.ptsf =  0b0110; // (0b0110 + 1)/16
+  cnfg_rtor1.bit.pavg =    0b00; // 2
+  cnfg_rtor1.bit.en_rtor =  0b1; // R to R detection enabled
+  cnfg_rtor1.bit.gain =  0b1111; // autoscale
+  cnfg_rtor1.bit.wndw =  0b0011; // 12 x RTOR resolution 
+
+  cnfg_rtor2.bit.rhsf =    0b100; // 4/8 
+  cnfg_rtor2.bit.ravg =     0b10; // 4 
+  cnfg_rtor2.bit.hoff = 0b100000; // 32*T_RTOR
+
+  en_int.bit.intb_type =    0b01; // open drain
+  en_int.bit.en_pllint =     0b0; // PLL interrupt disabled
+  en_int.bit.en_samp =       0b0; // sample interrupt disabled
+  en_int.bit.en_rrint =      0b1; // R to R interrupt enabled
+  en_int.bit.en_lonint =     0b0; // lead off interrupt disabled
+  en_int.bit.en_bcgmon =     0b0; // BIOZ current generator monitor interrupt disabled
+  en_int.bit.en_bunder =     0b0; // BIOZ undervoltage interrupt disabled
+  en_int.bit.en_bover =      0b0; // BIOZ overcurrent interrupt disabled
+  en_int.bit.en_bovf =       0b0; // BIOZ overvoltage interrupt disabled
+  en_int.bit.en_bint =       0b0; // BIOZ FIFO interrupt 
+  en_int.bit.en_dcloff =     0b0; // ECG lead off detection interrupt disabled
+  en_int.bit.en_eovf =       0b0; // ECG overflow detection interrupt disabled
+  en_int.bit.en_eint =       0b0; // ECG FIFO interrupt enabled
+
+  swReset(); // reset the AFE
+  delay(100); // wait for reset to complete
+  writeRegister(CNFG_GEN,   cnfg_gen.all);
+  delay(100);
+  writeRegister(CNFG_CAL,   cnfg_cal.all);  
+  delay(100);
+  writeRegister(CNFG_EMUX,  cnfg_emux.all);
+  delay(100);
+  writeRegister(CNFG_ECG,   cnfg_ecg.all);
+  delay(100);
+  writeRegister(CNFG_RTOR1, cnfg_rtor1.all);
+  delay(100);
+  writeRegister(CNFG_RTOR2, cnfg_rtor2.all);
+  delay(100);
+  writeRegister(EN_INT1,    en_int.all);
+  delay(100);
+  sync(); // synchronize the AFE
+  delay(100); 
+
+} // initialize driver ECG RTOR
+
+void MAX30001G::beginBIOZ(){
+
+  max30001_cnfg_gen_t     cnfg_gen;
+  max30001_cnfg_emux_t    cnfg_emux;
+  max30001_cnfg_ecg_t     cnfg_ecg;
+  max30001_cnfg_bmux_t    cnfg_bmux;
+  max30001_cnfg_bioz_t    cnfg_bioz;
+  max30001_cnfg_cal_t     cnfg_cal;
+  max30001_cnfg_bioz_lc_t cnfg_bioz_lc;
+  max30001_en_int_t       en_int;
+
+  // CONFIG GEN Register Settings
+  cnfg_gen.bit.en_ulp_lon   =      0; // ULP Lead-ON Disabled
+  cnfg_gen.bit.fmstr        =   0b00; // 32768 Hz
+  cnfg_gen.bit.en_ecg       =      0; // ECG Enabled
+  cnfg_gen.bit.en_bioz      =      1; // BioZ Enabled
+  cnfg_gen.bit.en_bloff     =      0; // BioZ digital lead off detection disabled
+  cnfg_gen.bit.en_dcloff    =      0; // DC Lead-Off Detection Disabled
+  cnfg_gen.bit.en_rbias     =   0b00; // RBias disabled
+  cnfg_gen.bit.rbiasv       =   0b01; // RBias = 100 Mohm
+  cnfg_gen.bit.rbiasp       =   0b00; // RBias Positive Input not connected
+  cnfg_gen.bit.rbiasn       =   0b00; // RBias Negative Input not connected
+  
+  // BioZ Config Settings, 64SPS, current generator 48microA
+  cnfg_bioz.bit.rate        =      0; // 64 SPS
+  cnfg_bioz.bit.ahpf        =  0b010; // 500 Hz
+  cnfg_bioz.bit.ext_rbias   =      0; // internal bias generator used
+  cnfg_bioz.bit.ln_bioz     =      1; // low noise mode
+  cnfg_bioz.bit.gain        =   0b01; // 20 V/V
+  cnfg_bioz.bit.dhpf        =   0b10; // 0.5Hz
+  cnfg_bioz.bit.dlpf        =   0b01; // 4Hz
+  cnfg_bioz.bit.fcgen       = 0b0100; // FMSTR/4 approx 8000z
+  cnfg_bioz.bit.cgmon       =      0; // current generator monitor disabled 
+  cnfg_bioz.bit.cgmag       =  0b100; // 48 microA
+  cnfg_bioz.bit.phoff       = 0x0011; // 3*11.25degrees shift 0..168.75 degrees
+
+  // BioZ MUX Settings, connect pins internally to BioZ channel
+  cnfg_bmux.bit.openp       =      0; // BIP internally connected to BIOZ channel
+  cnfg_bmux.bit.openn       =      0; // BIN internally connected to BIOZ channel
+  cnfg_bmux.bit.calp_sel    =   0b00; // No cal signal on BioZ P
+  cnfg_bmux.bit.caln_sel    =   0b00; // No cal signal on BioZ N
+  cnfg_bmux.bit.cg_mode     =   0b00; // Unchopped with higher noise and excellent 50/60Hz rejection
+  cnfg_bmux.bit.en_bist     =      0; // Modulated internal resistance self test disabled
+  cnfg_bmux.bit.rnom        =  0b000; // Nominal resistance selection, nominal 5000 Ohm for internal test
+  cnfg_bmux.bit.rmod        =  0b100; // No modulation for internal test
+  cnfg_bmux.bit.fbist       =   0b00; // FMSTR/2^13 approx 4Hz for internal test
+
+  // Calibration Settings
+  cnfg_cal.bit.thigh        = 0b00000000000; // thigh x CAL_RES
+  cnfg_cal.bit.fifty        =      0; // Use thigh to select time high for VCALP and VCALN
+  cnfg_cal.bit.fcal         =  0b000; // FMSTR/128
+  cnfg_cal.bit.vmag         =      1; // 0.5mV
+  cnfg_cal.bit.vmode        =      1; // bipolar
+  cnfg_cal.bit.vcal         =      1; // calibration sources and modes enabled
+
+  // BioZ LC Settings, turn off low current mode
+  cnfg_bioz_lc.bit.cmag_lc  = 0b0000; // 0 nA, turn OFF low current mode
+  cnfg_bioz_lc.bit.cmres    = 0b0000; // common mode feedback resistance is off
+  cnfg_bioz_lc.bit.bistr    =   0b00; // 27kOhm programmable load value selection
+  cnfg_bioz_lc.bit.en_bistr =      0; // disable programmable high resistance load
+  cnfg_bioz_lc.bit.lc2x     =      0; // 1x low drive current 55nA to 550nA
+  cnfg_bioz_lc.bit.hi_lob   =      1; // bioz drive current is low 55nA to 1100nA
+
+  en_int.bit.intb_type =    0b01; // open drain
+  en_int.bit.en_pllint =     0b0; // PLL interrupt disabled
+  en_int.bit.en_samp =       0b0; // sample interrupt disabled
+  en_int.bit.en_rrint =      0b0; // R to R interrupt enabled
+  en_int.bit.en_lonint =     0b0; // lead off interrupt disabled
+  en_int.bit.en_bcgmon =     0b0; // BIOZ current generator monitor interrupt disabled
+  en_int.bit.en_bunder =     0b0; // BIOZ undervoltage interrupt disabled
+  en_int.bit.en_bover =      0b0; // BIOZ overcurrent interrupt disabled
+  en_int.bit.en_bovf =       0b0; // BIOZ overvoltage interrupt disabled
+  en_int.bit.en_bint =       0b1; // BIOZ FIFO interrupt 
+  en_int.bit.en_dcloff =     0b0; // ECG lead off detection interrupt disabled
+  en_int.bit.en_eovf =       0b0; // ECG overflow detection interrupt disabled
+  en_int.bit.en_eint =       0b0; // ECG FIFO interrupt enabled
+
+  swReset();
+  delay(100);
+
+  writeRegister(CNFG_GEN, cnfg_gen.all);
+  delay(100);
+  wirteRegister(CNFG_CAL, cnfg_cal.all);
+  delay(100);
+  writeRegister(CNFG_BIOZ, cnfg_bioz.all);
+  delay(100);
+  writeRegister(CNFG_BIOZ_LC, cnfg_bioz_lc.all);
+  delay(100);
+  writeRegister(CNFG_BMUX, cnfg_bmux.all);
+  delay(100);
+  writeRegister(EN_INT1,    en_int.all);
+  delay(100);
+  synch();
+  delay(100);
+
+} // initialize driver for BIOZ
+
+void MAX30001G::beginBIOZcalibrationInternal(){
+
+}
+
+void MAX30001G::beginBIOZcalibrationExternal(){
+
+}
+
+void MAX30001G::beginECGandBIOZ() {
+  max30001_cnfg_gen_t     cnfg_gen;
+  max30001_cnfg_emux_t    cnfg_emux;
+  max30001_cnfg_ecg_t     cnfg_ecg;
+  max30001_cnfg_bmux_t    cnfg_bmux;
+  max30001_cnfg_bioz_t    cnfg_bioz;
+  max30001_cnfg_cal_t     cnfg_cal;
+  max30001_cnfg_bioz_lc_t cnfg_bioz_lc;
+  max30001_en_int_t       en_int;
+  
+  // CONFIG GEN Register Settings
+  cnfg_gen.bit.en_ulp_lon   =      0; // ULP Lead-ON Disabled
+  cnfg_gen.bit.fmstr        =   0b00; // 32768 Hz
+  cnfg_gen.bit.en_ecg       =      1; // ECG Enabled
+  cnfg_gen.bit.en_bioz      =      1; // BioZ Enabled
+  cnfg_gen.bit.en_bloff     =      0; // BioZ digital lead off detection disabled
+  cnfg_gen.bit.en_dcloff    =      0; // DC Lead-Off Detection Disabled
+  cnfg_gen.bit.en_rbias     =   0b00; // RBias disabled
+  cnfg_gen.bit.rbiasv       =   0b01; // RBias = 100 Mohm
+  cnfg_gen.bit.rbiasp       =   0b00; // RBias Positive Input not connected
+  cnfg_gen.bit.rbiasn       =   0b00; // RBias Negative Input not connected
+
+  // ECG Config Settings
+  cnfg_ecg.bit.rate         =   0b10; // Default, 128SPS
+  cnfg_ecg.bit.gain         =   0b10; // 80 V/V
+  cnfg_ecg.bit.dhpf         =      1; // 0.5Hz
+  cnfg_ecg.bit.dlpf         =   0b01; // 40Hz
+  
+  // ECG MUX Settings
+  cnfg_emux.bit.openp       =      0; // ECGP connected to ECGP AFE Channel
+  cnfg_emux.bit.openn       =      0; // ECGN connected to ECGN AFE Channel
+  cnfg_emux.bit.pol         =      0; // Non inverted polarity
+  cnfg_emux.bit.calp_sel    =      0; // No calibration signal on ECG_P
+  cnfg_emux.bit.caln_sel    =      0; // No calibration signal on ECG_N
+
+  // BioZ Config Settings, 64SPS, current generator 48microA
+  cnfg_bioz.bit.rate        =      0; // 64 SPS
+  cnfg_bioz.bit.ahpf        =  0b010; // 500 Hz
+  cnfg_bioz.bit.ext_rbias   =      0; // internal bias generator used
+  cnfg_bioz.bit.ln_bioz     =      1; // low noise mode
+  cnfg_bioz.bit.gain        =   0b01; // 20 V/V
+  cnfg_bioz.bit.dhpf        =   0b10; // 0.5Hz
+  cnfg_bioz.bit.dlpf        =   0b01; // 4Hz
+  cnfg_bioz.bit.fcgen       = 0b0100; // FMSTR/4 approx 8000z
+  cnfg_bioz.bit.cgmon       =      0; // current generator monitor disabled 
+  cnfg_bioz.bit.cgmag       =  0b100; // 48 microA
+  cnfg_bioz.bit.phoff       = 0x0011; // 3*11.25degrees shift 0..168.75 degrees
+
+  // BioZ MUX Settings, connect pins internally to BioZ channel
+  cnfg_bmux.bit.openp       =      0; // BIP internally connected to BIOZ channel
+  cnfg_bmux.bit.openn       =      0; // BIN internally connected to BIOZ channel
+  cnfg_bmux.bit.calp_sel    =   0b00; // No cal signal on BioZ P
+  cnfg_bmux.bit.caln_sel    =   0b00; // No cal signal on BioZ N
+  cnfg_bmux.bit.cg_mode     =   0b00; // Unchopped with higher noise and excellent 50/60Hz rejection
+  cnfg_bmux.bit.en_bist     =      0; // Modulated internal resistance self test disabled
+  cnfg_bmux.bit.rnom        =  0b000; // Nominal resistance selection, nominal 5000 Ohm for internal test
+  cnfg_bmux.bit.rmod        =  0b100; // No modulation for internal test
+  cnfg_bmux.bit.fbist       =   0b00; // FMSTR/2^13 approx 4Hz for internal test
+
+  // Calibration Settings
+  cnfg_cal.bit.thigh        = 0b00000000000; // thigh x CAL_RES
+  cnfg_cal.bit.fifty        =      0; // Use thigh to select time high for VCALP and VCALN
+  cnfg_cal.bit.fcal         =  0b000; // FMSTR/128
+  cnfg_cal.bit.vmag         =      1; // 0.5mV
+  cnfg_cal.bit.vmode        =      1; // bipolar
+  cnfg_cal.bit.vcal         =      1; // calibration sources and modes enabled
+
+  // BioZ LC Settings, turn off low current mode
+  cnfg_bioz_lc.bit.cmag_lc  = 0b0000; // 0 nA, turn OFF low current mode
+  cnfg_bioz_lc.bit.cmres    = 0b0000; // common mode feedback resistance is off
+  cnfg_bioz_lc.bit.bistr    =   0b00; // 27kOhm programmable load value selection
+  cnfg_bioz_lc.bit.en_bistr =      0; // disable programmable high resistance load
+  cnfg_bioz_lc.bit.lc2x     =      0; // 1x low drive current 55nA to 550nA
+  cnfg_bioz_lc.bit.hi_lob   =      1; // bioz drive current is low 55nA to 1100nA
+
+  // Interrupt Bit Settings
+  en_int.bit.intb_type      =   0b01; // open drain
+  en_int.bit.en_pllint      =    0b0; // PLL interrupt disabled
+  en_int.bit.en_samp        =    0b0; // sample interrupt disabled
+  en_int.bit.en_rrint       =    0b0; // R to R interrupt enabled
+  en_int.bit.en_lonint      =    0b0; // lead off interrupt disabled
+  en_int.bit.en_bcgmon      =    0b0; // BIOZ current generator monitor interrupt disabled
+  en_int.bit.en_bunder      =    0b0; // BIOZ undervoltage interrupt disabled
+  en_int.bit.en_bover       =    0b0; // BIOZ overcurrent interrupt disabled
+  en_int.bit.en_bovf        =    0b0; // BIOZ overvoltage interrupt disabled
+  en_int.bit.en_bint        =    0b1; // BIOZ FIFO interrupt 
+  en_int.bit.en_dcloff      =    0b0; // ECG lead off detection interrupt disabled
+  en_int.bit.en_eovf        =    0b0; // ECG overflow detection interrupt disabled
+  en_int.bit.en_eint        =    0b1; // ECG FIFO interrupt enabled
+
+  swReset();
+  delay(100);
+  writeRegister(CNFG_GEN, cnfg_gen.all);
+  delay(100);
+  wirteRegister(CNFG_CAL, cnfg_cal.all);
+  delay(100);
+  writeRegister(CNFG_ECG, cnfg_ecg.all);
+  delay(100);
+  writeRegister(CNFG_EMUX, cnfg_emux.all);
+  delay(100);
+  writeRegister(CNFG_BIOZ, cnfg_bioz.all);
+  delay(100);
+  writeRegister(CNFG_BIOZ_LC, cnfg_bioz_lc.all);
+  delay(100);
+  writeRegister(CNFG_BMUX, cnfg_bmux.all);
+  delay(100);
+  writeRegister(EN_INT1,    en_int.all);
+  delay(100);
+  synch();
+  delay(100);
+
+} // initialize driver for ECG and BIOZ
+
+/******************************************************************************************************/
+// Interrupt Service
+/******************************************************************************************************/
+
+//void MAX30001G::enableInterrupt(uint8_t interrupt) {
+//  max30001_en_int_t en_int = readRegister(EN_INT1);
+//}
+
+/******************************************************************************************************/
+// Change Settings
+/******************************************************************************************************/
+
+void MAX30001G::setSamplingRate(uint8_t  ECG, uint8_t BIOZ) {
+  /*
+  Set the ECG  sampling rate for the AFE, 0=low, 1=medium, 2=high
+  Set the BIOZ sampling rate for the AFE, 0=low, 1=high
+  */
+
+  max30001_cnfg_ecg_t  cnfg_ecg;
+  max30001_cnfg_bioz_t cnfg_bioz;
+  max30001_cnfg_gen_t  cnfg_gen;
+
+  cnfg_ecg.all  = readRegister(CNFG_ECG);
+  cnfg_bioz.all = readRegister(CNFG_BIOZ);
+  cnfg_gen.all  = readRegister(CNFG_GEN);
+
+  switch (ECG) {
+    case 0:
+      cnfg_ecg.bit.rate = 0b10; // low
+      break;
+    case 1:
+      cnfg_ecg.bit.rate = 0b01; // medium
+      break;
+    case 2:
+      cnfg_ecg.bit.rate = 0b00; // high
+      break;
+    default:
+      cnfg_ecg.bit.rate = 0b10; // low
+      break;
+  }
+
+  writeRegister(CNFG_ECG, cnfg_ecg.all);
+
+  switch (BIOZ) {
+    case 0:
+      cnfg_bioz.bit.rate = 0b1; // low
+      break;
+    case 1:
+      cnfg_bioz.bit.rate = 0b0; // high
+      break;
+    default:
+      cnfg_bioz.bit.rate = 0b1; // low
+      break;
+  }
+
+  writeRegister(CNFG_bioz, cnfg_bioz.all);
+
+  switch (cnfg_gen.fmstr) {
+    case 0b00: // FMSTR = 32768Hz, TRES = 15.26µs, 512Hz
+      fmstr = 32768.;
+      tres = 15.26;
+      ECG_progression = 512.;
+      RtoR_resolution = 7.8125;
+      CAL_resolution  = 30.52;
+      
+      switch (cnfg_ecg.bit.rate) {
+        case 0b00:
+          ECG_samplingRate = 512.;
+          break;
+        case 0b01:
+          ECG_samplingRate = 256.;
+          break;
+        case 0b10:
+          ECG_samplingRate = 128.;
+          break;
+        default:
+          ECG_samplingRate = 0.;
+          break;
+      }
+      switch (cnfg_bioz.bit.rate) {
+        case 0:
+          BIOZ_samplingRate = 64.;
+          break;
+        case 1:
+          BIOZ_samplingRate = 32.;
+          break;
+        default:
+          BIOZ_samplingRate = 0.;
+          break;
+      }
+      break;
+    case 0b01: // FMSTR = 32000Hz, TRES = 15.63µs, 500Hz
+      fmstr = 32000.;
+      tres = 15.63;
+      ECG_progression = 500.;
+      RtoR_resolution = 8.0;
+      CAL_resolution  = 31.25;
+      switch (cnfg_ecg.bit.rate) {
+        case 0b00:
+          ECG_samplingRate = 500.;
+          break;
+        case 0b01:
+          ECG_samplingRate = 250.;
+          break;
+        case 0b10:
+          ECG_samplingRate = 125.;
+          break;
+        default:
+          ECG_samplingRate = 0.;
+          break;
+      }    
+      switch (cnfg_bioz.bit.rate) {
+        case 0:
+          BIOZ_samplingRate = 62.5;
+          break;
+        case 1:
+          BIOZ_samplingRate = 31.25;
+          break;
+        default:
+          BIOZ_samplingRate = 0.;
+          break;
+      }
+      break;
+    case 0b10: // FMSTR = 32000Hz, TRES = 15.63µs, 200Hz
+      fmstr = 32000.;
+      tres = 15.63;
+      ECG_progression = 200.;
+      RtoR_resolution = 8.0;
+      CAL_resolution  = 31.25;
+      switch (cnfg_ecg.bit.rate) {
+        case 0b10:
+          ECG_samplingRate = 200.;
+          break;
+        default:
+          ECG_samplingRate = 0.;
+          break;
+      }
+      switch (cnfg_bioz.bit.rate) {
+        case 0:
+          BIOZ_samplingRate = 50.;
+          break;
+        case 1:
+          BIOZ_samplingRate = 25.;
+          break;
+        default:
+          BIOZ_samplingRate = 0.;
+          break;
+      }
+      break;
+
+    case 0b11: // FMSTR = 31968.78Hz, TRES = 15.64µs, 199.8049Hz
+      fmstr = 31968.78;
+      tres = 15.64;
+      ECG_progression = 199.8049;
+      RtoR_resolution = 8.008;
+      CAL_resolution  = 31.28;
+      switch (cnfg_ecg.bit.rate) {
+        case 0b10:
+          ECG_samplingRate = 199.8049;
+          break;
+        default:
+          ECG_samplingRate = 0.;
+          break;
+      }
+      switch (cnfg_bioz.bit.rate) {
+        case 0:
+          BIOZ_samplingRate = 49.95;
+          break;
+        case 1:
+          BIOZ_samplingRate = 24.98;
+          break;
+        default:
+          BIOZ_samplingRate = 0.;
+          break;
+      }
+      break;
+    
+    default:
+      ECG_samplingRate  = 0.;
+      BIOZ_samplingRate = 0.;
+      fmstr             = 0.;
+      tres              = 0.;
+      ECG_progression   = 0.;
+      RtoR_resolution   = 0.;
+      CAL_resolution    = 0.;
+      break;
+
+  }
+
+}
+// After chaning the sampling rate, we should also reset the ECG lowpass filter! 
+// When re running setECGfilter, the allowable values will be applied.
+
+void MAX30001G::setECGfilter(uint8_t lpf, uint8_t hpf) {
+  /*
+  Set the ECG lpf for the AFE
+  
+  0 bypass
+  1 low
+  2 medium
+  3 high
+
+  Set the ECG hpf for the AFE
+  
+  0 bypass
+  1 low 0.5Hz
+  
+  */
+
+  max30001_cnfg_ecg_t cnfg_ecg;
+  max30001_cnfg_gen_t  cnfg_gen;
+
+  cnfg_ecg.all = readRegister(CNFG_ECG);
+  cnfg_gen.all  = readRegister(CNFG_GEN);
+
+  if hpf == 0:
+    ECG_hpf = 0.;
+    cnfg_ecg.dhpf = 0b00; // bypass
+  else:
+    ECG_hpf = 0.5;
+    cnfg_ecg.dhpf = 0b01; // 0.5Hz
+
+  switch (cnfg_gen.fmstr) {
+    case 0b00: // FMSTR = 32768Hz, TRES = 15.26µs, 512Hz
+      fmstr = 32768.;
+      tres = 15.26;
+      ECG_progression = 512.;
+      switch (cnfg_ecg.bit.rate) {
+        case 0b00:
+          ECG_samplingRate = 512.;
+          switch (lpf) {
+            case 0:
+              ECG_lpf = 0.;  
+              cnfg_ecg.bit.dlpf = 0b00; // bypass
+              break;
+            case 1:
+              ECG_lpf = 40.96;  
+              cnfg_ecg.bit.dlpf = 0b01; // low
+              break;
+            case 2:
+              ECG_lpf = 102.4;  
+              cnfg_ecg.bit.dlpf = 0b10; // medium
+              break;
+            case 3:
+              ECG_lpf = 153.6;  
+              cnfg_ecg.bit.dlpf = 0b11; // high
+              break;
+            default:
+              ECG_lpf = 40.96;  
+              cnfg_ecg.bit.dlpf = 0b01; // low
+              break;
+          }
+          break;
+
+        case 0b01:
+          ECG_samplingRate = 256.;
+          switch (lpf) {
+            case 0:
+              ECG_lpf = 0.;  
+              cnfg_ecg.bit.dlpf = 0b00; // bypass
+              break;
+            case 1:
+              ECG_lpf = 40.96;  
+              cnfg_ecg.bit.dlpf = 0b01; // low
+              break;
+            case 2:
+              ECG_lpf = 102.4;  
+              cnfg_ecg.bit.dlpf = 0b10; // medium
+              break;
+            default:
+              ECG_lpf = 40.96;  
+              cnfg_ecg.bit.dlpf = 0b01; // low
+              break;
+          }
+          break;
+
+        case 0b10:
+          ECG_samplingRate = 128.;
+          if (lpf == 0) {
+            ECG_lpf = 0.;  
+            cnfg_ecg.bit.dlpf = 0b00; // bypass
+          } else {
+            ECG_lpf = 28.35;  
+            cnfg_ecg.bit.dlpf = 0b01; // low
+            break;
+          }
+          break;
+
+        default:
+          ECG_samplingRate = 0.;
+          ECG_lpf = 0.;  
+          cnfg_ecg.bit.dlpf = 0b00; // bypass
+          break;
+      }
+
+    case 0b01: // FMSTR = 32000Hz, TRES = 15.63µs, 500Hz
+      fmstr = 32000.;
+      tres = 15.63;
+      ECG_progression = 500.;
+      switch (cnfg_ecg.bit.rate) {
+        case 0b00:
+          ECG_samplingRate = 500.;
+          switch (lpf) {
+            case 0:
+              ECG_lpf = 0.;  
+              cnfg_ecg.bit.dlpf = 0b00; // bypass
+              break;
+            case 1:
+              ECG_lpf = 40.;  
+              cnfg_ecg.bit.dlpf = 0b01; // low
+              break;
+            case 2:
+              ECG_lpf = 100.;  
+              cnfg_ecg.bit.dlpf = 0b10; // medium
+              break;
+            case 3:
+              ECG_lpf = 150.;  
+              cnfg_ecg.bit.dlpf = 0b11; // high
+              break;
+            default:
+              ECG_lpf = 40.;  
+              cnfg_ecg.bit.dlpf = 0b01; // low
+              break;
+          }
+          break;
+
+        case 0b01:
+          ECG_samplingRate = 250.;
+          switch (lpf) {
+            case 0:
+              ECG_lpf = 0.;  
+              cnfg_ecg.bit.dlpf = 0b00; // bypass
+              break;
+            case 1:
+              ECG_lpf = 40.;  
+              cnfg_ecg.bit.dlpf = 0b01; // low
+              break;
+            case 2:
+              ECG_lpf = 100.;  
+              cnfg_ecg.bit.dlpf = 0b10; // medium
+              break;
+            default:
+              ECG_lpf = 40.;  
+              cnfg_ecg.bit.dlpf = 0b01; // low
+              break;
+          }
+          break;
+
+        case 0b10:
+          ECG_samplingRate = 125.;
+          if (lpf==0) {
+            ECG_lpf = 0.;  
+            cnfg_ecg.bit.dlpf = 0b00; // bypass
+          } else {
+            ECG_lpf = 27.68;  
+            cnfg_ecg.bit.dlpf = 0b01; // low
+          }
+          break;
+
+        default:
+          ECG_samplingRate = 0.;
+          ECG_lpf = 0.;  
+          cnfg_ecg.bit.dlpf = 0b00; // bypass
+          break;
+      }
+
+    case 0b10: // FMSTR = 32000Hz, TRES = 15.63µs, 200Hz
+      fmstr = 32000.;
+      tres = 15.63;
+      ECG_samplingRate = 200.;
+      ECG_progression = 200.;
+      if (lpf==0) {
+          ECG_lpf = 0.;  
+          cnfg_ecg.bit.dlpf = 0b00; // bypass
+      } else {
+          ECG_lpf = 40.;  
+          cnfg_ecg.bit.dlpf = 0b01; // low
+      }
+
+    case 0b11: // FMSTR = 31968.78Hz, TRES = 15.64µs, 199.8049Hz
+      fmstr = 31968.78;
+      tres = 15.64;
+      ECG_samplingRate = 199.8;
+      ECG_progression = 199.8;
+      if (lpf==0) {
+          ECG_lpf = 0.;  
+          cnfg_ecg.bit.dlpf = 0b00; // bypass
+      } else {
+          ECG_lpf = 39.96;  
+          cnfg_ecg.bit.dlpf = 0b01; // low
+      }
+  }
+  writeRegister(CNFG_ECG, cnfg_ecg.all);
+}
+
+void MAX30001G::setECGgain(uint8_t gain) {
+  /*
+  Set the ECG gain for the AFE
+  0 20V/V
+  1 40V/V
+  2 80V/V
+  3 160V/V
+  */
+
+  max30001_cnfg_ecg_t cnfg_ecg;
+  if (gain <=3) {
+    cnfg_ecg.all = readRegister(CNFG_ECG);
+    cnfg_ecg.bit.gain = gain;
+    writeRegister(CNFG_ECG, cnfg_ecg.all);
+  }
+
+  switch (gain){
+    case 0:
+      ECG_gain = 20;
+    case 1:
+      ECG_gain = 40;
+    case 2:
+      ECG_gain = 80;
+    case 3:
+      ECG_gain = 160;
+    default:
+      ECG_gain = 0;
+  }
+}
+
+void MAX30001G::setECGLeadDetection() {
+}
+
+void MAX30001G::setECGLeadBias() {}
+
+void MAX30001G::setBIOZgain(uint8_t gain) {
+  /*
+  Set the BIOZ gain for the AFE
+  0 20V/V
+  1 40V/V
+  2 80V/V
+  3 160V/V
+  */
+
+  max30001_cnfg_bioz_t cnfg_bioz;
+  if (gain <=3) {
+    cnfg_bioz.all = readRegister(CNFG_BIOZ);
+    cnfg_bioz.bit.gain = gain;
+    writeRegister(CNFG_BIOZ, cnfg_bioz.all);
+  }
+
+  switch (gain){
+    case 0:
+      BIOZ_gain = 10;
+    case 1:
+      BIOZ_gain = 20;
+    case 2:
+      BIOZ_gain = 40;
+    case 3:
+      BIOZ_gain = 80;
+    default:
+      BIOZ_gain = 0;
+  }
+}
+
+void MAX30001G::setBIOZmag(uint32_t current){
+  /*
+  * Setting current magnitude
+  * 50 to 96000 nA
+  * This adjust current to be in the range allwed by frequency
+  * This programs the BIOZ common mode resistor
+  */
+  
+  max30001_cnfg_bioz_t cnfg_bioz;
+  cnfg_bioz.all = readRegister(CNFG_BIOZ);
+
+  max30001_cnfg_bioz_lc_t cnfg_bioz_lc;
+  cnfg_bioz_lc.all = readRegister(CNFG_BIOZ_LC);
+
+  // Make sure requested current is achievable with current frequency 
+  // ----------------------------------------------------------------
+  // BIOZ CURRENT GENERATOR MODULATION FREQUENCY (Hz)
+  // BIOZ_FCGEN[3:0]  FMSTR[1:0] = 00 FMSTR[1:0] = 01  FMSTR[1:0] = 10  FMSTR[1:0] = 11   CMAG allowed
+  //                  fMSTR= 32,768Hz fMSTR = 32,000Hz fMSTR = 32,000Hz fMSTR = 31,968Hz  
+  // 0000             131,072         128,000          128,0001         27,872            all
+  // 0001              81,920          80,000           80,000          81,920            all
+  // 0010              40,960          40,000           40,000          40,960            all
+  // 0011              18,204          17,780           17,780          18,204            all
+  // 0100               8,192           8,000            8,000           7,992            not 111
+  // 0101               4,096           4,000            4,000           3,996            000 to 011
+  // 0110               2,048           2,000            2,000           1,998            000 to 010
+  // 0111               1,024           1,000            1,000             999            000, 001
+  // 1000                 512             500              500             500            000, 001
+  // 1001                 256             250              250             250            000, 001
+  // 101x,11xx            128             125              125             125            000, 001
+
+  // high current 
+  // --------------------------------------------------------------------
+  //   cmag >= 001
+  //   and cnfg_bioz_lc.bit.hi_lob == 1 
+  //
+  //BioZ Current Generator Magnitude: cnfg_bioz.cmag
+  // 000 = Off (DRVP and DRVN floating, Current Generators Off)
+  // 001 = 8µA (also use this setting when BIOZ_HI_LOB = 0)
+  // 010 = 16µA
+  // 011 = 32µA
+  // 100 = 48µA
+  // 101 = 64µA
+  // 110 = 80µA
+  // 111 = 96µA
+
+  // low current
+  // ---------------------------------------------------------------------
+  //   cmag == 001 
+  //   and cnfg_bioz_lc.bit.hi_lob == 0 
+  //   cnfg_bioz_lc.bit.lc2x == 0 55-1100nA
+  //   cnfg_bioz_lc.bit.lc2x == 1 110-1100nA
+  //   set the common mode resistance as recommended in BIOZ_CMRES.
+  // BIOZ Low Current Generator Magnitude: cnfg_bioz_lc.bit.cmag_lc
+  //         LC2X = 0 LC2X = 1
+  // 0000    0        0
+  // 0001    55nA     110nA
+  // 0010    110nA    220nA
+  // 0011    220nA    440nA
+  // 0100    330nA    660nA
+  // 0101    440nA    880nA
+  // 0110    550nA    1100nA
+
+  if (cnfg_bioz.bit.fcgen >= 0b0111) {
+    if (current > 8000) {
+      current = 8000
+      LOGD("Current can not exceed 8000 nA")
+    }
+  } else if (cnfg_bioz.bit.fcgen == 0b0110) {
+    if (current > 16000) {
+      current = 16000
+      LOGD("Current can not exceed 16000 nA")
+    }
+  } else if (cnfg_bioz.bit.fcgen == 0b0101) {
+    if (current > 32000) {
+      current = 32000
+      LOGD("Current can not exceed 32000 nA")
+    }
+  } else if (cnfg_bioz.bit.fcgen == 0b0100) {
+    if (current > 96000) {
+      current = 96000
+      LOGD("Current can not exceed 96000 nA")
+    }
+  }
+
+  if (current == 0) {
+    // Disabled ---------------------------------
+    cnfg_bioz.cmag = 0b000;
+    BIOZ_cgmag = 0;
+  }
+
+  else if (current >= 8000) {
+    // High current -----------------------------
+    cnfg_bioz_lc.bit.hi_lob = 1;
+    if        (current < 12000){
+      cnfg_bioz.cmag = 0b001;
+      BIOZ_cgmag = 8000;
+    } else if (current < 24000) {
+      cnfg_bioz.cmag = 0b010;
+      BIOZ_cgmag = 16000;
+    } else if (current < 40000) {
+      cnfg_bioz.cmag = 0b011;
+      BIOZ_cgmag = 32000;
+    } else if (current < 56000) {
+      cnfg_bioz.cmag = 0b100;
+      BIOZ_cgmag = 48000;
+    } else if (current < 72000) {
+      cnfg_bioz.cmag = 0b101;
+      BIOZ_cgmag = 64000;
+    } else if (current < 88000) {
+      cnfg_bioz.cmag = 0b110;
+      BIOZ_cgmag = 80000;
+    } else if (current == 96000) {
+      cnfg_bioz.cmag = 0b111;
+      BIOZ_cgmag = 96000;
+    }
+  
+  } else {
+    // Low current ------------------------------
+    cnfg_bioz.cmag = 0b001;
+    cnfg_bioz_lc.bit.hi_lob = 0;
+    if          (current < 80){
+      cnfg_bioz_lc.bit.lc2x = 0;
+      cnfg_bioz_lc.bit.cmag_lc = 0b001;
+      BIOZ_cgmag = 55;
+    } else {
+      cnfg_bioz_lc.bit.lc2x = 1;
+      if        (current < 165){
+        cnfg_bioz_lc.bit.cmag_lc = 0b001;
+        BIOZ_cgmag = 110;
+      } else if (current < 330){
+        cnfg_bioz_lc.bit.cmag_lc = 0b010;
+        BIOZ_cgmag = 220;
+      } else if (current < 550){
+        cnfg_bioz_lc.bit.cmag_lc = 0b011;
+        BIOZ_cgmag = 440;
+      } else if (current < 770){
+        cnfg_bioz_lc.bit.cmag_lc = 0b100;
+        BIOZ_cgmag = 660;
+      } else if (current < 990){
+        cnfg_bioz_lc.bit.cmag_lc = 0b101;
+        BIOZ_cgmag = 880;
+      } else {
+        cnfg_bioz_lc.bit.cmag_lc = 0b110;
+        BIOZ_cgmag = 1100;
+      }
+    } 
+  } // low current
+  
+  // Adjust CMRES 
+  // ------------
+  // Should be approximately  5000 / (drive current [µA]) [kΩ]
+  // BIOZ_cmag is in [nA]
+  uint32_t cmres = 5000 * 1000 / BIOZ_cgmag;
+  if        (cmres <= 5250) {
+    cnfg_bioz_lc.cmres = 0b1111; 
+    BIOZ_cmres = 5000;
+  } else if (cmres <= 6000) {
+    cnfg_bioz_lc.cmres = 0b1110; 
+    BIOZ_cmres = 5500;
+  } else if (cmres <= 7000) {
+    cnfg_bioz_lc.cmres = 0b1101; 
+    BIOZ_cmres = 6500;
+  } else if (cmres <= 8750) {
+    cnfg_bioz_lc.cmres = 0b1100; 
+    BIOZ_cmres = 7500;
+  } else if (cmres <= 11250) {
+    cnfg_bioz_lc.cmres = 0b1011; 
+    BIOZ_cmres = 10000;
+  } else if (cmres <= 16250) {
+    cnfg_bioz_lc.cmres = 0b1010; 
+    BIOZ_cmres = 12500;
+  } else if (cmres <= 30000) {
+    cnfg_bioz_lc.cmres = 0b1001; 
+    BIOZ_cmres = 20000;
+  } else if (cmres <= 60000) {
+    cnfg_bioz_lc.cmres = 0b1000; 
+    BIOZ_cmres = 40000;
+  } else if (cmres <= 90000) {
+    cnfg_bioz_lc.cmres = 0b0111; 
+    BIOZ_cmres = 80000;
+  } else if (cmres <= 13000) {
+    cnfg_bioz_lc.cmres = 0b0101; 
+    BIOZ_cmres = 100000;
+  } else if (cmres <= 240000) {
+    cnfg_bioz_lc.cmres = 0b0011; 
+    BIOZ_cmres = 160000;
+  } else if (cmres >240000) {
+    cnfg_bioz_lc.cmres = 0b0001; 
+    BIOZ_cmres = 320000;
+  }
+
+  writeRegister(CNFG_BIOZ, cnfg_bioz.all);
+  writeRegister(CNFG_BIOZ_LC, cnfg_bioz_lc.all);
+
+  LOGI("BioZ current set to %5u [nA]", BIOZ_cgmag);
+  LOGI("BioZ common mode resistance set to %5u [nA]", BIOZ_cres);
+
+}
+
+void MAX30001G::setBIOZfrequency(uint16_t frequency){
+  /*
+  * Set the BIOZ frequency modulation
+  * After setting the the frequency, the current magnitude will need to be set.
+  */
+
+  // BIOZ CURRENT GENERATOR MODULATION FREQUENCY (Hz)
+  // BIOZ_FCGEN[3:0]  FMSTR[1:0] = 00 FMSTR[1:0] = 01  FMSTR[1:0] = 10  FMSTR[1:0] = 11   CMAG allowed
+  //                  fMSTR= 32,768Hz fMSTR = 32,000Hz fMSTR = 32,000Hz fMSTR = 31,968Hz  
+  // 0000             131,072         128,000          128,000         127,872            all
+  // 0001              81,920          80,000           80,000          81,920            all
+  // 0010              40,960          40,000           40,000          40,960            all
+  // 0011              18,204          17,780           17,780          18,204            all
+  // 0100               8,192           8,000            8,000           7,992            not 111
+  // 0101               4,096           4,000            4,000           3,996            000 to 011
+  // 0110               2,048           2,000            2,000           1,998            000 to 010
+  // 0111               1,024           1,000            1,000             999            000, 001
+  // 1000                 512             500              500             500            000, 001
+  // 1001                 256             250              250             250            000, 001
+  // 101x,11xx            128             125              125             125            000, 001
+
+  max30001_cnfg_bioz_t cnfg_bioz;
+  cnfg_bioz.all = readRegister(CNFG_BIOZ);
+  
+  max30001_cnfg_gen_t cnfg_gen;
+  cnfg_gen.all = readRegister(CNFG_GEN);
+
+  if (frequency >= 104000) {
+    cnfg_bioz.bit.fcgen = 0b0000;
+    if        (cnfg_gen.fmstr == 0b00) {
+      BIOZ_frequency = 131072;
+    } else if (cnfg_gen.fmstr == 0b01) {
+      BIOZ_frequency = 128000;
+    } else if (cnfg_gen.fmstr == 0b10) {
+      BIOZ_frequency = 128000;
+    } else if (cnfg_gen.fmstr == 0b11) {
+      BIOZ_frequency = 127872;
+    }
+  } else if (frequency > 60000) {
+    cnfg_bioz.bit.fcgen = 0b0001;
+    if        (cnfg_gen.fmstr == 0b00) {
+      BIOZ_frequency = 81920;
+    } else if (cnfg_gen.fmstr == 0b01) {
+      BIOZ_frequency = 80000;
+    } else if (cnfg_gen.fmstr == 0b10) {
+      BIOZ_frequency = 80000;
+    } else if (cnfg_gen.fmstr == 0b11) {
+      BIOZ_frequency = 81920;
+    }
+  } else if (frequency > 29000) {
+    cnfg_bioz.bit.fcgen = 0b0010;
+    if        (cnfg_gen.fmstr == 0b00) {
+      BIOZ_frequency = 40960;
+    } else if (cnfg_gen.fmstr == 0b01) {
+      BIOZ_frequency = 40000;
+    } else if (cnfg_gen.fmstr == 0b10) {
+      BIOZ_frequency = 40000;
+    } else if (cnfg_gen.fmstr == 0b11) {
+      BIOZ_frequency = 40960;
+    }
+  } else if (frequency > 13000) {
+    cnfg_bioz.bit.fcgen = 0b0011;
+    if        (cnfg_gen.fmstr == 0b00) {
+      BIOZ_frequency = 18204;
+    } else if (cnfg_gen.fmstr == 0b01) {
+      BIOZ_frequency = 17780;
+    } else if (cnfg_gen.fmstr == 0b10) {
+      BIOZ_frequency = 17780;
+    } else if (cnfg_gen.fmstr == 0b11) {
+      BIOZ_frequency = 18204;
+    }
+  } else if (frequency > 6000) {
+    cnfg_bioz.bit.fcgen = 0b0100;
+    if        (cnfg_gen.fmstr == 0b00) {
+      BIOZ_frequency = 8192;
+    } else if (cnfg_gen.fmstr == 0b01) {
+      BIOZ_frequency = 8000;
+    } else if (cnfg_gen.fmstr == 0b10) {
+      BIOZ_frequency = 8000;
+    } else if (cnfg_gen.fmstr == 0b11) {
+      BIOZ_frequency = 7992;
+    }
+  } else if (frequency > 3000) {
+    cnfg_bioz.bit.fcgen = 0b0101;
+    if        (cnfg_gen.fmstr == 0b00) {
+      BIOZ_frequency = 4096;
+    } else if (cnfg_gen.fmstr == 0b01) {
+      BIOZ_frequency = 4000;
+    } else if (cnfg_gen.fmstr == 0b10) {
+      BIOZ_frequency = 4000;
+    } else if (cnfg_gen.fmstr == 0b11) {
+      BIOZ_frequency = 3996;
+    }
+  } else if (frequency > 1500) {
+    cnfg_bioz.bit.fcgen = 0b0110;
+    if        (cnfg_gen.fmstr == 0b00) {
+      BIOZ_frequency = 2048;
+    } else if (cnfg_gen.fmstr == 0b01) {
+      BIOZ_frequency = 2000;
+    } else if (cnfg_gen.fmstr == 0b10) {
+      BIOZ_frequency = 2000;
+    } else if (cnfg_gen.fmstr == 0b11) {
+      BIOZ_frequency = 1998;
+    }
+  } else if (frequency > 750) {
+    cnfg_bioz.bit.fcgen = 0b0111;
+    if        (cnfg_gen.fmstr == 0b00) {
+      BIOZ_frequency = 1024;
+    } else if (cnfg_gen.fmstr == 0b01) {
+      BIOZ_frequency = 1000;
+    } else if (cnfg_gen.fmstr == 0b10) {
+      BIOZ_frequency = 1000;
+    } else if (cnfg_gen.fmstr == 0b11) {
+      BIOZ_frequency = 999;
+    }
+  } else if (frequency > 375) {
+    cnfg_bioz.bit.fcgen = 0b1000;
+    if        (cnfg_gen.fmstr == 0b00) {
+      BIOZ_frequency = 512;
+    } else if (cnfg_gen.fmstr == 0b01) {
+      BIOZ_frequency = 500;
+    } else if (cnfg_gen.fmstr == 0b10) {
+      BIOZ_frequency = 500;
+    } else if (cnfg_gen.fmstr == 0b11) {
+      BIOZ_frequency = 500;
+    }
+  } else if (frequency > 187) {
+    cnfg_bioz.bit.fcgen = 0b1001;
+    if        (cnfg_gen.fmstr == 0b00) {
+      BIOZ_frequency = 256;
+    } else if (cnfg_gen.fmstr == 0b01) {
+      BIOZ_frequency = 250;
+    } else if (cnfg_gen.fmstr == 0b10) {
+      BIOZ_frequency = 250;
+    } else if (cnfg_gen.fmstr == 0b11) {
+      BIOZ_frequency = 250;
+    }
+  } else if (frequency > 0) {
+    cnfg_bioz.bit.fcgen = 0b1010;
+    if        (cnfg_gen.fmstr == 0b00) {
+      BIOZ_frequency = 128;
+    } else if (cnfg_gen.fmstr == 0b01) {
+      BIOZ_frequency = 125;
+    } else if (cnfg_gen.fmstr == 0b10) {
+      BIOZ_frequency = 125;
+    } else if (cnfg_gen.fmstr == 0b11) {
+      BIOZ_frequency = 125;
+    }
+  }
+
+  writeRegister(CNFG_BIOZ, cnfg_bioz.all);
+  LOGI("BIOZ frequency set to %5u [Hz]", BIOZ_frequency);
+
+}
+// After setting the the frequency, the current magnitude will need to be set.
+
+void MAX30001G::setBIOZLeadDetection() {
+}
+
+void MAX30001G::synch(void){
+  writeRegister(SYNCH, 0x000000);  
+}
+
+void MAX30001G::swReset(void){
+  writeRegister(SW_RST, 0x000000);
+  delay(100);
+}
+
+void MAX30001G::fifoReset(void){
+  writeRegister(FIFO_RST, 0x000000);
 }
 
 /******************************************************************************************************/
 // Registers
 /******************************************************************************************************/
-/*
-
-  TIAGAIN 
-  -------
-  [23:16] must be 0
-  [15] separate gain mode
-    0 RF, CF, and stage 2 gain settings are the same for both LED2 and LED1
-      Values are set in RF_LED2, CF_LED2, STAGE2EN2 and STG2GAIN2 in TIA_AMB_GAIN
-    1 RF, CF, and stage 2 gain can be independtly set for LED1 and LED2
-      LED1: RF_LED1, CF_LED1, STAGE2EN1 in TIAGAIN
-      LED2: RF_LED2, CF_LED2, STAGE2EN1 in TIA_AMB_GAIN
-  [14] Stage 2 for LED1, 
-    0 disabled by default
-    1 with gain set in STG2GAIN1 below
-  [13:11] must be 0
-  [10:8] STG2GAIN1: 000 linear gain 1, 001/1.5, 010/2, 011/3, 100/4
-  [7:3] CF_LED1 00000 5pF, 00001 5+5pF, 00010 15+5pF, 00100 25+5pF, 01000 50+5pF, 10000 150+5pF
-  [2:0] RF_LED1 000 500k, 001/250k, 010 100k, 011 50k, 100 25k, 101 10k, 110 1M, 111 None
-
-  TIA_AMB_GAIN
-  ------------
-  [23:20] must be 0
-  [19:16] Ambient DAC cancellation current: 
-    00000 0 mu Amp
-    1,2,3,4,5,6,7,8,9,
-    00101 10 mu Amp
-  [15] Filter Corner Selection
-    0 500Hz
-    1 1000Hz
-  [14] Stage 2 for LED2, 
-    0 stage 2 bypassed
-    1 with gain set in STG2GAIN2 below
-  [13:11] must be 0
-  [10:8] STG2GAIN2: 000 linear gain 1, 001/1.5, 010/2, 011/3, 100/4
-  [7:3] CF_LED2 00000 5pF, 00001 5+5pF, 00010 15+5pF, 00100 25+5pF, 01000 50+5pF, 10000 150+5pF
-  [2:0] RF_LED2 000 500k, 001/250k, 010 100k, 011 50k, 100 25k, 101 10k, 110 1M, 111 None
-
-  LEDCNTRL
-  --------
-  [23:18] must be 0
-  [17:16] LED_RANGE 
-       [0.75, 0.5 1.0V]
-    00 150/100/200mA  (default), 
-    01 75/50/100, 
-    10 150/100/200, 
-    11 Tx Off
-  [15:8] LED1/256*Full_Scale_Current from above
-  [7:0]  LED2/256*Full_Scale_Current from above
-
-  CONTROL0 
-  --------
-  [23:4] must be 0
-  [3] Software Reset
-  [2] Enable Diagnostics, 1 starts diagnostics  and results are shown in Diagnostics Flags Resigster DIAG
-  [1] Timer Counter Reset 0 is normal operation, 1 counters are in reset state
-  [0] 0 SPI read, 0 is disabled after reset, 1 read is enabled
-
-  CONTROL1
-  --------
-  [23:12] must be 0
-  [11:9] CLKALMPIN, clocks on ALM pins
-        PD_ALM                    LED_ALM
-    000 Sample LED2 pulse         Sample LED1 pulse
-    001 LED2 LED pulse            LED1 LED pulse
-    010 Sample LED2 ambient pulse Sample LED1 ambient pulse
-    011 LED2 convert              LED1 convert
-    100 LED2 ambient convert      LED1 ambient convert
-    101 None                      None
-    110 None                      None
-    111 None                      None
-  [8]   Timer Enable, after reset all internal clocks are disabled
-  [7:0] Number of samples to be avaeraged -1, setting to 3 restults in 4 averaged samples
-
-  CONTROL2
-  --------
-  [23:19] must be 0
-  [18:17] TX_REF, reference voltage
-    00 0.75V default
-    01 0.5V
-    10 1.0V
-    11 0.75V
-  [16] 0 no RST Clock on PD_ALM, normal
-  [15] 0 internal ADC is active
-  [14:12] must be 0 
-  [11] 0 LED driver is H-Bridge, 1 is push pull
-  [10] digital output mode 0 is normal 1 is tristate (needed for multiple device SPI wen SPI is inactive)
-  [9] Oscillator disable, 0 enable oscillator based on external crystal
-  [8] 0 fast diagnostic mode 8ms after reset
-  [7:3] must be 0
-  [2] 1 Tx power down 
-  [1] 1 Rs power down
-  [0] 1 entire AFE power down
-
-  DIAG (read only)
-  ----
-  [23:13] must be 0
-  [12] Photo Diode, Alarm, 0 no alarm
-  [11] LED Alarm
-  [10] LED1 open
-  [9]  LED2 open
-  [8] LED short
-  [7] Output P to Ground
-  [6] Output N to Ground
-  [5] Photo Diode Open
-  [4] Photo Diode Short
-  [3] In N to Ground
-  [2] In P to Ground
-  [1] In N to LED
-  [0] In P to LED
-
-*/
-
-/******************************************************************************************************/
-// Clear
-/******************************************************************************************************/
-
-void AFE44XX::clearCNTRL0() {
-  /* Reset the Control0 register
-     ---------------------------
-  */
-  LOGD("AFE: clear control0 register");
-  writeRegister(CONTROL0, CLEAR); // clear all bits
-  LOGD("AFE: cleared control 0");
+void MAX30001G::readAllRegisters() {
+  status.all       = readRegister(STATUS);
+  en_int.all       = readRegister(EN_INT);
+  en_int2.all      = readRegister(EN_INT2);
+  mngr_int.all     = readRegister(MNGR_INT);
+  mngr_dyn.all     = readRegister(MNGR_DYN);
+  info.all         = readRegister(INFO,);
+  cnfg_gen.all     = readRegister(CNFG_GEN);
+  cnfg_cal.all     = readRegister(CNFG_CAL);
+  cnfg_emux.all    = readRegister(CNFG_EMUX);
+  cnfg_ecg.all     = readRegister(CNFG_ECG);
+  cnfg_bmux.all    = readRegister(CNFG_BMUX);
+  cnfg_bioz.all    = readRegister(CNFG_BIOZ);
+  cnfg_bioz_lc.all = readRegister(CNFG_BIOZ_LC);
+  cnfg_rtor1.all   = readRegister(CNFG_RTOR1);
+  cnfg_rtor2.all   = readRegister(CNFG_RTOR2);
 }
 
-/******************************************************************************************************/
-// Reset
-/******************************************************************************************************/
-
-void AFE44XX::reset() {
-  /* Reset the AFE with a soft reset and enable SPI read
-     ---------------------------------------------------
+void MAX30001G::dumpRegisters() {
+  /*
+  Read and report all known register
   */
-  LOGD("AFE: soft reset");
-  writeRegister(CONTROL0, CLEAR); // clear all bits
-  // Set the software reset bit in the CONTROL0 register
-  writeRegister(CONTROL0, SW_RST);
-  // Wait for a short period to allow the reset to complete
-  delay(10);  // 10 milliseconds should be sufficient
-  LOGD("AFE: soft reset completed");
+  printStatus();
+  printEN_INT(en_int);
+  printEN_INT(en_int2);
+  printMNGR_INT();
+  printMNGR_DYN();
+  printInfo();
+  printCNFG_GEN();
+  printCNFG_CAL();
+  printCNFG_EMUX();
+  printCNFG_ECG();
+  printCNFG_BMUX();
+  printCNFG_BIOZ();
+  printCNFG_BIOZ_LC();
+  printCNFG_RTOR1();
+  printCNFG_RTOR2();
+}
+
+max30001_info_t MAX30001::readInfo(void)
+{
+  /*
+  Read content of information register
+  This should contain the revision number of the chip
+  It should also include part ID but its not clear where in the register it is.
+  */
+    max30001_info_t info;
+    info.all = readRegister(INFO, info);
+    return info;
+}
+
+void MAX30001::printStatus() {
+  LOGI("MAX30001 Status Register:");
+  LOGI("----------------------------");
+ 
+  LOGI("ECG ------------------------");
+  
+  if (status.bit.dcdoffint ==1) {
+    LOGI("Lead ECG lead are off:");
+    if (status.bit.ldoff_nl == 1) {
+      LOGI("Lead ECGN below VTHL") ;
+    }else if (status.bit.ldoff_nh == 1) {
+      LOGI("Lead ECGN above VTHH") ;
+    } 
+    if (status.bit.ldoff_pl == 1) {
+      LOGI("Lead ECGP below VHTL") ;
+    } else if (status.bit.ldoff_ph == 1) {
+      LOGI("Lead ECGP above VHTL") ;
+    } 
+  } else {
+    LOGI("Lead ECG lead are on.");
+  }
+
+  LOGI("ECG FIFO interrupt is %s", status.bit.eint ? "on" : "off");
+  LOGI("ECG FIFO overflow is %s", status.bit.eovf ? "on" : "off");
+  LOGI("ECG Sample interupt %s", status.bit.eint ? "occured", "not present");
+  LOGI("ECG R to R interrupt %s", status.bit.print ? "occured", "not present");
+  LOGI("ECG Fast Recovery interrupt is %s", status.bit.fstint ? "on" : "off");
+
+  LOGI("BIOZ -----------------------");
+
+  if (status.bit.bcgmon == 1) {
+    LOGI("BIOZ leads are off.");
+    if (status.bit.bcgmn == 1) { LOGI("BIOZ N lead off"); }
+    if (status.bit.bcgmP == 1) { LOGI("BIOZ p lead off"); }
+    if (status.bit.bunder == 1) { LOGI("BIOZ ouput magnitude under BIOZ_LT (4 leads)"); }
+    if (status.bit.bover == 1) { LOGI("BIOZ ouput magnitude under BIOZ_HT (4 leads)"); }
+  } else {
+    LOGI("BIOZ leads are on.");
+  }
+  LOGI("BIOZ ultra low power leads interrupt is %s", status.bit.lonint ? "on" : "off");
+  LOGI("PLL %s", status.bit.pllint ? "PLL" "is working",  "has lost signal")
+}
+
+void MAX30001::printEN_INT(max30001_en_int_t en_int) {
+  LOGI("MAX30001 Interrupts:");
+  LOGI("----------------------------");
+  if (en_int.bit.int_type == 0) {
+    LOGI("Interrupts are disabled");
+  } else if (en_int.bit.int_type == 1) {
+    LOGI("Interrupt is CMOS driver");
+  } else if (en_int.bit.int_type == 2) {
+    LOGI("Interrupt is Open Drain driver");
+  } else if (en_int.bit.int_type == 3) {
+    LOGI("Interrupt is Open Drain with 125k pullup driver");
+  }
+  LOGI("PLL interrupt is                                %s", en_int.bit.en_pllint ? "enabled" : "disabled");
+  LOGI("Sample synch pulse is                           %s", en_int.bit.en_samp ? "enabled" : "disabled");
+  LOGI("R to R detection interrupt is                   %s", en_int.bit.en_rrint ? "enabled" : "disabled");
+  LOGI("Ultra low power leads on detection interrupt is %s", en_int.bit.en_samp ? "enabled" : "disabled");
+  LOGI("BIOZ current monitor interrupt is               %s", en_int.bit.en_samp ? "enabled" : "disabled");
+  LOGI("BIOZ under range interrupt is                   %s", en_int.bit.en_bunder ? "enabled" : "disabled");
+  LOGI("BIOZ over range interrupt is                    %s", en_int.bit.en_bover ? "enabled" : "disabled");
+  LOGI("BIOZ FIFO overflow interrupt is                 %s", en_int.bit.en_bovf ? "enabled" : "disabled");
+  LOGI("BIOZ FIFO interrupt is                          %s", en_int.bit.en_bint ? "enabled" : "disabled");
+  LOGI("ECG dc lead off interrupt is                    %s", en_int.bit.en_dcloffint ? "enabled" : "disabled");
+  LOGI("ECG fast recovery interrupt is                  %s", en_int.bit.en_fstint ? "enabled" : "disabled");
+  LOGI("ECG FIFO overflow interrupt is                  %s", en_int.bit.en_eovf ? "enabled" : "disabled");
+  LOGI("ECG FIFO interrupt is                           %s", en_int.bit.en_eint ? "enabled" : "disabled");
+
+}
+
+void MAX30001::printMNGR_INT() {
+  LOGI("MAX30001 Interrupt Management:");
+  LOGI("----------------------------");
+
+  if (mngr_int.bit.samp_it == 0) {
+    LOGI("Sample interrupt on every sample")
+  } else if (mngr_int.bit.samp_it == 1) {
+    LOGI("Sample interrupt on every 2nd sample")
+  } else if (mngr_int.bit.samp_it == 2) {
+    LOGI("Sample interrupt on every 4th sample")
+  } else if (mngr_int.bit.samp_it == 3) {
+    LOGI("Sample interrupt on every 16th sample")
+  }
+
+  LOGI("Sample synchronization pulse is cleared ", mngr_int.bit.clr_samp ? "automatically" : "on status read")
+
+  if (mngr_int.bit.clr_rrint == 0) {
+    LOGI("RtoR interrupt is cleared on status read");
+  } else if (mngr_int.bit.clr_rrint == 1) {
+    LOGI("RtoR interrupt is cleared RTOR read");
+  } else if (mngr_int.bit.clr_rrint == 2) {
+    LOGI("RtoR interrupt is cleared automatically");
+  } else {
+    LOGI("RtoR interrupt clearance is not defined");
+  }
+
+  LOGI("FAST_MODE interrupt %s", mngr_int.bit.clr_fast ? "remains on until FAST_MODE is disengaged" : "is cleared on status read")
+  LOGI("BIOZ FIFO interrupt after %u samples", mngr_int.bit.b_fit+1);
+  LOGI("ECG FIFO interrupt after %u samples", mngr_int.bit.e_fit+1);
+}
+
+void MAX30001::printMNGR_DYN(){
+  LOGI("MAX30001 Dynamic Modes:");
+  LOGI("----------------------------");
+  if (cnfg_gen.bit.en_bloff >= 2) {
+    LOGI("BIOZ lead off hi threshold +/-%u * ", 32*mngr_dyn.bit.bloff_hi_it);
+    LOGI("BIOZ lead off low threshold +/-%u * ", 32*mngr_dyn.bit.bloff_lo_it);
+  } else {
+    LOGI("BIOZ lead off thresholds not applicable");
+  }
+
+  if (mngr_gyn.bit.fast == 0) {
+    LOGI("ECG fast recovery is disabled");
+  } else if (mngr_gyn.bit.fast == 1) {
+    LOGI("ECG manual fast recovery is enabled");
+  } else if (mngr_gyn.bit.fast == 2) {
+    LOGI("ECG Automatic Fast recovery is enabled");
+    LOGI("ECG Fast recovery threshold is %u", 2048*mngr_dyn.bit.fast_th);
+  } else {
+    LOGI("ECG Fast recovery is not defined");
+  }
+
+}
+
+void MAX30001::printInfo()
+{
+  /*
+  Print the information register
+  */
+  LOGI("MAX30001 Information Register:");
+  LOGI("----------------------------");
+  LOGI("Nibble 1:       %u", info.bit.n1);
+  LOGI("Nibble 2:       %u", info.bit.n2);
+  LOGI("Nibble 3:       %u", info.bit.n3);
+  LOGI("Constant 1: (1) %u", info.bit.c1);
+  LOGI("2 Bit:          %u", info.bit.n4);
+  LOGI("Revision:       %u", info.revision);
+  LOGI("Constant 2 (5): %u", info.c2);
+}
+
+void MAX30001::printCNFG_GEN()
+{
+  LOGI("MAX30001 General Config:");
+  LOGI("----------------------------");
+  LOGI("ECG  is %s", cnfg_gen.bit.en_ecg ? "enabled" : "disabled");
+  LOGI("BIOZ is %s", cnfg_gen.bit.en_bioz ? "enabled" : "disabled");
+  if (confg_gen.bit.fmstr == 0) {
+    LOGI("FMSTR is 32768Hz, global var: %f", fmstr);
+    LOGI("TRES is 15.26us, global var: %f", tres);
+    LOGI("ECG progression is 512Hz, global var: %f", ECG_progression);    
+  } else if (confg_genbit.fmstr == 1) {
+    LOGI("FMSTR is 32000Hz, global var: %f", fmstr);
+    LOGI("TRES is 15.63us, global var: %f", tres);
+    LOGI("ECG progression is 500Hz, global var: %f", ECG_progression);    
+  } else if (confg_genbit.fmstr == 2) {
+    LOGI("FMSTR is 32000Hz, global var: %f", fmstr);
+    LOGI("TRES is 15.63us, global var: %f", tres);
+    LOGI("ECG progression is 200Hz, global var: %f", ECG_progression);    
+  } else if (confg_genbit.fmstr == 3) {
+    LOGI("FMSTR is 31968.78Hz, global var: %f", fmstr);
+    LOGI("TRES is 15.64us, global var: %f", tres);
+    LOGI("ECG progression is 199.8049Hz, global var: %f", ECG_progression);    
+  } else {
+    LOGI("FMSTR is undefined");
+  }
+
+  LOGI("          --------------------------");
+  if (cnfg_gen.bit.en_rbias > 0) {}
+    if        ((cnfg_gen.bit.en_rbias == 1) && (cnfg_gen.bit.en_ecg == 1)) {
+      LOGI("ECG bias resistor is enabled");
+    } else if ((cnfg_gen.bit.en_rbias == 2) && (cnfg_gen.bit.en_bioz == 1)) {
+      LOGI("BIOZ bias resistor is enabled");
+    } else {
+      LOGI("ECG and BIOZ bias resistors are undefined");
+    }
+    LOGI("N bias resistance is %s", cnfg_gen.bit.rbiasn ? "enabled" : "disabled");
+    LOGI("P bias resistance is %s", onfg_gen.bit.rbiasp ? "enabled" : "disabled");
+    if (cnfg_gen.bit.rbiasv == 0) {
+      LOGI("bias resistor is 50MOhm");
+    } else if (cnfg_gen.bit.rbiasv == 1) {
+      LOGI("bias resistor is 100MOhm");
+    } else if (cnfg_gen.bit.rbiasv == 2) {
+      LOGI("bias resistor is 200MOhm");
+    } else {
+      LOGI("bias resistor is not defined");
+    }
+  else {
+    LOGI("ECG and BIOZ bias resistors are disabled");
+  }
+
+  LOGI("          --------------------------");
+  if (cnfg_gen.bit.en_dcloff == 1) {
+    LOGI("ECG lead off detection is enabled");
+    if (cnfg_gen.bit.vth == 0) {
+      LOGI("ECG lead off/on threshold is VMID +/-300mV")
+    } else if (cnfg_gen.bit.vth == 1) {
+      LOGI("ECG lead off/on threshold is VMID +/-400mV")
+    } else if (cnfg_gen.bit.vth == 2) {
+      LOGI("ECG lead off/on threshold is VMID +/-450mV")
+    } else if (cnfg_gen.bit.vth == 3) {
+      LOGI("ECG lead off/on threshold is VMID +/-5000mV")
+    } else {
+      LOGI("ECG lead off/on threshold is not defined")
+    }
+
+    if (cnfg_gen.bit.imag == 0) {
+      LOGI("ECG lead off/on current source is 0nA")
+    } else if (cnfg_gen.bit.imag == 1) {
+      LOGI("ECG lead off/on current source is 5nA")
+    } else if (cnfg_gen.bit.imag == 2) {
+      LOGI("ECG lead off/on current source is 10nA")
+    } else if (cnfg_gen.bit.imag == 3) {
+      LOGI("ECG lead off/on current source is 20nA")
+    } else if (cnfg_gen.bit.imag == 4) {
+      LOGI("ECG lead off/on current source is 50nA")
+    } else if (cnfg_gen.bit.imag == 5) {
+      LOGI("ECG lead off/on current source is 100nA")
+    } else {
+      LOGI("ECG lead off/on threshold is not defined")
+    }
+
+    LOGI("ECG lead off/on polarity is %s", cnfg_gen.bit.dcloff_ipol ? "P is pull down" : "P is pull up");
+
+  } else {
+    LOGI("ECG lead off detection is disabled");
+  }
+
+  LOGI("          --------------------------");
+  if (cnfg_gen.bit.en_ulp_lon == 0) {
+    LOGI("ECG Ultra low power leads on detection is disabled");
+  } else if (cnfg_gen.bit.en_ulp_lon == 1) {
+    LOGI("ECG Ultra low power leads on detection is enabled");
+  } else{
+    LOGI("ECG Ultra low power leads on detection is not defined");
+  }
+
+  LOGI("          --------------------------");
+  if (cnfg_gen.bit.en_bloff > 0) {
+    LOGI("BIOZ lead off detection is enabled");
+    if (cnfg_gen.bit.en_bloff == 1) {
+      LOGI("BIOZ lead off/on is under range detection for 4 electrodes operation")
+    } else if (cnfg_gen.bit.en_bloff == 2) {
+      LOGI("BIOZ lead off/on is over range detection for 2 and 4 electrodes operation")
+    } else if (cnfg_gen.bit.en_bloff == 3) {
+      LOGI("BIOZ lead off/on is under and over range detection for 4 electrodes operation")
+    } else {
+      LOGI("BIOZ lead off/on detection is not defined")
+    }
+
+  } else {
+    LOGI("BIOZ lead off detection is disabled");
+  }
+
+}
+
+void MAX30001::printCNFG_CAL(){
+  LOGI("MAX30001 Internal Voltage Calibration Source:");
+  LOGI("---------------------------------------------");
+  if (cnfg_cal.bit.vcal == 1){
+    LOGI("Internal voltage calibration source is enabled");
+    LOGI ("Voltage calibration source is %s", cnfg_cal.bit.vmode ? "bi polar" : "unipolar");
+    LOGI ("Magnitude is %s", cnfg_cal.bit.vmode ? "0.25mV" : "0.5mV");
+    if (cnfg_cal.bit.fcal == 0) {
+      LOGI ("Frequency is %u Hz", fmstr/128);
+    } else if(cnfg_cal.bit.fcal == 1) {
+      LOGI ("Frequency is %u Hz", fmstr/512);
+    } else if(cnfg_cal.bit.fcal == 2) {
+      LOGI ("Frequency is %u Hz", fmstr/2048);
+    } else if(cnfg_cal.bit.fcal == 3) {
+      LOGI ("Frequency is %u Hz", fmstr/8192);
+    } else if(cnfg_cal.bit.fcal == 4) {
+      LOGI ("Frequency is %u Hz", fmstr/(2^15));
+    } else if(cnfg_cal.bit.fcal == 5) {
+      LOGI ("Frequency is %u Hz", fmstr/(2^17));
+    } else if(cnfg_cal.bit.fcal == 6) {
+      LOGI ("Frequency is %u Hz", fmstr/(2^19));
+    } else if(cnfg_cal.bit.fcal == 6) {
+      LOGI ("Frequency is %u Hz", fmstr/(2^21));
+    } else {
+      LOGI ("Frequency is not defined");
+    }
+  } else { 
+    LOGI("Internal voltage calibration source is disabled");
+  }
+  if (cnfg_cal.bit.fifty == 1) {
+    LOGI("50%% duty cycle");
+  } else {
+    LOGI("Pule length %u [us]", cnfg_cal.bit.thigh*CAL_resolution);
+  }
+}
+
+void MAX30001::printCNFG_EMUX(){
+  LOGI("MAX30001 ECG multiplexer:");
+  LOGI("-------------------------");
+  
+  if (cnfg_emux.bit.caln_sel = 0) {
+    LOGI("ECG N is not connected to calibration signal");
+  } else if (cnfg_emux.bit.caln_sel == 1) {
+    LOGI("ECG N is connected to V_MID");
+  } else if (cnfg_emux.bit.caln_sel == 2) {
+    LOGI("ECG N is connected to V_CALP");
+  } else if (cnfg_emux.bit.caln_sel == 3) {
+    LOGI("ECG N is connected to V_CALN");
+  }
+  if (cnfg_emux.bit.calp_sel = 0) {
+    LOGI("ECG P is not connected to calibration signal");
+  } else if (cnfg_emux.bit.calp_sel == 1) {
+    LOGI("ECG P is connected to V_MID");
+  } else if (cnfg_emux.bit.calp_sel == 2) {
+    LOGI("ECG P is connected to V_CALP");
+  } else if (cnfg_emux.bit.calp_sel == 3) {
+    LOGI("ECG P is connected to V_CALN");
+  }
+  LOGI("ECG N is %s from AFE", cnfg_emux.bit.openn ? "disconnected" : "connected");
+  LOGI("ECG P is %s from AFE", cnfg_emux.bit.openp ? "disconnected" : "connected");
+  LOGI("ECG input polarity is %s", cnfg_emux.bit.openp ? "inverted" : "not inverted");
+}
+
+void MAX30001::printCNFG_ECG(){
+  LOGI("MAX30001 ECG settings:");
+  LOGI("----------------------");
+  
+  NEED TO CHECK HERE SEEMS INCOMPLETE
+
+  if (cnfg_ecg.bit.fmstr == 0) {
+    if        (cfg_ecg.bit.rate = 0) {
+      LOGI("ECG digital low pass filter is bypassed, global: %,2f", ECG_lpf);
+    } else if (cfg_ecg.bit.rate = 1) {
+      if        (cnfg_ecg.bit.dlpf = 0) {
+        LOGI("ECG digital low pass filter is bypassed, global: %,2f", ECG_lpf);
+      } else if (cnfg_ecg.bit.dlpf = 1) {
+        LOGI("ECG digital low pass filter is 40.96Hz, global: %,2f", ECG_lpf);
+      } else if (cnfg_ecg.bit.dlpf = 2) {
+        LOGI("ECG digital low pass filter is 102.4Hz, global: %,2f", ECG_lpf);
+      } else if (cnfg_ecg.bit.dlpf = 3) {
+        LOGI("ECG digital low pass filter is 153.6Hz, global: %,2f", ECG_lpf);
+      }
+    } else if (cfg_ecg.bit.rate = 2) {
+      if        (cnfg_ecg.bit.dlpf = 0) {
+        LOGI("ECG digital low pass filter is bypassed, global: %,2f", ECG_lpf);
+      } else if (cnfg_ecg.bit.dlpf = 1) {
+        LOGI("ECG digital low pass filter is 40.96Hz, global: %,2f", ECG_lpf);
+      } else if (cnfg_ecg.bit.dlpf = 2) {
+        LOGI("ECG digital low pass filter is 102.4Hz, global: %,2f", ECG_lpf);
+      } else if (cnfg_ecg.bit.dlpf = 3) {
+        LOGI("ECG digital low pass filter is 40.96Hz, global: %,2f", ECG_lpf);
+      }  
+    }
+
+  } else if (cnfg_ecg.bit.fmstr == 1) {
+    if        (cfg_ecg.bit.rate = 0) {
+          LOGI("ECG digital low pass filter is bypassed, global: %,2f", ECG_lpf);
+    } else if (cfg_ecg.bit.rate = 1) {
+      if        (cnfg_ecg.bit.dlpf = 0) {
+        LOGI("ECG digital low pass filter is bypassed, global: %,2f", ECG_lpf);
+      } else if (cnfg_ecg.bit.dlpf = 1) {
+        LOGI("ECG digital low pass filter is 40.00Hz, global: %,2f", ECG_lpf);
+      } else if (cnfg_ecg.bit.dlpf = 2) {
+        LOGI("ECG digital low pass filter is 100.0Hz, global: %,2f", ECG_lpf);
+      } else if (cnfg_ecg.bit.dlpf = 3) {
+        LOGI("ECG digital low pass filter is 150.0Hz, global: %,2f", ECG_lpf);
+      }
+    } else if (cfg_ecg.bit.rate = 2) {
+      if        (cnfg_ecg.bit.dlpf = 0) {
+        LOGI("ECG digital low pass filter is bypassed, global: %,2f", ECG_lpf);
+      } else if (cnfg_ecg.bit.dlpf = 1) {
+        LOGI("ECG digital low pass filter is 27.68Hz, global: %,2f", ECG_lpf);
+      } else if (cnfg_ecg.bit.dlpf = 2) {
+        LOGI("ECG digital low pass filter is 27.68Hz, global: %,2f", ECG_lpf);
+      } else if (cnfg_ecg.bit.dlpf = 3) {
+        LOGI("ECG digital low pass filter is 27.68Hz, global: %,2f", ECG_lpf);
+      }  
+    }
+
+  } else if (cnfg_ecg.bit.fmstr == 2) {
+    if (cfg_ecg.bit.rate = 2) {
+      if        (cnfg_ecg.bit.dlpf = 0) {
+        LOGI("ECG digital low pass filter is bypassed, global: %,2f", ECG_lpf);
+      } else if (cnfg_ecg.bit.dlpf = 1) {
+        LOGI("ECG digital low pass filter is 40.00Hz, global: %,2f", ECG_lpf);
+      } else if (cnfg_ecg.bit.dlpf = 2) {
+        LOGI("ECG digital low pass filter is 40.00Hz, global: %,2f", ECG_lpf);
+      } else if (cnfg_ecg.bit.dlpf = 3) {
+        LOGI("ECG digital low pass filter is 40.00Hz, global: %,2f", ECG_lpf);
+      }  
+    }  else {
+      LOGI("ECG digital low pass filter is not set, global: %,2f", ECG_lpf);
+    }
+
+  } else if (cnfg_ecg.bit.fmstr == 3) {
+    if       (cfg_ecg.bit.rate = 2) {
+      if        (cnfg_ecg.bit.dlpf = 0) {
+        LOGI("ECG digital low pass filter is bypassed, global: %,2f", ECG_lpf);
+      } else if (cnfg_ecg.bit.dlpf = 1) {
+        LOGI("ECG digital low pass filter is 39.96Hz, global: %,2f", ECG_lpf);
+      } else if (cnfg_ecg.bit.dlpf = 2) {
+        LOGI("ECG digital low pass filter is 39.96Hz, global: %,2f", ECG_lpf);
+      } else if (cnfg_ecg.bit.dlpf = 3) {
+        LOGI("ECG digital low pass filter is 39.93Hz, global: %,2f", ECG_lpf);
+      }  
+    } else {
+      LOGI("ECG digital low pass filter is not set, global: %,2f", ECG_lpf);
+    }
+  }
+
+  LOGI("ECG digital high pass filter is %s Hz, global: %,2f", cnfg_ecg.bit.dhpf ? "bypassed" : "0.5", cnfg ECG_hpf);
+
+  LOGIS("ECG gain is ");
+  if (cnfg_ecg.bit.gain = 0) {
+    LOGIE("20V/V, global %d", ECG_gain );
+  } else if (cnfg_ecg.bit.gain == 1) {
+    LOGIE("40V/V, global %d", ECG_gain);
+  } else if (cnfg_ecg.bit.gain == 2) {
+    LOGIE("80V/V, global %d", ECG_gain);
+  } else if (cnfg_ecg.bit.gain == 3) {
+    LOGIE("160V/V, global %d", ECG_gain);
+  }
+
+  LOGI("ECG data rate is ");
+  if (cnfg_ecg.bit.rate == 0) {
+    if        (cnfg_gen.fmstr == 0b00) {
+      LOGI("512SPS, global %d", ECG_samplingRate);
+    } else if (cnfg_gen.fmstr == 0b01) {
+      LOGI("500SPS, global %d", ECG_samplingRate);
+    } else if (cnfg_gen.fmstr == 0b10) {
+      LOGI("not defined, global %d", ECG_samplingRate);
+    } else if (cnfg_gen.fmstr == 0b11) {
+      LOGI("not defined, global %d", ECG_samplingRate);
+    }
+  } else if (cnfg_ecg.bit.rate == 1) {
+    if        (cnfg_gen.fmstr == 0b00) {
+      LOGI("256SPS, global %d", ECG_samplingRate);
+    } else if (cnfg_gen.fmstr == 0b01) {
+      LOGI("250SPS, global %d", ECG_samplingRate);
+    } else if (cnfg_gen.fmstr == 0b10) {
+      LOGI("not defined, global %d", ECG_samplingRate);
+    } else if (cnfg_gen.fmstr == 0b11) {
+      LOGI("not defined, global %d", ECG_samplingRate);
+    }
+  } else if (cnfg_ecg.bit.rate == 2) {
+    if        (cnfg_gen.fmstr == 0b00) {
+      LOGI("128SPS, global %d", ECG_samplingRate);
+    } else if (cnfg_gen.fmstr == 0b01) {
+      LOGI("125SPS, global %d", ECG_samplingRate);
+    } else if (cnfg_gen.fmstr == 0b10) {
+      LOGI("200SPS, global %d", ECG_samplingRate);
+    } else if (cnfg_gen.fmstr == 0b11) {
+      LOGI("199.8SPS, global %d", ECG_samplingRate);
+    }
+  } else if (cnfg_ecg.bit.rate == 3) {
+    if        (cnfg_gen.fmstr == 0b00) {
+      LOGI("not defined, global %d", ECG_samplingRate);
+    } else if (cnfg_gen.fmstr == 0b01) {
+      LOGI("not defined, global %d", ECG_samplingRate);
+    } else if (cnfg_gen.fmstr == 0b10) {
+      LOGI("not defined, global %d", ECG_samplingRate);
+    } else if (cnfg_gen.fmstr == 0b11) {
+      LOGI("not defined, global %d", ECG_samplingRate);
+    }
+  }
+
+}
+
+void MAX30001::printCNFG_BMUX(){
+
+  LOGI("BIOZ MUX Configuration");
+  LOGI("----------------------");
+  LOGI("Calibration");
+  LOGIS("BIOZ Calibration source frequency is ");
+  if (confg_bmux.bit.fbist == 0) {
+    LOGIE("%5u", fmst/(2^13));
+  } else if (confg_bmux.bit.fbist == 1) {
+    LOGIE("%5u", fmst/(2^15));
+  } else if (confg_bmux.bit.fbist == 2) {
+    LOGIE("%5u", fmst/(2^17));
+  } else if (confg_bmux.bit.fbist == 3) {
+    LOGIE("%5u", fmst/(2^19));
+  }
+
+  if (confg_bmux.bit.rnom == 0) {
+    LOGIS("BIOZ nominal resistance is 5000 Ohm with modulated resistamce of ");
+    if        (confg_bmux.bit.rmod == 0) {
+      LOGIE("2960.7 mOhm");
+    } else if (confg_bmux.bit.rmod == 1) {
+      LOGIE("980.6 mOhm");
+    } else if (confg_bmux.bit.rmod == 2) {
+      LOGIE("247.5.7 mOhm");
+    } else if (confg_bmux.bit.rmod >=4) {
+      LOGIE("unmodulated");
+    }
+  } else if (confg_bmux.bit.rnom == 1) {
+    LOGIS("BIOZ nominal resistance is 2500 Ohm with modulated resistance of ");
+    if        (confg_bmux.bit.rmod == 0) {
+      LOGIE("740.4 mOhm");
+    } else if (confg_bmux.bit.rmod == 1) {
+      LOGIE("245.2 mOhm");
+    } else if (confg_bmux.bit.rmod == 2) {
+      LOGIE("61.9 mOhm");
+    } else if (confg_bmux.bit.rmod >= 4) {
+      LOGIE("unmodulated");
+    }
+  } else if (confg_bmux.bit.rnom == 2) {
+    LOGIS("BIOZ nominal resistance is 1667 Ohm with modulated resistance of ");
+    if        (confg_bmux.bit.rmod == 0) {
+      LOGIE("329.1 mOhm");
+    } else if (confg_bmux.bit.rmod == 1) {
+      LOGIE("109.0 mOhm");
+    } else if (confg_bmux.bit.rmod == 2) {
+      LOGIE("27.5 mOhm");
+    } else if (confg_bmux.bit.rmod >= 4) {
+      LOGIE("unmodulated");
+    }
+  } else if (confg_bmux.bit.rnom == 3) {
+    LOGIS("BIOZ nominal resistance is 1250 Ohm with modulated resitance of ");
+    if        (confg_bmux.bit.rmod == 0) {
+      LOGIE("185.1 mOhm");
+    } else if (confg_bmux.bit.rmod == 1) {
+      LOGIE("61.3 mOhm");
+    } else if (confg_bmux.bit.rmod >=4) {
+      LOGIE("unmodulated");
+    }
+  } else if (confg_bmux.bit.rnom == 4) {
+    LOGIS("BIOZ nominal resistance is 1000 Ohm with modulated resitance of ");
+    if        (confg_bmux.bit.rmod == 0) {
+      LOGIE("118.5 mOhm");
+    } else if (confg_bmux.bit.rmod == 1) {
+      LOGIE("39.2 mOhm");
+    } else if (confg_bmux.bit.rmod >=4) {
+      LOGIE("unmodulated");
+    }
+  } else if (confg_bmux.bit.rnom == 5) {
+    LOGIS("BIOZ nominal resistance is 833 Ohm with modulated resistance of ");
+    if        (confg_bmux.bit.rmod == 0) {
+      LOGIE("82.3 mOhm");
+    } else if (confg_bmux.bit.rmod == 1) {
+      LOGIE("27.2 mOhm");
+    } else if (confg_bmux.bit.rmod >=4) {
+      LOGIE("unmodulated");
+    }
+  } else if (confg_bmux.bit.rnom == 6) {
+    LOGIS("BIOZ nominal resistance is 714 Ohm with modulated resitance of ");
+    if        (confg_bmux.bit.rmod == 0) {
+      LOGIE("60.5 mOhm");
+    } else if (confg_bmux.bit.rmod == 1) {
+      LOGIE("20 mOhm");
+    } else if (confg_bmux.bit.rmod >=4) {
+      LOGIE("unmodulated");
+    }
+  } else if (confg_bmux.bit.rnom == 7) {
+    LOGIS("BIOZ nominal resistance is 625 Ohm with modulated resistance of ");
+    if        (confg_bmux.bit.rmod == 0) {
+      LOGI("46.3 mOhm");
+    } else if (confg_bmux.bit.rmod == 1) {
+      LOGI("15.3 mOhm");
+    } else if (confg_bmux.bit.rmod >=4) {
+      LOGI("unmodulated");
+    }
+  }
+
+  LOGI("Built in selftest %s", cnfg_bmux.bit.en_bist ? "enabled, BIP/N should be open." : "disabled");
+
+  LOGIS("BIOZ current generator for ");
+  if (cnfg_bmux.bit.cg_mode == 0) {
+    LOGIE("unchopped sources (ECG&BIOZ application), or low current range mode");
+  } else if (cnfg_bmux.bit.cg_mode == 1) {
+    LOGIE("chopped sources, BIOZ without low pass filter");
+  } else if (cnfg_bmux.bit.cg_mode == 2) {
+    LOGIE("chopped sources, BIOZ with low pass filter");
+  } else if (cnfg_bmux.bit.cg_mode == 3) {
+    LOGIE("chopped soources, with resistive CM setting, low impedance");
+  }
+
+  LOGI("Connections");
+  LOGIS("BIOZ N is connected to ")
+  if (cnfg_bmux.bit.caln_sel == 0) {
+    LOGIE("no calibration");
+  } else if (cnfg_bmux.bit.caln_sel == 1) {
+    LOGIE("V_MID");
+  } else if (cnfg_bmux.bit.caln_sel == 2) {
+    LOGIE("V_CALP");
+  } else if (cnfg_bmux.bit.caln_sel == 3) {
+    LOGIE("V_CALN");
+  }
+  LOGIS("BIOZ P is connected to ")
+  if (cnfg_mux.bit.calp_sel == 0) {
+    LOGIE("no calibration");
+  } else if (cnfg_mux.bit.calp_sel == 1) {
+    LOGIE("V_MID");
+  } else if (cnfg_mux.bit.calp_sel == 2) {
+    LOGIE("V_CALP");
+  } else if (cnfg_mux.bit.calp_sel == 3) {
+    LOGIE("V_CALN");
+  }
+
+  LOGI("BIOZ N is %s from AFE", cnfg_bmux.bit.openn ? "disconnected" : "connected");
+  LOGI("BIOZ P is %s from AFE", cnfg_bmux.bit.openp ? "disconnected" : "connected");
+}
+
+void MAX30001::printCNFG_BIOZ(){
+
+  LOGI("BIOZ Configuration");
+  LOGI("----------------------");
+
+  LOGIS("BIOZ phaseoffset is ");
+  if (cnfg_bioz.bit.fcgen == 0) {
+    LOGIE("%f", cnfg_bioz.bit.phoff*45);
+  } else if (cnfg_bioz.bit.fcgen == 1) {
+    LOGIE("%f", cnfg_bioz.bit.phoff*22.5);
+  } else if (cnfg_bioz.bit.fcgn >= 2) {
+    LOGIE("%f", cnfg_bioz.bit.phoff*11.25);
+  }
+
+  LOGIS("BIOZ current generator ");
+  if (cnfg_bioz.bit.cgmag == 0) {
+    LOGIE("is off");
+  } else if (cnfg_bioz.bit.cgmag == 1) {
+    LOGIE("magnitude is 8uA or low current mode");
+  } else if (cnfg_bioz.bit.cgmag == 2) {
+    LOGIE("magnitude is 16uA");
+  } else if (cnfg_bioz.bit.cgmag == 3) {
+    LOGIE("magnitude is 32uA");
+  } else if (cnfg_bioz.bit.cgmag == 4) {
+    LOGIE("magnitude is 48uA");
+  } else if (cnfg_bioz.bit.cgmag == 5) {
+    LOGIE("magnitude is 64uA");
+  } else if (cnfg_bioz.bit.cgmag == 6) {
+    LOGIE("magnitude is 80uA");
+  } else if (cnfg_bioz.bit.cgmag == 7) {
+    LOGIE("magnitude is 96uA");
+  }
+
+  LOGI("BIOZ current generator monitor(lead off) is %s". cnfg_bioz.bit.cgmon ? "enabled" : "disabled");
+
+  LOGI("Modulation frequency is ...");
+  if (cnfg_bioz.bit.fcgen == 0) {
+    if (cnfg_gen.bit.fmstr == 0) {
+      LOGI("131072 Hz");
+    } else if (cnfg_gen.bit.fmstr == 1) {
+      LOGI("128000 Hz");
+    } else if (cnfg_gen.bit.fmstr == 2) {
+      LOGI("128000 Hz");
+    } else if (cnfg_gen.bit.fmstr == 3) {
+      LOGI("127872 Hz");
+    }
+  } else if (cnfg_bioz.bit.fcgen == 1) {
+    if (cnfg_gen.bit.fmstr == 0) {
+      LOGI("81920 Hz");
+    } else if (cnfg_gen.bit.fmstr == 1) {
+      LOGI("80000 Hz");
+    } else if (cnfg_gen.bit.fmstr == 2) {
+      LOGI("80000 Hz");
+    } else if (cnfg_gen.bit.fmstr == 3) {
+      LOGI("81920 Hz");
+    }
+  } else if (cnfg_bioz.bit.fcgen == 2) {
+    if (cnfg_gen.bit.fmstr == 0) {0
+      LOGI("40960 Hz");
+    } else if (cnfg_gen.bit.fmstr == 1) {
+      LOGI("40000 Hz");
+    } else if (cnfg_gen.bit.fmstr == 2) {
+      LOGI("40000 Hz");
+    } else if (cnfg_gen.bit.fmstr == 3) {
+      LOGI("40960 Hz");
+    }
+  } else if (cnfg_bioz.bit.fcgen == 3) {
+    if (cnfg_gen.bit.fmstr == 0) {
+      LOGI("18204 Hz");
+    } else if (cnfg_gen.bit.fmstr == 1) {
+      LOGI("17780 Hz");
+    } else if (cnfg_gen.bit.fmstr == 2) {
+      LOGI("17780 Hz");
+    } else if (cnfg_gen.bit.fmstr == 3) {
+      LOGI("18204 Hz");
+    }
+  } else if (cnfg_bioz.bit.fcgen == 4) {
+    if (cnfg_gen.bit.fmstr == 0) {
+      LOGI("8192 Hz");
+    } else if (cnfg_gen.bit.fmstr == 1) {
+      LOGI("8000 Hz");
+    } else if (cnfg_gen.bit.fmstr == 2) {
+      LOGI("8000 Hz");
+    } else if (cnfg_gen.bit.fmstr == 3) {
+      LOGI("7992 Hz");
+    }
+  } else if (cnfg_bioz.bit.fcgen == 5) {
+    if (cnfg_gen.bit.fmstr == 0) {
+      LOGI("4096 Hz");
+    } else if (cnfg_gen.bit.fmstr == 1) {
+      LOGI("4000 Hz");
+    } else if (cnfg_gen.bit.fmstr == 2) {
+      LOGI("4000 Hz");
+    } else if (cnfg_gen.bit.fmstr == 3) {
+      LOGI("3996 Hz");
+    }
+  } else if (cnfg_bioz.bit.fcgen == 6) {
+    if (cnfg_gen.bit.fmstr == 0) {
+      LOGI("2048 Hz");
+    } else if (cnfg_gen.bit.fmstr == 1) {
+      LOGI("2000 Hz");
+    } else if (cnfg_gen.bit.fmstr == 2) {
+      LOGI("2000 Hz");
+    } else if (cnfg_gen.bit.fmstr == 3) {
+      LOGI("1998 Hz");
+    }
+  } else if (cnfg_bioz.bit.fcgen == 7) {
+    if (cnfg_gen.bit.fmstr == 0) {
+      LOGI("1024 Hz");
+    } else if (cnfg_gen.bit.fmstr == 1) {
+      LOGI("1000 Hz");
+    } else if (cnfg_gen.bit.fmstr == 2) {
+      LOGI("1000 Hz");
+    } else if (cnfg_gen.bit.fmstr == 3) {
+      LOGI("999 Hz");
+    }
+  } else if (cnfg_bioz.bit.fcgen == 8) {
+    if (cnfg_gen.bit.fmstr == 0) {
+      LOGI("512 Hz");
+    } else if (cnfg_gen.bit.fmstr == 1) {
+      LOGI("500 Hz");
+    } else if (cnfg_gen.bit.fmstr == 2) {
+      LOGI("500 Hz");
+    } else if (cnfg_gen.bit.fmstr == 3) {
+      LOGI("500 Hz");
+    }
+  } else if (cnfg_bioz.bit.fcgen == 9) {
+    if (cnfg_gen.bit.fmstr == 0) {
+      LOGI("256 Hz");
+    } else if (cnfg_gen.bit.fmstr == 1) {
+      LOGI("250 Hz");
+    } else if (cnfg_gen.bit.fmstr == 2) {
+      LOGI("250 Hz");
+    } else if (cnfg_gen.bit.fmstr == 3) {
+      LOGI("250 Hz");
+    }
+  } else if (cnfg_bioz.bit.fcgen > 9) {
+    if (cnfg_gen.bit.fmstr == 0) {
+      LOGI("128 Hz");
+    } else if (cnfg_gen.bit.fmstr == 1) {
+      LOGI("125 Hz");
+    } else if (cnfg_gen.bit.fmstr == 2) {
+      LOGI("125 Hz");
+    } else if (cnfg_gen.bit.fmstr == 3) {
+      LOGI("125 Hz");
+    }
+  }
+
+  LOGI("Low pass cut off frequency is ");
+  if (cnfg_gen.bit.fmstr == 0) {
+    if (cnfg_bioz.bit.dlpf == 0) {
+      LOGI("bypassed");
+    } else if (cnfg_bioz.bit.dlpf == 1) {
+      LOGI("4.096 Hz");
+    } else if (cnfg_bioz.bit.dlpf == 2) {
+      LOGI("8.192 Hz");
+    } else if (cnfg_bioz.bit.dlpf == 3) {
+      if (cnfg_bioz.bit.rate == 0) {
+        LOGI("16.384 Hz");
+      } else {
+        LOGI("4.096 Hz");
+      }
+    }
+  } else if (cnfg_gen.bit.fmstr == 1) {
+    if (cnfg_bioz.bit.dlpf == 0) {
+      LOGI("bypassed");
+    } else if (cnfg_bioz.bit.dlpf == 1) {
+      LOGI("4.0 Hz");
+    } else if (cnfg_bioz.bit.dlpf == 2) {
+      LOGI("8.0 Hz");
+    } else if (cnfg_bioz.bit.dlpf == 3) {
+      if (cnfg_bioz.bit.rate == 0) {
+        LOGI("16.0 Hz");
+      } else {
+        LOGI("4.0 Hz");
+      }
+    }
+  } else if (cnfg_gen.bit.fmstr == 2) {
+    if (cnfg_bioz.bit.dlpf == 0) {
+      LOGI("bypassed");
+    } else if (cnfg_bioz.bit.dlpf == 1) {
+      LOGI("4.0 Hz");
+    } else if (cnfg_bioz.bit.dlpf == 2) {
+      LOGI("8.0 Hz");
+    } else if (cnfg_bioz.bit.dlpf == 3) {
+      if (cnfg_bioz.bit.rate == 0) {
+        LOGI("16.0 Hz");
+      } else {
+        LOGI("4.0 Hz");
+      }
+    }
+  } else if (cnfg_gen.bit.fmstr == 3) {
+    if (cnfg_bioz.bit.dlpf == 0) {
+      LOGI("bypassed");
+    } else if (cnfg_bioz.bit.dlpf == 1) {
+      LOGI("3.996 Hz");
+    } else if (cnfg_bioz.bit.dlpf == 2) {
+      LOGI("7.992 Hz");
+    } else if (cnfg_bioz.bit.dlpf == 3) {
+      if (cnfg_bioz.bit.rate == 0) {
+        LOGI("15.984 Hz");
+      } else {
+        LOGI("3.996 Hz");
+      }
+    }
+  }
+
+  LOGI("High pass cut off frequency is ...");
+  if (cnfg_bio.bit.dhpf ==0) {
+    LOGI("bypassed");
+  } else if (cnfg_bio.bit.dhpf ==1) {
+    LOGI("0.05 Hz");
+  } else if (cnfg_bio.bit.dhpf >=2) {
+    LOGI("0.5 Hz");
+  } 
+
+  LOGI("BIOZ gain is ...");
+  if        (cnfg_bioz.bit.gain == 0) {
+    LOGI("10V/V");
+  } else if (cnfg_bioz.bit.gain == 1) {
+    LOGI("20V/V");
+  } else if (cnfg_bioz.bit.gain == 2) {
+    LOGI("40V/V");
+  } else if (cnfg_bioz.bit.gain == 3) {
+    LOGI("80V/V");
+  } 
+
+  LOGI("BIOZ INA is in %s mode", cnfg_bioz.bit.ln_bioz ? "low noise" : "low power");
+
+  LOGI("BIOZ external bias resistor is %s", cnfg_bioz.bit.ext_rbias ? "enabled" : "disabled");
+
+  LOGI("BIOZ analog high pass cutoff frequency is ...");
+  if (cnfg_bioz.bit.ahpf == 0) {
+    LOGI("60.0 Hz");
+  } else if (cnfg_bioz.bit.ahpf == 1) {
+    LOGI("150 Hz");
+  } else if (cnfg_bioz.bit.ahpf == 2) {
+    LOGI("500 Hz");
+  } else if (cnfg_bioz.bit.ahpf == 3) {
+    LOGI("1000 Hz");
+  } else if (cnfg_bioz.bit.ahpf == 4) {
+    LOGI("2000 Hz");
+  } else if (cnfg_bioz.bit.ahpf == 5) {
+    LOGI("4000 Hz");
+  } else if (cnfg_bioz.bit.ahpf > 5) {
+    LOGI("bypassed");
+  }
+
+  LOGI("BIOZ data rate is ...");
+  if (cnfg_bioz.bit.rate == 0){
+    if        (cnfg_gen.bit.fmstr == 0) {
+      LOGI("64 SPS");
+    } else if (cnfg_gen.bit.fmstr == 1) {
+      LOGI("62.5 SPS");
+    } else if (cnfg_gen.bit.fmstr == 2) {
+      LOGI("50 SPS");
+    } else if (cnfg_gen.bit.fmstr == 3) {
+      LOGI("49.95 SPS");
+    }
+  } else if (cnfg_bioz.bit.rate == 1){
+    if        (cnfg_gen.bit.fmstr == 0) {
+      LOGI("32 SPS");
+    } else if (cnfg_gen.bit.fmstr == 1) {
+      LOGI("31.25 SPS");
+    } else if (cnfg_gen.bit.fmstr == 2) {
+      LOGI("25 SPS");
+    } else if (cnfg_gen.bit.fmstr == 3) {
+      LOGI("24.98 SPS");
+    }
+  }
+}
+
+void MAX30001::printCNFG_BIOZ_LC(){
+  LOGI("BIOZ Low Current Configuration");
+  LOGI("------------------------------");
+  LOGIS("BIOZ low current magnitude is ")
+  if (cnfg_bioz_lc.bit.cmag_lc == 0) {
+    LOGIE("0nA")
+  } else if (cnfg_bioz_lc.bit.cmag_lc == 1) {
+    if (cnfg_bioz_lc.bit.lc2x == 0) {
+      LOGIE("55nA")
+    } else {
+      LOGIE("110nA")
+    }
+  } else if (cnfg_bioz_lc.bit.cmag_lc == 2) {
+    if (cnfg_bioz_lc.bit.lc2x == 0) {
+      LOGIE("110nA")
+    } else {
+      LOGIE("220nA")
+    }
+  } else if (cnfg_bioz_lc.bit.cmag_lc == 3) {
+    if (cnfg_bioz_lc.bit.lc2x == 0) {
+      LOGIE("220nA")
+    } else {
+      LOGIE("440nA")
+    }
+  } else if (cnfg_bioz_lc.bit.cmag_lc == 4) {
+    if (cnfg_bioz_lc.bit.lc2x == 0) {
+      LOGIE("330nA")
+    } else {
+      LOGIE("660nA")
+    }
+  } else if (cnfg_bioz_lc.bit.cmag_lc == 5) {
+    if (cnfg_bioz_lc.bit.lc2x == 0) {
+      LOGIE("440nA")
+    } else {
+      LOGIE("880nA")
+    }
+  } else if (cnfg_bioz_lc.bit.cmag_lc == 6) {
+    if (cnfg_bioz_lc.bit.lc2x == 0) {
+      LOGIE("550nA")
+    } else {
+      LOGIE("1100nA")
+    }
+  } 
+
+  LOGIS("BIOZ common mode feedback resestance for current generator is ");
+  if        (cnfg_bioz_lc.bit.cmres == 0) {
+    LOGIE("off");
+  } else if (cnfg_bioz_lc.bit.cmres == 1) {
+    LOGIE("320MOhm");
+  } else if (cnfg_bioz_lc.bit.cmres == 3) {
+    LOGIE("160MOhm");
+  } else if (cnfg_bioz_lc.bit.cmres == 5) {
+    LOGIE("100MOhm");
+  } else if (cnfg_bioz_lc.bit.cmres == 7) {
+    LOGIE("80MOhm");
+  } else if (cnfg_bioz_lc.bit.cmres == 8) {
+    LOGIE("40MOhm");
+  } else if (cnfg_bioz_lc.bit.cmres == 9) {
+    LOGIE("20MOhm");
+  } else if (cnfg_bioz_lc.bit.cmres == 10) {
+    LOGIE("12.5MOhm");
+  } else if (cnfg_bioz_lc.bit.cmres == 11) {
+    LOGIE("10MOhm");
+  } else if (cnfg_bioz_lc.bit.cmres == 12) {
+    LOGIE("7.5MOhm");
+  } else if (cnfg_bioz_lc.bit.cmres == 13) {
+    LOGIE("6.5MOhm");
+  } else if (cnfg_bioz_lc.bit.cmres == 14) {
+    LOGIE("5.5MOhm");
+  } else if (cnfg_bioz_lc.bit.cmres == 15) {
+    LOGIE("5.0MOhm");
+  }
+
+  LOGI("BIOZ high resisstance is %s", cnfg_bioz_lc.bit.en_bistr ? "enabled" : "disabled");
+  LOGIS("BIOZ high resistance load is ");
+  if        (cnfg_bioz.bit.bistr == 0) {
+    LOGIE("27kOhm");
+  } else if (cnfg_bioz.bit.bistr == 1) {
+    LOGIE("108kOhm");
+  } else if (cnfg_bioz.bit.bistr == 2) {
+    LOGIE("487kOhm");
+  } else if (cnfg_bioz.bit.bistr == 3) {
+    LOGIE("1029kOhm");
+  }
+
+  LOGI("BIOZ low current mode is %s", cnfg_bioz_lc.bit.lc2x ? "2x" : "1");
+  LOGI("BIOZ drive current range is %s", cnfg_bioz.bit.hi_lob ? "high [uA]" : "low [nA]");
+
+}
+
+void MAX30001::printCNFG_RTOR1(){
+  LOGI("R to R configuration");
+  LOGI("--------------------");
+
+  LOGI("R to R peak detection is %s", cnfg_rtor1.bit.en_rtor ? "enabled" : "disabled");
+  LOGI("R to R threshold scaling factor is %d/16", cnfg_rtor1.bit.ptsf+1);
+
+  LOGIS("R to R peak averaging weight factor is ...");
+  if (cnfg_rtor1.bit.pavg == 0) {
+    LOGIE("2")
+  } else if (cnfg_rtor1.bit.pavg == 1) {
+    LOGIE("4")
+  } else if (cnfg_rtor1.bit.pavg == 2) {
+    LOGIE("8")
+  } else if (cnfg_rtor1.bit.pavg == 3) {
+    LOGIE("16")
+  }
+
+  if (cnfg_rtor1.bit.gain < 0b1111) {
+    LOGI("R to R gain %d", 2^cnfg_rtor1.bit.gain);
+  } else {
+    LOGI("R to R gain is auto scale");
+  }
+
+  LOGIS("R to R window legnth is ...");
+  if (cnfg_rtor1.bit.wndw == 0) {
+    LOGIE("%f", 6*RtoR_resolution)
+  } else if (cnfg_rtor1.bit.wndw == 1) {
+    LOGIE("%f", 8*RtoR_resolution)
+  } else if (cnfg_rtor1.bit.wndw == 2) {
+    LOGIE("%f", 10*RtoR_resolution)
+  } else if (cnfg_rtor1.bit.wndw == 3) {
+    LOGIE("%f", 12*RtoR_resolution)
+  } else if (cnfg_rtor1.bit.wndw == 4) {
+    LOGIE("%f", 14*RtoR_resolution)
+  } else if (cnfg_rtor1.bit.wndw == 5) {
+    LOGIE("%f", 16*RtoR_resolution)
+  } else if (cnfg_rtor1.bit.wndw == 6) {
+    LOGIE("%f", 18*RtoR_resolution)
+  } else if (cnfg_rtor1.bit.wndw == 7) {
+    LOGIE("%f", 20*RtoR_resolution)
+  } else if (cnfg_rtor1.bit.wndw == 8) {
+    LOGIE("%f", 22*RtoR_resolution)
+  } else if (cnfg_rtor1.bit.wndw == 9) {
+    LOGIE("%f", 24*RtoR_resolution)
+  } else if (cnfg_rtor1.bit.wndw == 10) {
+    LOGIE("%f", 26*RtoR_resolution)
+  } else if (cnfg_rtor1.bit.wndw == 11) {
+    LOGIE("%f", 28*RtoR_resolution)
+  } else if (cnfg_rtor1.bit.wndw >= 12) {
+    LOGIE("-1")
+  }
+}
+
+void MAX30001::printCNFG_RTOR2(){
+  LOGI("R to R configuration");
+  LOGI("--------------------");
+
+  if (cnfg_rtor2.bit.rhsf > 0) {
+    LOGI("R to R hold off scaling is %d/8", cnfg_rtor2.bit.rhsf);
+  } else {
+    LOGI("R to R hold off interval is determined by minimum hold off only");
+  }
+
+  LOGIS("R to R interval averaging weight factor is ...");
+  if (cnfg_rtor2.bit.ravg==0){
+    LOGIE("2");
+  } else if (cnfg_rtor2.bit.ravg==1){
+    LOGIE("4");
+  } else if (cnfg_rtor2.bit.ravg==2){
+    LOGIE("8");
+  } else if (cnfg_rtor2.bit.ravg==3){
+    LOGIE("16");
+  }
+
+  LOGI("R to R minimum hold off is %f", cnfg_rtor2.bit.hoff*RtoR_resolution);
 }
 
 /******************************************************************************************************/
 // Run Diagnostics
 /******************************************************************************************************/
 
-void AFE44XX::readDiag(uint32_t &status) {
-/*
-  Starts diagnostics process and reads the status register
-  --------------------------------------------------------
-*/
-
-  LOGD("AFE: diagnostics in progres");
-  // Start diagnostics by writing to the CONTROL0 register
-  writeRegister(CONTROL0, DIAGNOSIS); // Set the DIAG_EN bit and SPI read bit to enable diagnostics
-  // Wait for diagnostics to complete
-  delay(16); // 16 milliseconds delay
-  // Read the DIAG register
-  status = readRegister(DIAG);
-  LOGD("AFE: diagnosis completed");
-}
-
-void AFE44XX::printDiag(uint32_t &status)
-{
-/* 
-  Print the diagnostic values in readable form
-  --------------------------------------------
-
-  Needs value of diagnostic status register.
-*/
-
-  LOGI("DIAG Register: %s", intToBinaryString(status));
-
-  // Check each bit and print the corresponding status
-  LOGI("AFE: Diagnostics Status:");
-  LOGI("------------------------");
-  bool ok = true;
-  for (int i = 13; i <= 23; i++) { if (status & (1 << i)) {ok = false;} }
-  LOGI("Bits [23:13] must be 0: %s", (ok)                 ? "0 (Ok)" : "1 (Error)");
-  LOGI("LED:                    %s", (status & (1 << 11)) ? "Alarm" : "No Alarm");
-  LOGI("LED1 Open:              %s", (status & (1 << 10)) ? "Open"  : "OK");
-  LOGI("LED2 Open:              %s", (status & (1 <<  9)) ? "Open"  : "OK");
-  LOGI("LED Short:              %s", (status & (1 <<  8)) ? "Short" : "OK");
-  LOGI("Output P to Ground:     %s", (status & (1 <<  7)) ? "Short" : "OK");
-  LOGI("Output N to Ground:     %s", (status & (1 <<  6)) ? "Short" : "OK");
-  LOGI("Photo Diode:            %s", (status & (1 << 12)) ? "Alarm" : "No Alarm");
-  LOGI("Photo Diode Open:       %s", (status & (1 <<  5)) ? "Open"  : "OK");
-  LOGI("Photo Diode Short:      %s", (status & (1 <<  4)) ? "Short" : "OK");
-  LOGI("In N to Ground:         %s", (status & (1 <<  3)) ? "Short" : "OK");
-  LOGI("In P to Ground:         %s", (status & (1 <<  2)) ? "Short" : "OK");
-  LOGI("In N to LED:            %s", (status & (1 <<  1)) ? "Connected" : "OK");
-  LOGI("In P to LED:            %s", (status & 1)         ? "Connected" : "OK");
-}
-
-bool AFE44XX::selfCheck(){
+bool MAX30001G::selfCheck(){
   /*
     Perform a self check to verify connections and chip clock integrity
     -------------------------------------------------------------------
@@ -362,983 +2750,11 @@ bool AFE44XX::selfCheck(){
     Returns ture if the self-check passes
     ! The timers need to be enabled and the sensor running when executing the self test !
   */
-  uint32_t original_value = readRegister(CONTROL1);
+
+  max30001_info_t original = readInfo();
   for (int i = 0; i < 5; i++) {
-    if ( readRegister(CONTROL1) != original_value) { return false; }
+    if ( readInfo().all != original.all) { return false; }
   }
-  if ( readRegister(CONTROL1) != 0 ) { return false; }
+  if ( original.all == 0 ) { return false; }
   return true;
 }
-
-/******************************************************************************************************/
-// Receiver Stage
-/******************************************************************************************************/
-
-uint32_t AFE44XX::findCapacitancePattern(int16_t desiredValue) {
-  /* 
-    Given a desired capacitance, this computes the closest available value for the AFE feedback amp.
-
-    All values in pico Farrad.
-  */
-  
-  struct Capacitor {
-    uint8_t binaryPattern;
-    uint8_t value;
-  };
-
-  const Capacitor capacitors[] = {
-    {0b00001,   5},
-    {0b00010,  15},
-    {0b00100,  25},
-    {0b01000,  50},
-    {0b10000, 150}
-  };
-  const int numCapacitors = sizeof(capacitors) / sizeof(capacitors[0]);
-  uint32_t closestPattern = 0;
-  int closestValue = 0;
-  int minDifference = 255; // Initial large difference
-
-  // Loop through all possible combinations of capacitors
-  for (uint8_t pattern = 0; pattern < (1 << numCapacitors); ++pattern) {
-      int totalValue = 0;
-
-      // Calculate total capacitor value for the current pattern
-      for (int i = 0; i < numCapacitors; ++i) {
-          if (pattern & (1 << i)) {
-              totalValue += capacitors[i].value;
-          }
-      }
-      totalValue += 5; // Add the 5pF minimum capacitance of the system
-
-      // Check if this combination is closer to the desired value
-      int difference = abs(totalValue - desiredValue);
-      if (difference < minDifference) {
-          minDifference = difference;
-          closestValue = totalValue;
-          closestPattern = pattern;
-      }
-  }
-
-  LOGD("AFE:   Finding feedback capacitor: Traget: %d, Best: %d, Config %s", desiredValue, closestValue, intToBinaryString(closestPattern));
-  return closestPattern;
-}
-
-int8_t AFE44XX::setCancellationCurrent(uint8_t current) {
-  /* 
-     Set the cancelation/background current of the photo diode
-     ---------------------------------------------------------
-
-     0,1,2,3,4,5,6,7,8,9 micro Amp 
-  */
-  LOGD("AFE: --Configureing cackground current");
-  if (current > 0b1010) {
-      return -1;
-  } else {
-      uint32_t mask = 0b1111 << 16;              // Create a mask to isolate bits 19..16
-      uint32_t tia_settings = readRegister(TIA_AMB_GAIN);
-      tia_settings &= ~mask;                     // Clear bits 19..16
-      tia_settings |= (uint32_t(current) << 16); // Set bits 19..16 with the current value
-      writeRegister(TIA_AMB_GAIN, tia_settings);
-      LOGD("AFE:   Background current configured to %u, %s", current, intToBinaryString(tia_settings));
-      return 0;
-  }
-}
-
-int8_t AFE44XX::setSameGain(bool enable) {
-  /* Enable Same Gain and Feedback Resistor and Capacitor settings for LED1 and LED2
-     --------------------------- ---------------------------------------------------
-
-     Settings for LED1 will be used for LED2
-  */
-  LOGD("AFE: --Setting same gain and feedback resistor, capacitor for LED1&2");
-  uint32_t mask = 0b1 << 15; // Create a mask to isolate bit 15
-  uint32_t tia_settings = readRegister(TIAGAIN);
-  // Set gain for LED1&2 to be the same or different
-  if (enable) {
-    tia_settings &= ~mask; // Clear bit 15
-    LOGD("AFE:   Same gain and feedback paramters set for LED1&2, %s", intToBinaryString(tia_settings));
-  } else {
-    tia_settings |= mask;  // Set bit 15
-    LOGD("AFE:   Different gain and feedback paramters enabled for LED1&2, %s", intToBinaryString(tia_settings));
-}
-  writeRegister(TIAGAIN, tia_settings);
-  return 0;
-}
-
-int8_t AFE44XX::setSecondStageGain(uint8_t gain, bool enabled, uint8_t LED) {
-  /* 
-    Set the gain of the second stage amplifier
-    ------------------------------------------
-
-    0 gain 1, 1 gain 1.5, 2 gain 2, 3 gain 3, 4 gain 4
-    enabled: true or false
-    0 both LEDs, 1 LED1, 2 LED2
-   */
-  LOGD("AFE: --Setting second stage gain");
-  if (gain > 0b100) {
-    return -1;
-  } else {
-    uint32_t mask = (0b1 << 14) | (0b111 << 8);  // Create a mask for bits 14 (enable) and 10-8 (gain)
-    uint32_t tia_settings1 = readRegister(TIAGAIN);
-    uint32_t tia_settings2 = readRegister(TIA_AMB_GAIN);
-    tia_settings1 &= ~mask;  // Clear bits 14 and 10-8
-    tia_settings1 |= (uint32_t(gain) << 8);  // Set bits 10-8 with the gain value
-    tia_settings2 &= ~mask;  // Clear bits 14 and 10-8
-    tia_settings2 |= (uint32_t(gain) << 8);  // Set bits 10-8 with the gain value
-    if (enabled) { tia_settings1 |= (0b1 << 14); } // Set bit 14 if enabled}
-    if (enabled) { tia_settings2 |= (0b1 << 14); } // Set bit 14 if enabled}
-    switch (LED) {
-      case 0: { 
-        writeRegister(TIAGAIN, tia_settings1);
-        writeRegister(TIA_AMB_GAIN, tia_settings2);
-        LOGD("AFE:   Second stage gain set to %u, %s, %s", gain, intToBinaryString(tia_settings1), intToBinaryString(tia_settings2));
-        break;
-      }
-      case 1: { 
-        writeRegister(TIAGAIN, tia_settings1);
-        LOGD("AFE:   Second stage gain set to %u, %s", gain, intToBinaryString(tia_settings1));
-        break;
-      }
-      case 2: { 
-        writeRegister(TIA_AMB_GAIN, tia_settings2);
-        LOGD("AFE:   Second stage gain set to %u, %s", gain, intToBinaryString(tia_settings2));
-        break;
-      }
-      default: {
-        break;
-      }
-    }
-    return 0;
-  }
-}
-
-int8_t AFE44XX::setFirstStageFeedbackCapacitor(uint16_t cap, uint8_t LED) {
-  /* 
-    Set the feedback capcitor of photodiode amplifier
-    -------------------------------------------------
-
-    cap 0..275pF 5pF default 
-    LED 0 both, 1 LED1, 2 LED2 
-  */
-  LOGD("AFE: --Setting feeback capacitor");
-  if (cap > 275) {
-      return -1;
-  } else {
-    uint32_t config = findCapacitancePattern(cap); // Removed type from function call
-    uint32_t mask = 0b11111 << 3;
-    uint32_t tia_settings1 = readRegister(TIAGAIN);
-    uint32_t tia_settings2 = readRegister(TIA_AMB_GAIN);
-    tia_settings1 &= ~mask; // Clear bits 7-3
-    tia_settings1 |= config << 3;
-    tia_settings2 &= ~mask; // Clear bits 7-3
-    tia_settings2 |= config << 3;
-    switch (LED) {
-      case 0: { 
-        writeRegister(TIAGAIN, tia_settings1);
-        writeRegister(TIA_AMB_GAIN, tia_settings2);
-        LOGD("AFE:   Feeback capacitor on LED %u set to %u, %s, %s", LED, cap, intToBinaryString(tia_settings1), intToBinaryString(tia_settings2));
-        break;
-      }
-      case 1: { 
-        writeRegister(TIAGAIN, tia_settings1);
-        LOGD("AFE:   Feeback capacitor on LED %u set to %u, %s", LED, cap, intToBinaryString(tia_settings1));
-        break;
-      }
-      case 2: { 
-        writeRegister(TIA_AMB_GAIN, tia_settings2);
-        LOGD("AFE:   Feeback capacitor on LED %u set to %u, %s", LED, cap, intToBinaryString(tia_settings2));
-        break;
-      }
-      default: {
-        return -1;
-        break;
-      }
-    }
-    return 0;
-  }
-}
-
-
-int8_t AFE44XX::setFirstStageFeedbackResistor(uint16_t resistance, uint8_t LED) {
-  /*
-    Set feedback resistor of photodiode amplifier
-    ---------------------------------------------
-
-    -1..1000 kOhm 500kOhm default 
-  */
-  LOGD("AFE: --Setting feeback resistor");
-  if (resistance > 1000 || resistance < -1)  {
-      return -1;
-  } else {
-    uint32_t mask = 0b111; // No need to shift since we are working with bits 2-0
-    uint32_t tia_settings1 = readRegister(TIAGAIN);
-    uint32_t tia_settings2 = readRegister(TIA_AMB_GAIN);
-    tia_settings1 &= ~mask; // Clear bits 2-0
-    tia_settings2 &= ~mask; // Clear bits 2-0
-    if (resistance <= 0) {
-        tia_settings1 |= 0b111; // 0kOhm
-        tia_settings2 |= 0b111; // 0kOhm
-    } else if (resistance >= 750) {
-        tia_settings1 |= 0b110; // 1000kOhm
-        tia_settings2 |= 0b110; // 1000kOhm
-    } else if (resistance >= 375) {
-        tia_settings1 |= 0b000; // 500kOhm
-        tia_settings2 |= 0b000; // 500kOhm
-    } else if (resistance >= 175) {
-        tia_settings1 |= 0b001; // 250kOhm
-        tia_settings2 |= 0b001; // 250kOhm
-    } else if (resistance >= 75) {
-        tia_settings1 |= 0b010; // 100kOhm
-        tia_settings2 |= 0b010; // 100kOhm
-    } else if (resistance >= 38) {
-        tia_settings1 |= 0b011; // 50kOhm
-        tia_settings2 |= 0b011; // 50kOhm
-    } else if (resistance >= 18) {
-        tia_settings1 |= 0b100; // 25kOhm
-        tia_settings2 |= 0b100; // 25kOhm
-    } else {
-        tia_settings1 |= 0b101; // 10kOhm
-        tia_settings2 |= 0b101; // 10kOhm
-    }
-    switch (LED) {
-      case 0: {
-        writeRegister(TIAGAIN, tia_settings1);
-        writeRegister(TIA_AMB_GAIN, tia_settings2);
-        LOGD("AFE:   Feeback resistor on LED %u set to %u, %s, %s", LED, resistance, intToBinaryString(tia_settings1), intToBinaryString(tia_settings2));
-        break;
-      }
-      case 1: {
-        writeRegister(TIAGAIN, tia_settings1);
-        LOGD("AFE:   Feeback resistor on LED %u set to %u,%s", LED, resistance, intToBinaryString(tia_settings1));
-        break;
-      }
-      case 2: {
-        writeRegister(TIA_AMB_GAIN, tia_settings2);
-        LOGD("AFE:   Feeback resistor on LED %u set to %u,%s", LED, resistance, intToBinaryString(tia_settings2));
-        break;
-      }
-      default: {
-        return -1;
-        break;
-      }
-    }
-    return 0;
-  }
-}
-
-int8_t AFE44XX::setFirstStageCutOffFrequency(uint8_t frequency) {
-  /*
-    Set the cut-off frequency of the ADC low pass filter
-    ----------------------------------------------------
-
-    0 500Hz, 1 1000Hz 
-  */
-  LOGD("AFE: --Setting low pass filter");
-  if (frequency > 1) {
-      return -1;
-  } else {
-    uint32_t mask = 0b1 << 15; // Create a mask to isolate bit 15
-    uint32_t tia_amb_settings = readRegister(TIA_AMB_GAIN);
-    tia_amb_settings &= ~mask; // Clear bit 15
-    if (frequency) {
-      tia_amb_settings |= (0b1 << 15); // Set bit 15
-    }
-    writeRegister(TIA_AMB_GAIN, tia_amb_settings);
-    LOGD("AFE:   Low pass filter set to %u, %s", (frequency==0) ? "500Hz" : "1000Hz", intToBinaryString(tia_amb_settings));
-    return 0;
-  }
-} 
-
-/******************************************************************************************************/
-// Transmitter Stage
-/******************************************************************************************************/
-
-uint8_t AFE44XX::getLEDpower(uint8_t LED) {
-  /* 
-    Obtain LED power
-    ----------------
-
-    LED 0 or 1 
-    returns 0..255
-  */
-  switch (LED) {
-    case 0: {
-      return (readRegister(LEDCNTRL) & 0x00FF);
-    }
-    case 1: {
-      return ((readRegister(LEDCNTRL) & 0xFF00) >> 8);
-    }
-    default: {
-      LOGE("AFE: LED %u not recognized. Only 0 or 1 are valid.", LED);
-      return 0;
-    }
-  }
-}
-
-int8_t AFE44XX::setLEDdriver(uint8_t txRefVoltage, uint8_t range) {
-  /*
-    Set the reference voltage and max current of the LED driver
-    -----------------------------------------------------------
-
-                txRefVoltage
-                1   0/2   3 
-
-  current range
-              1  50   75  100 milliAmp
-            0/2 100  150  200 milliAmp
-              3   0    0    0
-  power 0..255
-  */
-
-  uint32_t led_settings;
-  uint32_t mask;
-
-  LOGD("AFE: --Setting LED driver");
-  if (txRefVoltage > 3) {
-    return -1;
-  } else {
-    mask = 0b11 << 17; // bit 18-17
-    led_settings = readRegister(CONTROL2);
-    led_settings &= ~mask; // Clear bits 18-17
-    switch (txRefVoltage) {
-      case 0: // default 0.75V
-        led_settings  |= (0x00 << 17);
-        break;
-      case 1: // 0.5V
-        led_settings  |= (0x01 << 17);
-        break;
-      case 2: // 0.75V
-        led_settings  |= (0x03 << 17);
-        break;
-      case 3: // 1.0V
-        led_settings  |= (0x02 << 17);
-        break;
-    }
-    writeRegister(CONTROL2, led_settings);
-    LOGD("AFE:   LED ref voltage set to %u, %s", txRefVoltage, intToBinaryString(led_settings));
-  }
-
-  if (range > 3) {
-    return -1;
-  } else {
-    mask = 0b11 << 16; // bit 17-16
-    led_settings = readRegister(LEDCNTRL);
-    led_settings &= ~mask; // Clear bits 17-16
-    switch (range) {
-      case 0:
-        led_settings |= (0x00 << 16); // 00 for default range
-        break;
-      case 1:
-        led_settings |= (0x01 << 16); // 01 for low range
-        break;
-      case 2:
-        led_settings |= (0x02 << 16); // 10 for high range
-        break;
-      case 3:
-        led_settings |= (0x03 << 16); // 11 for off
-        break;
-    }
-    writeRegister(LEDCNTRL, led_settings);
-    LOGD("AFE:   LED range set to %u, %s", range, intToBinaryString(led_settings));
-  }
-}
-
-void AFE44XX::setLEDpower(uint8_t power, uint8_t LED) {
-  /*
-    Set the LED power level
-    -----------------------
-
-    power
-    0 both leds, 1 led1, 2 led2
-  */
-
-  uint32_t led_settings;
-  uint32_t mask;
-
-  LOGD("AFE: --Setting LED power");
-
-  led_settings = readRegister(LEDCNTRL);
-
-  switch (LED) {
-    case 0: {
-      mask = 0xFFFF; // bit 15-0
-      led_settings &= ~mask; // Clear bits 15-0
-      led_settings |= (power << 8); // LED1 power level
-      led_settings |= power; // LED2 power level
-      break;
-    }
-    case 1: {
-      mask = 0xFF00; // bit 15-8
-      led_settings &= ~mask; // Clear bits 15-8
-      led_settings |= (power << 8); // LED1 power level
-      break;
-    }
-    case 2: {
-      mask = 0x00FF; // bit 7-0
-      led_settings &= ~mask; // Clear bits 7-0
-      led_settings |= power; // LED2 power level
-      break;
-    }
-    default: {
-      LOGE("AFE: LED %u not recognized. Only 0, 1 or 2 are valid.", LED);
-      break;}
-  }
-
-  writeRegister(LEDCNTRL, led_settings);
-  LOGD("AFE:   LED %u power set to %u,%s", LED, power, intToBinaryString(led_settings));
-
-}
-
-/******************************************************************************************************/
-// AFE Behaviour
-/******************************************************************************************************/
-
-void AFE44XX::bypassADC(bool enable) {
-  /* 
-    Enable interal ADC
-    ------------------
-  */
-  uint32_t internalADC_settings = readRegister(CONTROL2);
-  if (enable) { internalADC_settings |=  (1 << 15); } // Set bit 15
-  else        { internalADC_settings &= ~(1 << 15); } // Clear bit 15
-  writeRegister(CONTROL2, internalADC_settings);
-  LOGD("AFE: --Internal ADC is %s, %s", enable ? "on" : "off", intToBinaryString(internalADC_settings));
-}
-
-void AFE44XX::setOscillator(bool enable){
-  /* 
-    Set Crystal Oscillator or Provide Clock
-    ---------------------------------------
-    1 enable crystal, 
-    0 enable external oscillator
-  */
-  uint32_t oscillator_settings = readRegister(CONTROL2);
-  if (enable) { oscillator_settings &= ~(1 << 9); } // Clear bit 9
-  else        { oscillator_settings |= (1 << 9); }  // Set bit 9
-  writeRegister(CONTROL2, oscillator_settings);
-  LOGD("AFE: --Oscillator is %s, %s", enable ? "on" : "off", intToBinaryString(oscillator_settings));
-}
-
-void AFE44XX::setShortDiagnostic(bool enable){
-  /*
-   Set length of diagnostic time
-   -----------------------------
-
-   0 8ms
-`  1 16ms
-  */
-  uint32_t diagTime_settings = readRegister(CONTROL2);
-  if (enable) { diagTime_settings &= ~(1 << 8); } // Clear bit 8 
-  else        { diagTime_settings |= (1 << 8); }  // Set bit 8
-  writeRegister(CONTROL2, diagTime_settings);
-  LOGD("AFE: --Diagnostic time length is %s, %s", enable ? "16ms" : "8ms", intToBinaryString(diagTime_settings));
-}  
-
-void AFE44XX::setTristate(bool enable) {
-  /*
-   Enable trisate mode for the digital pins
-   ----------------------------------------
-
-  needed for multiple devices on the same SPI bus
-   0 normal, 1 tristate
-   enable when SPI is inactive
-  */
-  uint32_t triState_settings = readRegister(CONTROL2);
-  // Tristate 0 normal, 1 tristate
-  if (enable) { triState_settings |= (1 << 10); }  // Set bit 10 
-  else        { triState_settings &= ~(1 << 10); } // Clear bit 10 
-  writeRegister(CONTROL2, triState_settings);
-  LOGD("AFE: --Tristate is %s, %s", enable ? "on" : "off", intToBinaryString(triState_settings));
-}
-
-void AFE44XX::setHbridge(bool enable) {
-  /*
-    Enable H-Bridge mode for the LED driver
-    ---------------------------------------
-
-    push pull otherwise
-  */  
-  uint32_t hBridge_settings = readRegister(CONTROL2);
-  // H Bridge 1 is push pull, 0 is H-Bridge
-  if (enable) { hBridge_settings &= ~(1 << 11); } // Clear bit 11
-  else        { hBridge_settings |= (1 << 11); }  // Set bit 11 
-  writeRegister(CONTROL2, hBridge_settings);
-  LOGD("AFE: --H-Bridge is %s, %s", enable ? "on" : "off", intToBinaryString(hBridge_settings));
-}
-
-int8_t AFE44XX::setAlarmpins(uint8_t alarmpins) {
-  /*
-    Setting the alarm pins output behaviour
-    ---------------------------------------
-
-        PD_ALM                    LED_ALM
-    000 Sample LED2 pulse         Sample LED1 pulse
-    001 LED2 LED pulse            LED1 LED pulse
-    010 Sample LED2 ambient pulse Sample LED1 ambient pulse
-    011 LED2 convert              LED1 convert
-    100 LED2 ambient convert      LED1 ambient convert
-    101 None                      None
-    110 None                      None
-    111 None                      None
-  */
-
-  if (alarmpins > 0b111) {
-    return -1;
-  } else {
-    // Read control1 register
-    uint32_t alarmpins_settings = readRegister(CONTROL1);
-    // Alarm pins
-    alarmpins_settings &= ~(0b111 << 9);     // Clear bit 11 to 9 
-    alarmpins_settings |= (alarmpins << 9);
-    writeRegister(CONTROL1, alarmpins_settings);
-    LOGD("AFE: --Alarm pins set to %u, %s", alarmpins, intToBinaryString(alarmpins_settings));
-    return 0;
-  }
-}
-
-void AFE44XX::setPowerRX(bool enable) // if enable 1 power is on and bit is 0
-{
-  /*
-    Power up the receiver
-  */
-  LOGD("AFE: --RXPOWER");
-  uint32_t control2Value = readRegister(CONTROL2);
-  if (enable) { control2Value &= ~(1 << 1); } // Clear bit 1 to power up the Receiver
-  else        { control2Value |= (1 << 1); } // Set bit 1 to power down the Receiver
-  writeRegister(CONTROL2, control2Value);     // Write the modified value back to the CONTROL2 register
-  LOGD("AFE: --RXPOWER:   %s, %s", (enable) ? "On": "Off", intToBinaryString(control2Value));
-}
-
-void AFE44XX::setPowerAFE(bool enable) // 0 is on
-{
-  /* 
-    Power up the device
-  */
-  LOGD("AFE: --AFEPOWER");
-  uint32_t control2Value = readRegister(CONTROL2);
-  if (enable) { control2Value &= ~(1 << 0); } // Clear bit 0 to power up the Receiver
-  else        { control2Value |= (1 << 0); } // Set bit 0 to power down the Receiver
-  writeRegister(CONTROL2, control2Value);     // Write the modified value back to the CONTROL2 register
-  LOGD("AFE: --AFEPOWER:  %s, %s", (enable) ? "On ": "Off", intToBinaryString(control2Value));
-}
-
-void AFE44XX::setPowerTX(bool enable) // 0 is on
-{ 
-  /*
-    Power up the LED driver
-  */
-  LOGD("AFE: --TXPOWER");
-  uint32_t control2Value = readRegister(CONTROL2);
-  if (enable) { control2Value &= ~(1 << 2); } // Clear bit 2 to power up the Receiver
-  else        { control2Value |= (1 << 2); } // Set bit 2 to power down the Receiver
-  writeRegister(CONTROL2, control2Value);     // Write the modified value back to the CONTROL2 register
-  LOGD("AFE: --TXPOWER:   %s, %s", (enable) ? "On ": "Off", intToBinaryString(control2Value));
-}
-
-bool AFE44XX::isTXPoweredDown() { // 1 is down
-  /*
-    Is the LED driver powered down?
-  */
-  LOGD("AFE: --TXPOWER");
-  uint32_t control2Value = readRegister(CONTROL2);
-  LOGD("AFE:   CONTROL2: %s",intToBinaryString(control2Value));
-  return control2Value & (1 << 2);
-}
-
-bool AFE44XX::isRXPoweredDown() { // 1 is down
-  /*
-    Is the photodiode driver powered down?
-  */
-  LOGD("AFE: --RXPOWER");
-  uint32_t control2Value = readRegister(CONTROL2);
-  LOGD("AFE:   CONTROL2: %s",intToBinaryString(control2Value));
-  return control2Value & (1 << 1);
-}
-
-bool AFE44XX::isAFEPoweredDown() { // 1 is down
-  /*
-    Is the AFE powered down?
-  */
-  LOGD("AFE: --AFEPOWER");
-  uint32_t control2Value = readRegister(CONTROL2);
-  LOGD("AFE:   CONTROL2: %s",intToBinaryString(control2Value));
-  return control2Value & (1 << 0);
-}
-
-/******************************************************************************************************/
-// Configure Timer
-/******************************************************************************************************/
-
-int8_t AFE44XX::setTimers(float factor) {
-/*
-  Configure timing sequence of LED power, sampling and conversion
-  ---------------------------------------------------------------
-
-  If factor is 1.0, the default values from Table 2 in the data sheet are used. This results in a 
-  measurement sequence executing 500 times per second.
-
-  Factor is multiplied with timing values in table 2, while reset pulse length and sampling offset is kept the same.
-
-  PRPCOUNT (length of measurement sequence)
-  --------
-  [23:16] must be 0
-  [15:0] 800 to 64000  
-
-  4Mhz / PRPCount = Measurements per second
-
-  Order of measurement operation is:
-    Turn LED on
-    Sample Signal 
-    Turn LED off
-    Reset ADC 
-    ADC Conversion
-
-  All measurements:
-  1. Ambient LED2 (LED1&2 off), background measurement
-  2. LED1
-  3. Ambient LED1 (LED1&2 off)
-  4. LED2
-  5. Repeat
-
-  Timing
-  ------------------------------------------------------
-  What occurs when?
-                 On        Sample    Convert   ADC Reset
-    LED2         6000-7999 6050-7998    4-1999    0-   3
-    LED1         2000-3999 2050-3998 4004-5999 4000-4003
-    Ambient LED2             50-1998 2004-3999 2000-2003
-    Ambient LED1           4050-5998 6004-7999 6000-6003
-*/
-
-  if (factor < 0.1 || factor > 10.0) {
-    return -1;
-  }
-
-  LOGD("AFE: --Configuring timing");
-
-  disableSPIread();
-
-  // 1) Reset CONTROL0 register
-  spiWrite(CONTROL0,CLEAR);
-
-  // 2) Set TIMINGS
- 
-  uint32_t _START = 0;
-  uint32_t _ONEQUARTER    = uint32_t(factor * 2000.0);
-  uint32_t _HALF          = uint32_t(factor * 4000.0);
-  uint32_t _THREEQUARTERS = uint32_t(factor * 6000.0);
-  uint32_t _END           = uint32_t(factor * 8000.0);
-
-  LOGD("AFE:   PRPCOUNT: %u", (_END - 1));
-  spiWrite(PRPCOUNT,     (_END -            1));  // Set timing reload counter, default is 8000 increments
-
-  LOGD("AFE:   Start: %u", _START);
-  spiWrite(ADCRSTSTCT0,  (_START             ));  // Start of first ADC conversion reset pulse
-  spiWrite(ADCRSTENDCT0, (_START +          3));  // End of first ADC conversion reset pulse
-  spiWrite(LED2CONVST,   (_START +          4));  // Start of convert LED2 pulse
-  spiWrite(ALED2STC,     (_START +         50));  // Start of sample LED2 ambient pulse
-
-  LOGD("AFE:   1/4: %u", _ONEQUARTER);
-  spiWrite(ALED2ENDC,    (_ONEQUARTER -     2));  // End of sample LED2 ambient pulse
-  spiWrite(LED2CONVEND,  (_ONEQUARTER -     1));  // End of convert LED2 pulse
-  spiWrite(LED1LEDSTC,   (_ONEQUARTER        ));  // Start of LED1 pulse
-  spiWrite(ADCRSTSTCT1,  (_ONEQUARTER        ));  // Start of second ADC conversion reset pulse
-  spiWrite(ADCRSTENDCT1, (_ONEQUARTER +     3));  // End of second ADC conversion reset pulse
-  spiWrite(ALED2CONVST,  (_ONEQUARTER +     4));  // Start of convert LED2 ambient pulse
-  spiWrite(LED1STC,      (_ONEQUARTER +    50));  // Start of sample LED1 pulse
-
-  LOGD("AFE:   1/2: %u", _HALF);
-  spiWrite(LED1ENDC,     (_HALF -           2));  // End of sample LED1 pulse
-  spiWrite(LED1LEDENDC,  (_HALF -           1));  // End of LED1 pulse
-  spiWrite(ALED2CONVEND, (_HALF -           1));  // End of convert LED2 ambient pulse
-  spiWrite(ADCRSTSTCT2,  (_HALF              ));  // Start of third ADC conversion reset pulse
-  spiWrite(ADCRSTENDCT2, (_HALF +           3));  // End of third ADC conversion reset pulse
-  spiWrite(LED1CONVST,   (_HALF +           4));  // Start of convert LED1 pulse
-  spiWrite(ALED1STC,     (_HALF +          50));  // Start of sample LED1 ambient pulse
-
-  LOGD("AFE:   3/4: %u", _THREEQUARTERS);
-  spiWrite(ALED1ENDC,    (_THREEQUARTERS -  2));  // End of sample LED1 ambient pulse
-  spiWrite(LED1CONVEND,  (_THREEQUARTERS -  1));  // End of convert LED1 pulse
-  spiWrite(LED2LEDSTC,   (_THREEQUARTERS     ));  // Start of LED2 pulse
-  spiWrite(ADCRSTSTCT3,  (_THREEQUARTERS     ));  // Start of fourth ADC conversion reset pulse
-  spiWrite(ADCRSTENDCT3, (_THREEQUARTERS +  3));  // End of fourth ADC conversion reset pulse
-  spiWrite(ALED1CONVST,  (_THREEQUARTERS +  4));  // Start of convert LED1 ambient pulse
-  spiWrite(LED2STC,      (_THREEQUARTERS + 50));  // Start of sample LED2 pulse
-
-  LOGD("AFE:   End: %u", _END);
-  spiWrite(LED2ENDC,     (_END -            2));  // End of sample LED2 pulse
-  spiWrite(LED2LEDENDC,  (_END -            1));  // End of LED2 pulse
-  spiWrite(ALED1CONVEND, (_END -            1));  // End of convert LED1 ambient pulse
-
-  LOGD("AFE: --Timing configured");
-  return 0;
-}
-
-void AFE44XX::readTimers() {
-/*
-  Debug Timers
-*/
-  enableSPIread();
-  LOGI("AFE:   ADCRSTSTCT0:  %4u", spiRead(ADCRSTSTCT0));  // t21 Start of first ADC conversion reset pulse
-  LOGI("AFE:   ADCRSTENDCT0: %4u", spiRead(ADCRSTENDCT0)); // t22 End of first ADC conversion reset pulse
-  LOGI("AFE:   LED2CONVST:   %4u", spiRead(LED2CONVST));   // t13 Start of convert LED2 pulse
-  LOGI("AFE:   ALED2STC:     %4u", spiRead(ALED2STC));     // t5 Start of sample LED2 ambient pulse
-  LOGI("AFE:   ALED2ENDC:    %4u", spiRead(ALED2ENDC));    // t6 End of sample LED2 ambient pulse
-  LOGI("AFE:   LED2CONVEND:  %4u", spiRead(LED2CONVEND));  // t14 End of convert LED2 pulse
-  LOGI("AFE:   LED1LEDSTC:   %4u", spiRead(LED1LEDSTC));   // t9 Start of LED1 pulse
-  LOGI("AFE:   ADCRSTSTCT1:  %4u", spiRead(ADCRSTSTCT1));  // t23 Start of second ADC conversion reset pulse
-  LOGI("AFE:   ADCRSTENDCT1: %4u", spiRead(ADCRSTENDCT1)); // t24 End of second ADC conversion reset pulse
-  LOGI("AFE:   ALED2CONVST:  %4u", spiRead(ALED2CONVST));  // t15 Start of convert LED2 ambient pulse
-  LOGI("AFE:   LED1STC:      %4u", spiRead(LED1STC));      // t7 Start of sample LED1 pulse
-  LOGI("AFE:   LED1ENDC:     %4u", spiRead(LED1ENDC));     // t8 End of sample LED1 pulse
-  LOGI("AFE:   LED1LEDENDC:  %4u", spiRead(LED1LEDENDC));  // t10 End of LED1 pulse
-  LOGI("AFE:   ALED2CONVEND: %4u", spiRead(ALED2CONVEND)); // t16 End of convert LED2 ambient pulse
-  LOGI("AFE:   ADCRSTSTCT2:  %4u", spiRead(ADCRSTSTCT2));  // t25 Start of third ADC conversion reset pulse
-  LOGI("AFE:   ADCRSTENDCT2: %4u", spiRead(ADCRSTENDCT2)); // t26 End of third ADC conversion reset pulse
-  LOGI("AFE:   LED1CONVST:   %4u", spiRead(LED1CONVST));   // t17 Start of convert LED1 pulse
-  LOGI("AFE:   ALED1STC:     %4u", spiRead(ALED1STC));     // t11 Start of sample LED1 ambient pulse
-  LOGI("AFE:   ALED1ENDC:    %4u", spiRead(ALED1ENDC));    // t12 End of sample LED1 ambient pulse
-  LOGI("AFE:   LED1CONVEND:  %4u", spiRead(LED1CONVEND));  // t18 End of convert LED1 pulse
-  LOGI("AFE:   LED2LEDSTC:   %4u", spiRead(LED2LEDSTC));   // t3 Start of LED2 pulse
-  LOGI("AFE:   ADCRSTSTCT3:  %4u", spiRead(ADCRSTSTCT3));  // t27 Start of fourth ADC conversion reset pulse
-  LOGI("AFE:   ADCRSTENDCT3: %4u", spiRead(ADCRSTENDCT3)); // t28 End of fourth ADC conversion reset pulse
-  LOGI("AFE:   ALED1CONVST:  %4u", spiRead(ALED1CONVST));  // t19 Start of convert LED1 ambient pulse
-  LOGI("AFE:   LED2STC:      %4u", spiRead(LED2STC));      // t1 Start of sample LED2 pulse
-  LOGI("AFE:   LED2ENDC:     %4u", spiRead(LED2ENDC));     // t2 End of sample LED2 pulse
-  LOGI("AFE:   LED2LEDENDC:  %4u", spiRead(LED2LEDENDC));  // t4 End of LED2 pulse
-  LOGI("AFE:   ALED1CONVEND: %4u", spiRead(ALED1CONVEND)); // t20 End of convert LED1 ambient pulse
-  disableSPIread();
-}
-
-void AFE44XX::dumpRegisters() {
-  /*
-    Debug Registers incl Timers
-  */
-
-  enableSPIread();
-  LOGI("AFE:Registers");
-  LOGI("Start--------------------------------------------");
-  LOGI("CONTROL0:     N.A");
-  LOGI("LED2STC:      %4u", spiRead(LED2STC));
-  LOGI("LED2ENDC:     %4u", spiRead(LED2ENDC));
-  LOGI("LED2LEDSTC:   %4u", spiRead(LED2LEDSTC));
-  LOGI("LED2LEDENDC:  %4u", spiRead(LED2LEDENDC));
-  LOGI("ALED2STC:     %4u", spiRead(ALED2STC));
-  LOGI("ALED2ENDC:    %4u", spiRead(ALED2ENDC));
-  LOGI("LED1STC:      %4u", spiRead(LED1STC));
-  LOGI("LED1ENDC:     %4u", spiRead(LED1ENDC));
-  LOGI("LED1LEDSTC:   %4u", spiRead(LED1LEDSTC));
-  LOGI("LED1LEDENDC:  %4u", spiRead(LED1LEDENDC));
-  LOGI("ALED1STC:     %4u", spiRead(ALED1STC));
-  LOGI("ALED1ENDC:    %4u", spiRead(ALED1ENDC));
-  LOGI("LED2CONVST:   %4u", spiRead(LED2CONVST));
-  LOGI("LED2CONVEND:  %4u", spiRead(LED2CONVEND));
-  LOGI("ALED2CONVST:  %4u", spiRead(ALED2CONVST));
-  LOGI("ALED2CONVEND: %4u", spiRead(ALED2CONVEND));
-  LOGI("LED1CONVST:   %4u", spiRead(LED1CONVST));
-  LOGI("LED1CONVEND:  %4u", spiRead(LED1CONVEND));
-  LOGI("ALED1CONVST:  %4u", spiRead(ALED1CONVST));
-  LOGI("ALED1CONVEND: %4u", spiRead(ALED1CONVEND));
-  LOGI("ADCRSTSTCT0:  %4u", spiRead(ADCRSTSTCT0));
-  LOGI("ADCRSTENDCT0: %4u", spiRead(ADCRSTENDCT0));
-  LOGI("ADCRSTSTCT1:  %4u", spiRead(ADCRSTSTCT1));
-  LOGI("ADCRSTENDCT1: %4u", spiRead(ADCRSTENDCT1));
-  LOGI("ADCRSTSTCT2:  %4u", spiRead(ADCRSTSTCT2));
-  LOGI("ADCRSTENDCT2: %4u", spiRead(ADCRSTENDCT2));
-  LOGI("ADCRSTSTCT3:  %4u", spiRead(ADCRSTSTCT3));
-  LOGI("ADCRSTENDCT3: %4u", spiRead(ADCRSTENDCT3));
-  LOGI("PRPCOUNT:     %4u", spiRead(PRPCOUNT));
-  LOGI("CONTROL1:     %s", intToBinaryString(spiRead(CONTROL1)));
-  LOGI("SPARE1:       N.A");
-  LOGI("TIAGAIN:      %s", intToBinaryString(spiRead(TIAGAIN)));
-  LOGI("TIA_AMB_GAIN: %s", intToBinaryString(spiRead(TIA_AMB_GAIN)));
-  LOGI("LEDCNTRL:     %s", intToBinaryString(spiRead(LEDCNTRL)));
-  LOGI("CONTROL2:     %s", intToBinaryString(spiRead(CONTROL2)));
-  LOGI("SPARE2:       N.A.");
-  LOGI("SPARE3:       N.A.");
-  LOGI("SPARE4:       N.A.");
-  LOGI("RESERVED1:    N.A.");
-  LOGI("RESERVED2:    N.A.");
-  LOGI("ALARM:        %s", intToBinaryString(spiRead(ALARM)));
-  LOGI("DIAG:         %s", intToBinaryString(spiRead(DIAG)));
-  LOGI("Values----------------------------------------------");
-  LOGI("LED2VAL:      %s", intToBinaryString(spiRead(LED2VAL)));
-  LOGI("ALED2VAL:     %s", intToBinaryString(spiRead(ALED2VAL)));
-  LOGI("LED1VAL:      %s", intToBinaryString(spiRead(LED1VAL)));
-  LOGI("ALED1VAL:     %s", intToBinaryString(spiRead(ALED1VAL)));
-  LOGI("LED2ABSVAL:   %s", intToBinaryString(spiRead(LED2ABSVAL)));
-  LOGI("LED1ABSVAL:   %s", intToBinaryString(spiRead(LED1ABSVAL)));
-  LOGI("End----------------------------------------------");
-  disableSPIread();
-}
-
-/******************************************************************************************************/
-// AFE Start and Stop
-/******************************************************************************************************/
-
-bool AFE44XX::start(uint8_t numAverages) {
-/*
-  Enable Timers
-  Attach Interrupt
-*/
-
-  LOGD("AFE: --starting");
-
-  // 0) Set CONTROL2 register
-  // uint32_t control2Value = readRegister(CONTROL2);
-  // control2Value &= ~(0b11 << 17);          // Clear bits 18, 17 ref Voltage
-  // control2Value &= ~(0b1 << 16);           // Clear bit 16, NO RST clock on PD ALM (default)
-  // control2Value &= ~(0b1 << 15);           // Clear bit 15, use internal ADC
-  // control2Value &= ~(0b1 << 10);           // Set bit 10, tristate off
-  // control2Value &= ~(0b1 << 8);            // Clear bit 8, set slow diagnosis
-  // control2Value &= ~(0b111);               // Clear bits 0, 1, 2 to power up the AFE, Receiver, and Transmitter
-  // writeRegister(CONTROL2, control2Value);  // Write the modified value back to the CONTROL2 register
-
-  // 0) Make sure system is powered up
-  if (isAFEPoweredDown()) { setPowerAFE(true); }
-  if (isRXPoweredDown())  { setPowerRX(true); }
-  if (isTXPoweredDown())  { setPowerTX(true); }
-
-  // 1) Attach ISR
-  attachInterrupt(digitalPinToInterrupt(_drdyPin), AFE44XX::dataReadyISR, FALLING);
-  LOGD("AFE:   attached ISR");
-
-  // 2a) Control 1: Enable timers
-  uint32_t control1_settings = readRegister(CONTROL1);
-  control1_settings |= (1 << 8); // Set bit 8 to enable timers 
-  LOGD("AFE:   Timers are enabled, %s", intToBinaryString(control1_settings));
-  // 2b) Control 2: Set Averaging
-  if ((numAverages == 0) || (numAverages > 16)) {
-      return -1;
-  } else {
-      control1_settings &= ~(0xFF);            // Clear bits 7 - 0
-      control1_settings |= (numAverages << 0); // Set bits 7 to 0 with the averaging value
-      LOGD("AFE:   Averaging is %u, %s", numAverages, intToBinaryString(control1_settings));
-  }  
-  // 2) Set CONTROL1 register
-  writeRegister(CONTROL1, control1_settings);
-  
-  LOGD("AFE: --started");
-
-  return true; // now running
-}
-
-bool AFE44XX::stop() {
-  /*
-    Disable Timers
-    Detach Interrupt
-  */
-  LOGD("AFE: --stopping");
-
-  // 1) Disable Timers
-  uint32_t control1_settings = readRegister(CONTROL1);
-  control1_settings &= ~(1 << 8);  // Clear bit 8 to disable
-  writeRegister(CONTROL1, control1_settings);  // Write the modified value back to the CONTROL2 register
-  LOGD("AFE:   Timers are disabled, %s", intToBinaryString(control1_settings));
-  
-  // Power off TX, RX, AFE
-  // uint32_t control2_settings = readRegister(CONTROL2);
-  // control2_settings |= 0b111;  // Set bits 0, 1, 2 to power down the AFE, Receiver, and Transmitter
-  // writeRegister(CONTROL2, control2_settings);  // Write the modified value back to the CONTROL2 register
-  // LOGD("AFE:   TX, RX, and AFE are powered %s, %s", enable ? "on" : "down", intToBinaryString(control2_settings));
-
-  // 2) Detach ISR
-  detachInterrupt(digitalPinToInterrupt(_drdyPin));
-
-  LOGD("AFE: --stopped");
-  return false; // no longer running
-}
-
-/******************************************************************************************************/
-// AFE Initialization
-/******************************************************************************************************/
-
-void AFE44XX::initalize() {
-/*
-  Default Initialization Sequence
-*/
-  // 0) Software Reset
-  reset(); // software reset
-
-  // 1) Configure Timers
-  setTimers(1.0);
-
-  writeRegister(CONTROL0, CLEAR);       // Clear CONTROL0 register
-
-  // 2) Configure AFE
-  bypassADC(false);
-  setOscillator(true);
-  setShortDiagnostic(true);
-  setTristate(true);
-  setHbridge(true);
-  setAlarmpins(0b101); // None  
-  setPowerAFE(true);
-  setPowerRX(true);
-  setPowerTX(true);
-
-  // 3) Configure Receiver
-  setSameGain(true);                    // same gain for LED1 and LED2
-  setFirstStageFeedbackCapacitor(5,0);  // 5pF, both LEDs
-  setFirstStageFeedbackResistor(5,0);   // 500kOhm both LEDs
-  setFirstStageCutOffFrequency(0);      // 500Hz
-  setSecondStageGain(1, true, 0);       // 1.5x gain, enabled, both LEDs
-  setCancellationCurrent(0);             // 0 microAmp
-
-  // 4) Configure Transmitter
-  setLEDdriver(0,0);                    // 0.75V, 150mA
-  setLEDpower(24, 0);                   // 24 of 255 on both LEDs
-
-}
-
-////////////////////////////////////////////////////////////////////////////
-// Texas Instruments Firmware
-////////////////////////////////////////////////////////////////////////////
-// setgpio
-// =========================================================================
-
-//port set..
-// ===========================================================================
-// P1.1 - AFE_RESETZ Out, High
-// P1.2 - AFE_PDNZ   Out, High
-// P2.3 - ADC_RDY    In
-// P2.4 - PD_ALM     In
-// P2.5 - LED_ALM    In
-// P5.7 - DIAG_END   In
-
-// setSPI
-// ===========================================================================
-// Set SPI peripheral bits
-// STE, SCLK, and DOUT as output
-// Din as input
-// Set STE high
-// Enable SW reset
-// [b0]   1 -  Synchronous mode
-// [b2-1] 00-  3-pin SPI
-// [b3]   1 -  Master mode
-// [b4]   0 - 8-bit data
-// [b5]   1 - MSB first
-// [b6]   0 - Clock polarity high.
-// [b7]   1 - Clock phase - Data is captured on the first UCLK edge and changed on the following edge.
-// SMCLK
-// 16 MHz
-// Clear SW reset, resume operation
-
-// dataready interrupt
-// ===========================================================================
-// Enable P2.3 internal resistance
-// Set P2.3 as pull-Up resistance
-// P2.3 Hi/Lo edge
-// P2.3 IFG cleared
-// P2.3 interrupt disabled
-
-// set Registers
-// =============================================================================
-// disableSPIread
-// setTimers
-// Write CONTROL0 CLEAR
-// Write CONTROL2           LED driver
-// Write TIAGAIN            PD driver
-// Write TIA_AMB_GAIN       PD driver
-// Write LEDCNTRL           LED current and power
-// Write CONTROL1           
-// enableSPIread

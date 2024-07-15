@@ -3,7 +3,7 @@
 int currentLogLevel = LOG_LEVEL_DEBUG; // Default log level
 char binaryBuffer[36];                 // int32 to binary string
 
-void logPrint(const char* level, const char* format, ...) {
+void logPrintln(const char* level, const char* format, ...) {
     // Custom logging messaging
     Serial.print("[");
     Serial.print(level);
@@ -16,6 +16,41 @@ void logPrint(const char* level, const char* format, ...) {
     va_end(args);
 
     Serial.println(buffer);
+}
+
+void logPrintS(const char* level, const char* format, ...) {
+    // Custom logging messaging
+    Serial.print("[");
+    Serial.print(level);
+    Serial.print("] ");
+
+    va_list args;
+    va_start(args, format);
+    char buffer[256];
+    vsnprintf(buffer, sizeof(buffer), format, args);
+    va_end(args);
+
+    Serial.print(buffer);
+}
+
+void logPrintE(const char* level, const char* format, ...) {
+    va_list args;
+    va_start(args, format);
+    char buffer[256];
+    vsnprintf(buffer, sizeof(buffer), format, args);
+    va_end(args);
+
+    Serial.println(buffer);
+}
+
+void logPrintC(const char* level, const char* format, ...) {
+    va_list args;
+    va_start(args, format);
+    char buffer[256];
+    vsnprintf(buffer, sizeof(buffer), format, args);
+    va_end(args);
+    
+    Serial.print(buffer);
 }
 
 char* intToBinaryString(uint32_t num) {

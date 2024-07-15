@@ -14,13 +14,17 @@
 extern int currentLogLevel;
 
 // Macros for logging
-#define LOGE(...) if (currentLogLevel >= LOG_LEVEL_ERROR) { logPrint("ERROR", __VA_ARGS__); }
-#define LOGW(...) if (currentLogLevel >= LOG_LEVEL_WARN)  { logPrint("WARN",  __VA_ARGS__); }
-#define LOGI(...) if (currentLogLevel >= LOG_LEVEL_INFO)  { logPrint("INFO",  __VA_ARGS__); }
-#define LOGD(...) if (currentLogLevel >= LOG_LEVEL_DEBUG) { logPrint("DEBUG", __VA_ARGS__); }
+#define LOGE(...) if (currentLogLevel >= LOG_LEVEL_ERROR) { logPrintln("ERROR", __VA_ARGS__); }
+#define LOGW(...) if (currentLogLevel >= LOG_LEVEL_WARN)  { logPrintln("WARN",  __VA_ARGS__); }
+#define LOGI(...) if (currentLogLevel >= LOG_LEVEL_INFO)  { logPrintln("INFO",  __VA_ARGS__); }
+#define LOGIS(...) if (currentLogLevel >= LOG_LEVEL_INFO) { logPrintS("INFO",  __VA_ARGS__); }
+#define LOGIC(...) if (currentLogLevel >= LOG_LEVEL_INFO) { logPrintC("INFO",  __VA_ARGS__); }
+#define LOGIE(...) if (currentLogLevel >= LOG_LEVEL_INFO) { logPrintE("INFO",  __VA_ARGS__); }
+#define LOGD(...) if (currentLogLevel >= LOG_LEVEL_DEBUG) { logPrintln("DEBUG", __VA_ARGS__); }
 
 // Functions to print log messages
 void logPrint(const char* level, const char* format, ...);
+void logPrintln(const char* level, const char* format, ...);
 char* intToBinaryString(uint32_t num);
 
 #endif // LOGGER_H

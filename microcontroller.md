@@ -1,4 +1,5 @@
 # Microcontroller
+
 Code included with this project is using the Arduino programming environment. Communication with base station uses ESPNow. Therefor code will only work with ESP based micro controllers.
 
 During development, Adafruit ESP32-S3 Feather was primarily used but also SparkFun Thing Plus to test an older hardware version.
@@ -6,6 +7,26 @@ During development, Adafruit ESP32-S3 Feather was primarily used but also SparkF
 ## Arduino ESP32
 
 Currently, the Arduino ESP32 supports the peripherals with Arduino APIs as listed here: https://docs.espressif.com/projects/arduino-esp32/en/latest/libraries.html
+
+### Arduino IDE Programmer Settings
+
+#### Adafruit ESP32-S3 Feather with 2MB of PSRAM
+
+Reset boot loader: Push boot and hold it, push and release reset.
+
+The default setting is for micro python and not working well with Arduino IDE. These will work:
+
+- PSRAM: OPI-PSRAM
+- Flash Mode: QIO 80 MHz
+- Flash Size: 4Mb
+- Partition Scheme: Default 4Mb with spiffs
+- Upload mode: UART0
+- USB mode: Hardware CDC
+- Core Frequency 240MHz
+- USB DFU on boot: disabled
+
+#### Sparkfun ESP32 C WROOM
+
 
 ## EPS32 Variants
 

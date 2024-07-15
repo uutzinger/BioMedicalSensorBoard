@@ -27,4 +27,4 @@ DIAG_E    | Diagnostics End, Output   | 11   GPIO27 | 11
 Pin 10 is reserved for system button.
 Require connections are in **bold**.
 
-*The SPO2 Aanalog Front End uses the old terminology MOSI and MISO while appropriate terminologyis PCOI and PICO for peripheral out controller in and perpherial in controller out.
+*The SPO2 Aanalog Front End uses the old terminology MOSI and MISO while appropriate terminology is POCI and PICO for "peripheral out controller in" and "perpherial in controller out".

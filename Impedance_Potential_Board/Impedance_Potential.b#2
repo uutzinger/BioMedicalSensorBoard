@@ -216,7 +216,7 @@ MediBrick
 <text x="42.55" y="64" size="1.016" layer="25" font="vector" ratio="12" rot="R90">SDI</text>
 <text x="45.2" y="64" size="1.016" layer="25" font="vector" ratio="12" rot="R90">SDO</text>
 <text x="47.45" y="64" size="0.6096" layer="25" font="vector" ratio="12" rot="R90">INT2B</text>
-<text x="49.95" y="64" size="0.8128" layer="25" font="vector" ratio="12" rot="R90">INTB</text>
+<text x="49.95" y="63.2" size="0.8128" layer="25" font="vector" ratio="12" rot="R90">INT1B</text>
 <text x="53" y="63.7" size="1.016" layer="25" font="vector" ratio="12" rot="R90">3.3V</text>
 <text x="55.35" y="63.7" size="1.016" layer="25" font="vector" ratio="12" rot="R90">GND</text>
 <text x="22.6" y="28.95" size="0.6096" layer="21" font="vector" ratio="12">FCLK</text>
@@ -298,38 +298,6 @@ We've spent an enormous amount of time creating and checking these footprints an
 &lt;br&gt;
 You are welcome to use this library for commercial purposes. For attribution, we ask that when you begin to sell your device using our footprint, you email us with a link to the product being sold. We want bragging rights that we helped (in a very small part) to create your 8th world wonder. We would like the opportunity to feature your device on our homepage.</description>
 <packages>
-<package name="SMT-JUMPER_2_NC_TRACE_SILK" urn="urn:adsk.eagle:footprint:39258/2" library_version="2">
-<wire x1="0.762" y1="-1.016" x2="-0.762" y2="-1.016" width="0.2032" layer="21"/>
-<wire x1="0.762" y1="1.016" x2="1.2192" y2="0.5588" width="0.2032" layer="21" curve="-90"/>
-<wire x1="-1.2192" y1="0.5588" x2="-0.762" y2="1.016" width="0.2032" layer="21" curve="-90"/>
-<wire x1="-1.2192" y1="-0.5588" x2="-0.762" y2="-1.016" width="0.2032" layer="21" curve="90"/>
-<wire x1="0.762" y1="-1.016" x2="1.2192" y2="-0.5588" width="0.2032" layer="21" curve="90"/>
-<wire x1="1.2192" y1="-0.5588" x2="1.2192" y2="0.5588" width="0.2032" layer="21"/>
-<wire x1="-1.2192" y1="-0.5588" x2="-1.2192" y2="0.5588" width="0.2032" layer="21"/>
-<wire x1="-0.762" y1="1.016" x2="0.762" y2="1.016" width="0.2032" layer="21"/>
-<smd name="1" x="-0.5207" y="0" dx="0.6604" dy="1.27" layer="1" cream="no"/>
-<smd name="2" x="0.5207" y="0" dx="0.6604" dy="1.27" layer="1" cream="no"/>
-<text x="0" y="1.143" size="0.6096" layer="25" font="vector" ratio="20" align="bottom-center">&gt;NAME</text>
-<text x="0" y="-1.143" size="0.6096" layer="27" font="vector" ratio="20" align="top-center">&gt;VALUE</text>
-<polygon width="0.127" layer="29">
-<vertex x="-0.1905" y="0.127"/>
-<vertex x="0.1905" y="0.127"/>
-<vertex x="0.1905" y="-0.127"/>
-<vertex x="-0.1905" y="-0.127"/>
-</polygon>
-<polygon width="0.0127" layer="1">
-<vertex x="-0.6985" y="0.127"/>
-<vertex x="0.0254" y="0.127"/>
-<vertex x="0.0254" y="-0.127"/>
-<vertex x="-0.6985" y="-0.127"/>
-</polygon>
-<polygon width="0.0127" layer="1">
-<vertex x="-0.0254" y="0.127"/>
-<vertex x="0.6985" y="0.127"/>
-<vertex x="0.6985" y="-0.127"/>
-<vertex x="-0.0254" y="-0.127"/>
-</polygon>
-</package>
 <package name="SMT-JUMPER_2_NC_PASTE_SILK" urn="urn:adsk.eagle:footprint:39261/1" library_version="1">
 <text x="0" y="1.143" size="0.6096" layer="25" font="vector" ratio="20" align="bottom-center">&gt;NAME</text>
 <text x="0" y="-1.143" size="0.6096" layer="27" font="vector" ratio="20" align="top-center">&gt;VALUE</text>
@@ -361,11 +329,6 @@ You are welcome to use this library for commercial purposes. For attribution, we
 </package>
 </packages>
 <packages3d>
-<package3d name="SMT-JUMPER_2_NC_TRACE_SILK" urn="urn:adsk.eagle:package:39281/2" type="box" library_version="2">
-<packageinstances>
-<packageinstance name="SMT-JUMPER_2_NC_TRACE_SILK"/>
-</packageinstances>
-</package3d>
 <package3d name="SMT-JUMPER_2_NC_PASTE_SILK" urn="urn:adsk.eagle:package:39282/1" type="box" library_version="1">
 <packageinstances>
 <packageinstance name="SMT-JUMPER_2_NC_PASTE_SILK"/>
@@ -1089,7 +1052,7 @@ design rules under a new name.</description>
 <attribute name="PROD_ID" value="DIO-00819" x="68.2" y="61.5" size="1.778" layer="27" rot="R270" display="off"/>
 <attribute name="VALUE" x="63.634" y="60.7205" size="0.6096" layer="27" rot="R270"/>
 </element>
-<element name="LED_ENABLE" library="SparkFun-Jumpers" library_urn="urn:adsk.eagle:library:528" package="SMT-JUMPER_2_NC_TRACE_SILK" package3d_urn="urn:adsk.eagle:package:39281/2" value="LED ENABLE" x="66.3" y="61.5" smashed="yes" rot="R180">
+<element name="LED_ENABLE" library="SparkFun-Jumpers" library_urn="urn:adsk.eagle:library:528" package="SMT-JUMPER_2_NC_PASTE_SILK" package3d_urn="urn:adsk.eagle:package:39282/1" value="LED ENABLE" x="66.3" y="61.5" smashed="yes" rot="R180">
 <attribute name="NAME" x="63.3" y="58.557" size="1.016" layer="25" font="vector" ratio="12" align="bottom-center"/>
 <attribute name="VALUE" x="68.1" y="63.493" size="0.6096" layer="27" font="vector" ratio="20" rot="R270" align="top-center"/>
 </element>
@@ -1704,7 +1667,7 @@ design rules under a new name.</description>
 <signal name="N$28">
 <contactref element="D1" pad="C"/>
 <contactref element="LED_ENABLE" pad="2"/>
-<wire x1="65.7793" y1="61.5" x2="64.75" y2="61.5" width="0.508" layer="1"/>
+<wire x1="65.8936" y1="61.5" x2="64.75" y2="61.5" width="0.508" layer="1"/>
 </signal>
 <signal name="DRVP">
 <contactref element="DRV" pad="2"/>
@@ -2339,9 +2302,6 @@ design rules under a new name.</description>
 <mfgpreviewcolor name="coppercolor" color="0xFFFFBF00"/>
 <mfgpreviewcolor name="substratecolor" color="0xFF786E46"/>
 </mfgpreviewcolors>
-<errors>
-<approved hash="19,1,7de19c3edcd6d1ee"/>
-</errors>
 </board>
 </drawing>
 <compatibility>

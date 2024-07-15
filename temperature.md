@@ -50,7 +50,7 @@ int32_t R_thermistor = int32_t ( ( uint64_t(R3) * uint64_t(Vin*R2 - Vdiff*(R1+R2
 
 ### Steinhart-Hart Equation
 
-The Steinhart-Hart equation provides a formula to model the resistance of the thermistor based on 3 calibration values A, B and C. These are manufacturer provided and material constants but they vary for each type of thermistor.
+The cuation provides a formula to model the resistance of the thermistor based on 3 calibration values A, B and C. These are manufacturer provided and material constants but they vary for each type of thermistor. The equation is an approximation of the semiconductors resistance model.
 
 $\frac{1}{T} = A + B ln(R) + C (ln(R))^3$
 
