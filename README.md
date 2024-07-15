@@ -9,12 +9,12 @@
 ## Problem Description
 
 Biomedical engineering students need to practice measuring signals from living systems.
-Measurement equipment is needed for classroom laboratories that can safely record common physiological signals.
+Measurement equipment is needed for classroom laboratories that can safely record common physiological parameters.
 For a wide adoption, such equipment should be cost effective and repairable in-house.
 Therefore, it should take advantage of existing components that are open source and distributed through domestic channels.
 While there are commercial systems available [^fn1] [^fn2], there is no unifying approach that takes advantage of existing third party hardware, gives option to expand functionality at later time and uses open source software. 
 
-If there were well documented inexpensive measurement modules, they could also be readily incorporated into academic research projects.
+If there were well documented, inexpensive measurement modules, they could also be readily incorporated into academic research projects.
 
 [^fn1]: Bioradio, https://staging.glneurotech.com/product-category/bioradio-all
 [^fn2]: Protocentral https://protocentral.com
@@ -27,11 +27,11 @@ An expandable, low-costs, open-design system is needed that measures physiologic
 
 ### Common Physiologic Paramters
 
-**Biopotentials** are created by electric fields due to ion gradients primarily over muscle cells and neurons. Skin resistance is attenuating the measurable signal, requiring electrical amplification.
+**Biopotentials** are created by electric fields due to ion gradients primarily over muscle cells and neurons. Skin resistance is attenuating the measurable signal requiring electrical amplification.
 
 **Bioimpedance** measures body and tissue impedance by injecting oscillating current through electrodes and measuring the resulting voltage. The frequency response is indicative of electrical tissue composition.
 
-**Optical Absorption** is measured with light passing through the body and tissue at different optical wavelengths extracting optical absorption properties of tissue constituents such as hemoglobin. Variation in concentration occurs during blood pressure propagation. Background such as melanin and scattering affect these readings and can reduce signal strength. When measuring with more than two wavelenghts, additional Hemoglibin species can be detected however most common sensor elements support two wavelenghts.
+**Optical Absorption** is measured with light passing through the body and tissue at different optical wavelengths extracting optical absorption properties of tissue constituents such as hemoglobin. Variation in concentration occurs during blood pressure propagation. Background such as melanin and scattering affect these readings and can reduce signal strength. When measuring with more than two wavelenghts, additional Hemoglibin species can be detected, however most common sensor elements support two wavelenghts.
 
 **Temperature** is a simple measurement for increased metabolism which can be caused through viral or bacterial load as a defense mechanism to lower viral replication but also due to hyperactivity of cancer or exercise.
 
@@ -46,10 +46,10 @@ Below are two companies manfacturing integreated bio front ends.
 Below are the commonly measured signals using electronic analog front ends. In general, physiologic signals are slow with low frequency content compared to other electric signals but weak and needing significant amplification and suppression of background.
 
 - Biopotentials
-    - Electro Cardio Gram (ECG) heart muscle acticity
-    - Electro Mio Gram (EMG) any muscle activity
-    - Electro Occulo Gram (EOG) eye movement
-    - Electro Encephalo Gram (EEG) brain neural activity
+    - Electro Cardio Gram (ECG); heart muscle acticity
+    - Electro Mio Gram (EMG); any muscle activity
+    - Electro Occulo Gram (EOG); eye movement
+    - Electro Encephalo Gram (EEG); brain neural activity
 
 - Bioimpedance
     - Whole Body Impedance Analysis (BIA) or Total Body Composition (TBC)
@@ -60,7 +60,7 @@ Below are the commonly measured signals using electronic analog front ends. In g
     - Galvanic skin response (GSR), Skin Conductance Level (SCL) or Electro dermal activity (EDA)as a result of physiologic arousal
 
 - Optical Plethysmo Graphy
-    - Pulse Plethysmo Graphy (PPG), detecting pressure waves passing beneath the sensor, non contact heart rate and pulse propagation
+    - Pulse Plethysmo Graphy (PPG); detecting pressure waves passing beneath the sensor, non contact heart rate and pulse propagation
     - Blood Oxygenation
     - $SPO_2$ Pulse Oximetery, oxygen saturation
 
