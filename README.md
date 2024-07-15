@@ -46,10 +46,10 @@ Below are two companies manfacturing integreated bio front ends.
 Below are the commonly measured signals using electronic analog front ends. In general, physiologic signals are slow with low frequency content compared to other electric signals but weak and needing significant amplification and suppression of background.
 
 - Biopotentials
-    - Electro Cardio Gram (ECG) heart muscle acticity
-    - Electro Mio Gram (EMG) any muscle activity
-    - Electro Occulo Gram (EOG) eye movement
-    - Electro Encephalo Gram (EEG) brain neural activity
+    - Electro Cardio Gram (ECG); heart muscle acticity
+    - Electro Mio Gram (EMG); any muscle activity
+    - Electro Occulo Gram (EOG); eye movement
+    - Electro Encephalo Gram (EEG); brain neural activity
 
 - Bioimpedance
     - Whole Body Impedance Analysis (BIA) or Total Body Composition (TBC)
@@ -60,7 +60,7 @@ Below are the commonly measured signals using electronic analog front ends. In g
     - Galvanic skin response (GSR), Skin Conductance Level (SCL) or Electro dermal activity (EDA)as a result of physiologic arousal
 
 - Optical Plethysmo Graphy
-    - Pulse Plethysmo Graphy (PPG), detecting pressure waves passing beneath the sensor, non contact heart rate and pulse propagation
+    - Pulse Plethysmo Graphy (PPG); detecting pressure waves passing beneath the sensor, non contact heart rate and pulse propagation
     - Blood Oxygenation
     - $SPO_2$ Pulse Oximetery, oxygen saturation
 
