@@ -1899,7 +1899,7 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <rectangle x1="0.3302" y1="-0.4699" x2="0.8303" y2="0.4801" layer="51"/>
 <rectangle x1="-0.1999" y1="-0.3" x2="0.1999" y2="0.3" layer="35"/>
 </package>
-<package name="AXIAL-0.3" urn="urn:adsk.eagle:footprint:39622/1" library_version="1">
+<package name="AXIAL-0.3" urn="urn:adsk.eagle:footprint:39622/2" library_version="2">
 <description>&lt;h3&gt;AXIAL-0.3&lt;/h3&gt;
 &lt;p&gt;Commonly used for 1/4W through-hole resistors. 0.3" pitch between holes.&lt;/p&gt;</description>
 <wire x1="-2.54" y1="0.762" x2="2.54" y2="0.762" width="0.2032" layer="21"/>
@@ -1915,7 +1915,7 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <text x="0" y="1.016" size="0.6096" layer="25" font="vector" ratio="20" align="bottom-center">&gt;Name</text>
 <text x="0" y="-1.016" size="0.6096" layer="27" font="vector" ratio="20" align="top-center">&gt;Value</text>
 </package>
-<package name="AXIAL-0.1" urn="urn:adsk.eagle:footprint:39620/1" library_version="1">
+<package name="AXIAL-0.1" urn="urn:adsk.eagle:footprint:39620/2" library_version="2">
 <description>&lt;h3&gt;AXIAL-0.1&lt;/h3&gt;
 &lt;p&gt;Commonly used for 1/4W through-hole resistors. 0.1" pitch between holes.&lt;/p&gt;</description>
 <wire x1="0" y1="-0.762" x2="0" y2="0" width="0.2032" layer="21"/>
@@ -1925,9 +1925,9 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <pad name="P$1" x="-1.27" y="0" drill="0.9" diameter="1.8796"/>
 <pad name="P$2" x="1.27" y="0" drill="0.9" diameter="1.8796"/>
 <text x="0" y="1.143" size="0.6096" layer="25" font="vector" ratio="20" align="bottom-center">&gt;Name</text>
-<text x="0" y="-1.143" size="0.6096" layer="21" font="vector" ratio="20" align="top-center">&gt;Value</text>
+<text x="0" y="-1.143" size="0.6096" layer="27" font="vector" ratio="20" align="top-center">&gt;Value</text>
 </package>
-<package name="AXIAL-0.1-KIT" urn="urn:adsk.eagle:footprint:39621/1" library_version="1">
+<package name="AXIAL-0.1-KIT" urn="urn:adsk.eagle:footprint:39621/2" library_version="2">
 <description>&lt;h3&gt;AXIAL-0.1-KIT&lt;/h3&gt;
 &lt;p&gt;Commonly used for 1/4W through-hole resistors. 0.1" pitch between holes.&lt;/p&gt;
 &lt;p&gt;&lt;b&gt;Warning:&lt;/b&gt; This is the KIT version of the AXIAL-0.1 package. This package has a smaller diameter top stop mask, which doesn't cover the diameter of the pad. This means only the bottom side of the pads' copper will be exposed. You'll only be able to solder to the bottom side.&lt;/p&gt;</description>
@@ -1945,7 +1945,7 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <circle x="-1.27" y="0" radius="0.4572" width="0" layer="29"/>
 <circle x="1.27" y="0" radius="0.4572" width="0" layer="29"/>
 </package>
-<package name="AXIAL-0.3-KIT" urn="urn:adsk.eagle:footprint:39623/1" library_version="1">
+<package name="AXIAL-0.3-KIT" urn="urn:adsk.eagle:footprint:39623/2" library_version="2">
 <description>&lt;h3&gt;AXIAL-0.3-KIT&lt;/h3&gt;
 &lt;p&gt;Commonly used for 1/4W through-hole resistors. 0.3" pitch between holes.&lt;/p&gt;
 &lt;p&gt;&lt;b&gt;Warning:&lt;/b&gt; This is the KIT version of the AXIAL-0.3 package. This package has a smaller diameter top stop mask, which doesn't cover the diameter of the pad. This means only the bottom side of the pads' copper will be exposed. You'll only be able to solder to the bottom side.&lt;/p&gt;</description>
@@ -1986,48 +1986,93 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <vertex x="-3.3681" y="-0.0101" curve="-90.012967"/>
 </polygon>
 </package>
+<package name="0402" urn="urn:adsk.eagle:footprint:39625/2" library_version="2">
+<description>&lt;p&gt;&lt;b&gt;Generic 1005 (0402) package&lt;/b&gt;&lt;/p&gt;
+&lt;p&gt;0.2mm courtyard excess rounded to nearest 0.05mm.&lt;/p&gt;</description>
+<wire x1="-0.2704" y1="0.2286" x2="0.2704" y2="0.2286" width="0.1524" layer="51"/>
+<wire x1="0.2704" y1="-0.2286" x2="-0.2704" y2="-0.2286" width="0.1524" layer="51"/>
+<wire x1="-1.2" y1="0.65" x2="1.2" y2="0.65" width="0.0508" layer="39"/>
+<wire x1="1.2" y1="0.65" x2="1.2" y2="-0.65" width="0.0508" layer="39"/>
+<wire x1="1.2" y1="-0.65" x2="-1.2" y2="-0.65" width="0.0508" layer="39"/>
+<wire x1="-1.2" y1="-0.65" x2="-1.2" y2="0.65" width="0.0508" layer="39"/>
+<smd name="1" x="-0.58" y="0" dx="0.85" dy="0.9" layer="1"/>
+<smd name="2" x="0.58" y="0" dx="0.85" dy="0.9" layer="1"/>
+<text x="0" y="0.762" size="0.6096" layer="25" font="vector" ratio="20" align="bottom-center">&gt;NAME</text>
+<text x="0" y="-0.762" size="0.6096" layer="27" font="vector" ratio="20" align="top-center">&gt;VALUE</text>
+<rectangle x1="-0.554" y1="-0.3048" x2="-0.254" y2="0.3048" layer="51"/>
+<rectangle x1="0.2588" y1="-0.3048" x2="0.5588" y2="0.3048" layer="51"/>
+<rectangle x1="-0.1999" y1="-0.3" x2="0.1999" y2="0.3" layer="35"/>
+</package>
+<package name="0402-TIGHT" urn="urn:adsk.eagle:footprint:41389011/1" library_version="2">
+<smd name="1" x="-0.5" y="0" dx="0.6" dy="0.6" layer="1"/>
+<smd name="2" x="0.5" y="0" dx="0.6" dy="0.6" layer="1"/>
+<text x="0" y="0.562" size="0.6096" layer="25" font="vector" ratio="20" align="bottom-center">&gt;NAME</text>
+<text x="0" y="-0.562" size="0.6096" layer="27" font="vector" ratio="20" align="top-center">&gt;VALUE</text>
+<wire x1="-0.5" y1="-0.25" x2="-0.5" y2="0.25" width="0.002540625" layer="51"/>
+<wire x1="-0.5" y1="0.25" x2="0.5" y2="0.25" width="0.002540625" layer="51"/>
+<wire x1="0.5" y1="0.25" x2="0.5" y2="-0.25" width="0.002540625" layer="51"/>
+<wire x1="0.5" y1="-0.25" x2="-0.5" y2="-0.25" width="0.002540625" layer="51"/>
+<wire x1="0.9262" y1="0.4262" x2="-0.9262" y2="0.4262" width="0.05" layer="39"/>
+<wire x1="-0.9262" y1="0.4262" x2="-0.9262" y2="-0.4262" width="0.05" layer="39"/>
+<wire x1="-0.9262" y1="-0.4262" x2="0.9262" y2="-0.4262" width="0.05" layer="39"/>
+<wire x1="0.9262" y1="-0.4262" x2="0.9262" y2="0.4262" width="0.05" layer="39"/>
+<rectangle x1="-0.5" y1="-0.25" x2="-0.3" y2="0.25" layer="51"/>
+<rectangle x1="0.3" y1="-0.25" x2="0.5" y2="0.25" layer="51" rot="R180"/>
+</package>
 </packages>
 <packages3d>
-<package3d name="0603" urn="urn:adsk.eagle:package:39650/1" type="box" library_version="1">
+<package3d name="0603" urn="urn:adsk.eagle:package:41389018/1" type="box" library_version="2">
 <description>Generic 1608 (0603) package
 0.2mm courtyard excess rounded to nearest 0.05mm.</description>
 <packageinstances>
 <packageinstance name="0603"/>
 </packageinstances>
 </package3d>
-<package3d name="AXIAL-0.3" urn="urn:adsk.eagle:package:39658/1" type="box" library_version="1">
-<description>AXIAL-0.3
-Commonly used for 1/4W through-hole resistors. 0.3" pitch between holes.</description>
+<package3d name="AXIAL-0.3" urn="urn:adsk.eagle:package:39658/2" type="box" library_version="2">
+<description>&lt;h3&gt;AXIAL-0.3&lt;/h3&gt;
+&lt;p&gt;Commonly used for 1/4W through-hole resistors. 0.3" pitch between holes.&lt;/p&gt;</description>
 <packageinstances>
 <packageinstance name="AXIAL-0.3"/>
 </packageinstances>
 </package3d>
-<package3d name="AXIAL-0.1" urn="urn:adsk.eagle:package:39656/1" type="box" library_version="1">
-<description>AXIAL-0.1
-Commonly used for 1/4W through-hole resistors. 0.1" pitch between holes.</description>
+<package3d name="AXIAL-0.1" urn="urn:adsk.eagle:package:39656/2" type="box" library_version="2">
+<description>&lt;h3&gt;AXIAL-0.1&lt;/h3&gt;
+&lt;p&gt;Commonly used for 1/4W through-hole resistors. 0.1" pitch between holes.&lt;/p&gt;</description>
 <packageinstances>
 <packageinstance name="AXIAL-0.1"/>
 </packageinstances>
 </package3d>
-<package3d name="AXIAL-0.1-KIT" urn="urn:adsk.eagle:package:39653/1" type="box" library_version="1">
-<description>AXIAL-0.1-KIT
-Commonly used for 1/4W through-hole resistors. 0.1" pitch between holes.
-Warning: This is the KIT version of the AXIAL-0.1 package. This package has a smaller diameter top stop mask, which doesn't cover the diameter of the pad. This means only the bottom side of the pads' copper will be exposed. You'll only be able to solder to the bottom side.</description>
+<package3d name="AXIAL-0.1-KIT" urn="urn:adsk.eagle:package:39653/2" type="box" library_version="2">
+<description>&lt;h3&gt;AXIAL-0.1-KIT&lt;/h3&gt;
+&lt;p&gt;Commonly used for 1/4W through-hole resistors. 0.1" pitch between holes.&lt;/p&gt;
+&lt;p&gt;&lt;b&gt;Warning:&lt;/b&gt; This is the KIT version of the AXIAL-0.1 package. This package has a smaller diameter top stop mask, which doesn't cover the diameter of the pad. This means only the bottom side of the pads' copper will be exposed. You'll only be able to solder to the bottom side.&lt;/p&gt;</description>
 <packageinstances>
 <packageinstance name="AXIAL-0.1-KIT"/>
 </packageinstances>
 </package3d>
-<package3d name="AXIAL-0.3-KIT" urn="urn:adsk.eagle:package:39661/1" type="box" library_version="1">
-<description>AXIAL-0.3-KIT
-Commonly used for 1/4W through-hole resistors. 0.3" pitch between holes.
-Warning: This is the KIT version of the AXIAL-0.3 package. This package has a smaller diameter top stop mask, which doesn't cover the diameter of the pad. This means only the bottom side of the pads' copper will be exposed. You'll only be able to solder to the bottom side.</description>
+<package3d name="AXIAL-0.3-KIT" urn="urn:adsk.eagle:package:39661/2" type="box" library_version="2">
+<description>&lt;h3&gt;AXIAL-0.3-KIT&lt;/h3&gt;
+&lt;p&gt;Commonly used for 1/4W through-hole resistors. 0.3" pitch between holes.&lt;/p&gt;
+&lt;p&gt;&lt;b&gt;Warning:&lt;/b&gt; This is the KIT version of the AXIAL-0.3 package. This package has a smaller diameter top stop mask, which doesn't cover the diameter of the pad. This means only the bottom side of the pads' copper will be exposed. You'll only be able to solder to the bottom side.&lt;/p&gt;</description>
 <packageinstances>
 <packageinstance name="AXIAL-0.3-KIT"/>
 </packageinstances>
 </package3d>
+<package3d name="0402" urn="urn:adsk.eagle:package:39657/2" type="box" library_version="2">
+<description>&lt;p&gt;&lt;b&gt;Generic 1005 (0402) package&lt;/b&gt;&lt;/p&gt;
+&lt;p&gt;0.2mm courtyard excess rounded to nearest 0.05mm.&lt;/p&gt;</description>
+<packageinstances>
+<packageinstance name="0402"/>
+</packageinstances>
+</package3d>
+<package3d name="0402-TIGHT" urn="urn:adsk.eagle:package:41389023/1" type="box" library_version="2">
+<packageinstances>
+<packageinstance name="0402-TIGHT"/>
+</packageinstances>
+</package3d>
 </packages3d>
 <symbols>
-<symbol name="RESISTOR" urn="urn:adsk.eagle:symbol:39614/1" library_version="1">
+<symbol name="RESISTOR" urn="urn:adsk.eagle:symbol:39614/2" library_version="2">
 <wire x1="-2.54" y1="0" x2="-2.159" y2="1.016" width="0.1524" layer="94"/>
 <wire x1="-2.159" y1="1.016" x2="-1.524" y2="-1.016" width="0.1524" layer="94"/>
 <wire x1="-1.524" y1="-1.016" x2="-0.889" y2="1.016" width="0.1524" layer="94"/>
@@ -2044,7 +2089,61 @@ Warning: This is the KIT version of the AXIAL-0.3 package. This package has a sm
 </symbol>
 </symbols>
 <devicesets>
-<deviceset name="10KOHM" urn="urn:adsk.eagle:component:39764/1" prefix="R" library_version="1">
+<deviceset name="20KOHM" urn="urn:adsk.eagle:component:39704/2" prefix="R" library_version="2">
+<description>&lt;h3&gt;20kΩ resistor&lt;/h3&gt;
+&lt;p&gt;A resistor is a passive two-terminal electrical component that implements electrical resistance as a circuit element. Resistors act to reduce current flow, and, at the same time, act to lower voltage levels within circuits. - Wikipedia&lt;/p&gt;</description>
+<gates>
+<gate name="G$1" symbol="RESISTOR" x="0" y="0"/>
+</gates>
+<devices>
+<device name="-0603-1/10W-1%" package="0603">
+<connects>
+<connect gate="G$1" pin="1" pad="1"/>
+<connect gate="G$1" pin="2" pad="2"/>
+</connects>
+<package3dinstances>
+<package3dinstance package3d_urn="urn:adsk.eagle:package:41389018/1"/>
+</package3dinstances>
+<technologies>
+<technology name="">
+<attribute name="PROD_ID" value="RES-09383"/>
+<attribute name="VALUE" value="20k"/>
+</technology>
+</technologies>
+</device>
+<device name="-0603-1/10W-5%" package="0603">
+<connects>
+<connect gate="G$1" pin="1" pad="1"/>
+<connect gate="G$1" pin="2" pad="2"/>
+</connects>
+<package3dinstances>
+<package3dinstance package3d_urn="urn:adsk.eagle:package:41389018/1"/>
+</package3dinstances>
+<technologies>
+<technology name="">
+<attribute name="PROD_ID" value="RES-09231"/>
+<attribute name="VALUE" value="20k"/>
+</technology>
+</technologies>
+</device>
+<device name="-0402T-1/16W-1%" package="0402-TIGHT">
+<connects>
+<connect gate="G$1" pin="1" pad="1"/>
+<connect gate="G$1" pin="2" pad="2"/>
+</connects>
+<package3dinstances>
+<package3dinstance package3d_urn="urn:adsk.eagle:package:41389023/1"/>
+</package3dinstances>
+<technologies>
+<technology name="">
+<attribute name="PROD_ID" value="RES-15131"/>
+<attribute name="VALUE" value="20k"/>
+</technology>
+</technologies>
+</device>
+</devices>
+</deviceset>
+<deviceset name="10KOHM" urn="urn:adsk.eagle:component:39764/2" prefix="R" library_version="2">
 <description>&lt;h3&gt;10kΩ resistor&lt;/h3&gt;
 &lt;p&gt;A resistor is a passive two-terminal electrical component that implements electrical resistance as a circuit element. Resistors act to reduce current flow, and, at the same time, act to lower voltage levels within circuits. - Wikipedia&lt;/p&gt;</description>
 <gates>
@@ -2057,7 +2156,7 @@ Warning: This is the KIT version of the AXIAL-0.3 package. This package has a sm
 <connect gate="G$1" pin="2" pad="P$2"/>
 </connects>
 <package3dinstances>
-<package3dinstance package3d_urn="urn:adsk.eagle:package:39658/1"/>
+<package3dinstance package3d_urn="urn:adsk.eagle:package:39658/2"/>
 </package3dinstances>
 <technologies>
 <technology name="">
@@ -2072,7 +2171,7 @@ Warning: This is the KIT version of the AXIAL-0.3 package. This package has a sm
 <connect gate="G$1" pin="2" pad="P$2"/>
 </connects>
 <package3dinstances>
-<package3dinstance package3d_urn="urn:adsk.eagle:package:39656/1"/>
+<package3dinstance package3d_urn="urn:adsk.eagle:package:39656/2"/>
 </package3dinstances>
 <technologies>
 <technology name="">
@@ -2087,7 +2186,7 @@ Warning: This is the KIT version of the AXIAL-0.3 package. This package has a sm
 <connect gate="G$1" pin="2" pad="P$2"/>
 </connects>
 <package3dinstances>
-<package3dinstance package3d_urn="urn:adsk.eagle:package:39653/1"/>
+<package3dinstance package3d_urn="urn:adsk.eagle:package:39653/2"/>
 </package3dinstances>
 <technologies>
 <technology name="">
@@ -2102,7 +2201,7 @@ Warning: This is the KIT version of the AXIAL-0.3 package. This package has a sm
 <connect gate="G$1" pin="2" pad="P$2"/>
 </connects>
 <package3dinstances>
-<package3dinstance package3d_urn="urn:adsk.eagle:package:39656/1"/>
+<package3dinstance package3d_urn="urn:adsk.eagle:package:39656/2"/>
 </package3dinstances>
 <technologies>
 <technology name="">
@@ -2117,7 +2216,7 @@ Warning: This is the KIT version of the AXIAL-0.3 package. This package has a sm
 <connect gate="G$1" pin="2" pad="P$2"/>
 </connects>
 <package3dinstances>
-<package3dinstance package3d_urn="urn:adsk.eagle:package:39653/1"/>
+<package3dinstance package3d_urn="urn:adsk.eagle:package:39653/2"/>
 </package3dinstances>
 <technologies>
 <technology name="">
@@ -2132,7 +2231,7 @@ Warning: This is the KIT version of the AXIAL-0.3 package. This package has a sm
 <connect gate="G$1" pin="2" pad="P$2"/>
 </connects>
 <package3dinstances>
-<package3dinstance package3d_urn="urn:adsk.eagle:package:39658/1"/>
+<package3dinstance package3d_urn="urn:adsk.eagle:package:39658/2"/>
 </package3dinstances>
 <technologies>
 <technology name="">
@@ -2147,7 +2246,7 @@ Warning: This is the KIT version of the AXIAL-0.3 package. This package has a sm
 <connect gate="G$1" pin="2" pad="P$2"/>
 </connects>
 <package3dinstances>
-<package3dinstance package3d_urn="urn:adsk.eagle:package:39661/1"/>
+<package3dinstance package3d_urn="urn:adsk.eagle:package:39661/2"/>
 </package3dinstances>
 <technologies>
 <technology name="">
@@ -2162,7 +2261,7 @@ Warning: This is the KIT version of the AXIAL-0.3 package. This package has a sm
 <connect gate="G$1" pin="2" pad="P$2"/>
 </connects>
 <package3dinstances>
-<package3dinstance package3d_urn="urn:adsk.eagle:package:39661/1"/>
+<package3dinstance package3d_urn="urn:adsk.eagle:package:39661/2"/>
 </package3dinstances>
 <technologies>
 <technology name="">
@@ -2177,7 +2276,7 @@ Warning: This is the KIT version of the AXIAL-0.3 package. This package has a sm
 <connect gate="G$1" pin="2" pad="P$2"/>
 </connects>
 <package3dinstances>
-<package3dinstance package3d_urn="urn:adsk.eagle:package:39656/1"/>
+<package3dinstance package3d_urn="urn:adsk.eagle:package:39656/2"/>
 </package3dinstances>
 <technologies>
 <technology name="">
@@ -2192,7 +2291,7 @@ Warning: This is the KIT version of the AXIAL-0.3 package. This package has a sm
 <connect gate="G$1" pin="2" pad="P$2"/>
 </connects>
 <package3dinstances>
-<package3dinstance package3d_urn="urn:adsk.eagle:package:39653/1"/>
+<package3dinstance package3d_urn="urn:adsk.eagle:package:39653/2"/>
 </package3dinstances>
 <technologies>
 <technology name="">
@@ -2207,7 +2306,7 @@ Warning: This is the KIT version of the AXIAL-0.3 package. This package has a sm
 <connect gate="G$1" pin="2" pad="P$2"/>
 </connects>
 <package3dinstances>
-<package3dinstance package3d_urn="urn:adsk.eagle:package:39658/1"/>
+<package3dinstance package3d_urn="urn:adsk.eagle:package:39658/2"/>
 </package3dinstances>
 <technologies>
 <technology name="">
@@ -2222,7 +2321,7 @@ Warning: This is the KIT version of the AXIAL-0.3 package. This package has a sm
 <connect gate="G$1" pin="2" pad="P$2"/>
 </connects>
 <package3dinstances>
-<package3dinstance package3d_urn="urn:adsk.eagle:package:39661/1"/>
+<package3dinstance package3d_urn="urn:adsk.eagle:package:39661/2"/>
 </package3dinstances>
 <technologies>
 <technology name="">
@@ -2237,7 +2336,7 @@ Warning: This is the KIT version of the AXIAL-0.3 package. This package has a sm
 <connect gate="G$1" pin="2" pad="2"/>
 </connects>
 <package3dinstances>
-<package3dinstance package3d_urn="urn:adsk.eagle:package:39650/1"/>
+<package3dinstance package3d_urn="urn:adsk.eagle:package:41389018/1"/>
 </package3dinstances>
 <technologies>
 <technology name="">
@@ -2246,9 +2345,54 @@ Warning: This is the KIT version of the AXIAL-0.3 package. This package has a sm
 </technology>
 </technologies>
 </device>
+<device name="-0402-1/16W-1%" package="0402">
+<connects>
+<connect gate="G$1" pin="1" pad="1"/>
+<connect gate="G$1" pin="2" pad="2"/>
+</connects>
+<package3dinstances>
+<package3dinstance package3d_urn="urn:adsk.eagle:package:39657/2"/>
+</package3dinstances>
+<technologies>
+<technology name="">
+<attribute name="PROD_ID" value="RES-14241"/>
+<attribute name="VALUE" value="10k"/>
+</technology>
+</technologies>
+</device>
+<device name="-0402T-1/16W-1%" package="0402-TIGHT">
+<connects>
+<connect gate="G$1" pin="1" pad="1"/>
+<connect gate="G$1" pin="2" pad="2"/>
+</connects>
+<package3dinstances>
+<package3dinstance package3d_urn="urn:adsk.eagle:package:41389023/1"/>
+</package3dinstances>
+<technologies>
+<technology name="">
+<attribute name="PROD_ID" value="RES-14241" constant="no"/>
+<attribute name="VALUE" value="10k" constant="no"/>
+</technology>
+</technologies>
+</device>
+<device name="-0402-1/10W-0.1%" package="0402-TIGHT">
+<connects>
+<connect gate="G$1" pin="1" pad="1"/>
+<connect gate="G$1" pin="2" pad="2"/>
+</connects>
+<package3dinstances>
+<package3dinstance package3d_urn="urn:adsk.eagle:package:41389023/1"/>
+</package3dinstances>
+<technologies>
+<technology name="">
+<attribute name="PROD_ID" value="RES-16147" constant="no"/>
+<attribute name="VALUE" value="10K" constant="no"/>
+</technology>
+</technologies>
+</device>
 </devices>
 </deviceset>
-<deviceset name="1KOHM" urn="urn:adsk.eagle:component:39763/1" prefix="R" library_version="1">
+<deviceset name="1KOHM" urn="urn:adsk.eagle:component:39763/2" prefix="R" library_version="2">
 <description>&lt;h3&gt;1kΩ resistor&lt;/h3&gt;
 &lt;p&gt;A resistor is a passive two-terminal electrical component that implements electrical resistance as a circuit element. Resistors act to reduce current flow, and, at the same time, act to lower voltage levels within circuits. - Wikipedia&lt;/p&gt;</description>
 <gates>
@@ -2261,7 +2405,7 @@ Warning: This is the KIT version of the AXIAL-0.3 package. This package has a sm
 <connect gate="G$1" pin="2" pad="P$2"/>
 </connects>
 <package3dinstances>
-<package3dinstance package3d_urn="urn:adsk.eagle:package:39658/1"/>
+<package3dinstance package3d_urn="urn:adsk.eagle:package:39658/2"/>
 </package3dinstances>
 <technologies>
 <technology name="">
@@ -2276,7 +2420,7 @@ Warning: This is the KIT version of the AXIAL-0.3 package. This package has a sm
 <connect gate="G$1" pin="2" pad="P$2"/>
 </connects>
 <package3dinstances>
-<package3dinstance package3d_urn="urn:adsk.eagle:package:39656/1"/>
+<package3dinstance package3d_urn="urn:adsk.eagle:package:39656/2"/>
 </package3dinstances>
 <technologies>
 <technology name="">
@@ -2291,7 +2435,7 @@ Warning: This is the KIT version of the AXIAL-0.3 package. This package has a sm
 <connect gate="G$1" pin="2" pad="P$2"/>
 </connects>
 <package3dinstances>
-<package3dinstance package3d_urn="urn:adsk.eagle:package:39653/1"/>
+<package3dinstance package3d_urn="urn:adsk.eagle:package:39653/2"/>
 </package3dinstances>
 <technologies>
 <technology name="">
@@ -2306,7 +2450,7 @@ Warning: This is the KIT version of the AXIAL-0.3 package. This package has a sm
 <connect gate="G$1" pin="2" pad="P$2"/>
 </connects>
 <package3dinstances>
-<package3dinstance package3d_urn="urn:adsk.eagle:package:39661/1"/>
+<package3dinstance package3d_urn="urn:adsk.eagle:package:39661/2"/>
 </package3dinstances>
 <technologies>
 <technology name="">
@@ -2321,7 +2465,7 @@ Warning: This is the KIT version of the AXIAL-0.3 package. This package has a sm
 <connect gate="G$1" pin="2" pad="P$2"/>
 </connects>
 <package3dinstances>
-<package3dinstance package3d_urn="urn:adsk.eagle:package:39656/1"/>
+<package3dinstance package3d_urn="urn:adsk.eagle:package:39656/2"/>
 </package3dinstances>
 <technologies>
 <technology name="">
@@ -2336,7 +2480,7 @@ Warning: This is the KIT version of the AXIAL-0.3 package. This package has a sm
 <connect gate="G$1" pin="2" pad="P$2"/>
 </connects>
 <package3dinstances>
-<package3dinstance package3d_urn="urn:adsk.eagle:package:39653/1"/>
+<package3dinstance package3d_urn="urn:adsk.eagle:package:39653/2"/>
 </package3dinstances>
 <technologies>
 <technology name="">
@@ -2351,7 +2495,7 @@ Warning: This is the KIT version of the AXIAL-0.3 package. This package has a sm
 <connect gate="G$1" pin="2" pad="P$2"/>
 </connects>
 <package3dinstances>
-<package3dinstance package3d_urn="urn:adsk.eagle:package:39658/1"/>
+<package3dinstance package3d_urn="urn:adsk.eagle:package:39658/2"/>
 </package3dinstances>
 <technologies>
 <technology name="">
@@ -2366,7 +2510,7 @@ Warning: This is the KIT version of the AXIAL-0.3 package. This package has a sm
 <connect gate="G$1" pin="2" pad="P$2"/>
 </connects>
 <package3dinstances>
-<package3dinstance package3d_urn="urn:adsk.eagle:package:39661/1"/>
+<package3dinstance package3d_urn="urn:adsk.eagle:package:39661/2"/>
 </package3dinstances>
 <technologies>
 <technology name="">
@@ -2381,7 +2525,7 @@ Warning: This is the KIT version of the AXIAL-0.3 package. This package has a sm
 <connect gate="G$1" pin="2" pad="P$2"/>
 </connects>
 <package3dinstances>
-<package3dinstance package3d_urn="urn:adsk.eagle:package:39656/1"/>
+<package3dinstance package3d_urn="urn:adsk.eagle:package:39656/2"/>
 </package3dinstances>
 <technologies>
 <technology name="">
@@ -2396,12 +2540,41 @@ Warning: This is the KIT version of the AXIAL-0.3 package. This package has a sm
 <connect gate="G$1" pin="2" pad="2"/>
 </connects>
 <package3dinstances>
-<package3dinstance package3d_urn="urn:adsk.eagle:package:39650/1"/>
+<package3dinstance package3d_urn="urn:adsk.eagle:package:41389018/1"/>
 </package3dinstances>
 <technologies>
 <technology name="">
 <attribute name="PROD_ID" value="RES-07856"/>
 <attribute name="VALUE" value="1k"/>
+</technology>
+</technologies>
+</device>
+<device name="-0402-1/16W-1%" package="0402">
+<connects>
+<connect gate="G$1" pin="1" pad="1"/>
+<connect gate="G$1" pin="2" pad="2"/>
+</connects>
+<package3dinstances>
+<package3dinstance package3d_urn="urn:adsk.eagle:package:39657/2"/>
+</package3dinstances>
+<technologies>
+<technology name="">
+<attribute name="PROD_ID" value="RES-14342" constant="no"/>
+</technology>
+</technologies>
+</device>
+<device name="-0402T-1/16W-1%" package="0402-TIGHT">
+<connects>
+<connect gate="G$1" pin="1" pad="1"/>
+<connect gate="G$1" pin="2" pad="2"/>
+</connects>
+<package3dinstances>
+<package3dinstance package3d_urn="urn:adsk.eagle:package:41389023/1"/>
+</package3dinstances>
+<technologies>
+<technology name="">
+<attribute name="PROD_ID" value="RES-14342" constant="no"/>
+<attribute name="VALUE" value="1k" constant="no"/>
 </technology>
 </technologies>
 </device>
@@ -3045,9 +3218,9 @@ FRAME-LETTER</description>
 </class>
 </classes>
 <parts>
-<part name="R3" library="SparkFun-Resistors" library_urn="urn:adsk.eagle:library:532" deviceset="10KOHM" device="-0603-1/10W-1%" package3d_urn="urn:adsk.eagle:package:39650/1" value="10k"/>
-<part name="R1" library="SparkFun-Resistors" library_urn="urn:adsk.eagle:library:532" deviceset="10KOHM" device="-0603-1/10W-1%" package3d_urn="urn:adsk.eagle:package:39650/1" value="10k"/>
-<part name="R2" library="SparkFun-Resistors" library_urn="urn:adsk.eagle:library:532" deviceset="10KOHM" device="-0603-1/10W-1%" package3d_urn="urn:adsk.eagle:package:39650/1" value="10k"/>
+<part name="R3" library="SparkFun-Resistors" library_urn="urn:adsk.eagle:library:532" deviceset="20KOHM" device="-0603-1/10W-1%" package3d_urn="urn:adsk.eagle:package:41389018/1" value="20k"/>
+<part name="R1" library="SparkFun-Resistors" library_urn="urn:adsk.eagle:library:532" deviceset="10KOHM" device="-0603-1/10W-1%" package3d_urn="urn:adsk.eagle:package:41389018/1" value="10k"/>
+<part name="R2" library="SparkFun-Resistors" library_urn="urn:adsk.eagle:library:532" deviceset="20KOHM" device="-0603-1/10W-1%" package3d_urn="urn:adsk.eagle:package:41389018/1" value="20k"/>
 <part name="J2" library="SJ-3523-SMT-TR" deviceset="SJ-3523-SMT-TR" device=""/>
 <part name="JP1" library="SparkFun-Jumpers" library_urn="urn:adsk.eagle:library:528" deviceset="JUMPER-SMT_2_NO" device="_NO-SILK" package3d_urn="urn:adsk.eagle:package:39277/1"/>
 <part name="JP2" library="SparkFun-Jumpers" library_urn="urn:adsk.eagle:library:528" deviceset="JUMPER-SMT_2_NO" device="_NO-SILK" package3d_urn="urn:adsk.eagle:package:39277/1"/>
@@ -3060,14 +3233,14 @@ FRAME-LETTER</description>
 <part name="J1" library="SparkFun-Connectors" library_urn="urn:adsk.eagle:library:513" deviceset="CONN_08" device="&quot;" package3d_urn="urn:adsk.eagle:package:38138/1" value="IO"/>
 <part name="C1" library="SparkFun-Capacitors" library_urn="urn:adsk.eagle:library:510" deviceset="10UF" device="-0603-6.3V-20%" package3d_urn="urn:adsk.eagle:package:37414/1" value="10uF"/>
 <part name="C2" library="SparkFun-Capacitors" library_urn="urn:adsk.eagle:library:510" deviceset="0.1UF" device="-0603-25V-(+80/-20%)" package3d_urn="urn:adsk.eagle:package:37414/1" value="0.1uF"/>
-<part name="R16" library="SparkFun-Resistors" library_urn="urn:adsk.eagle:library:532" deviceset="1KOHM" device="-0603-1/10W-1%" package3d_urn="urn:adsk.eagle:package:39650/1" value="1k"/>
+<part name="R16" library="SparkFun-Resistors" library_urn="urn:adsk.eagle:library:532" deviceset="1KOHM" device="-0603-1/10W-1%" package3d_urn="urn:adsk.eagle:package:41389018/1" value="1k"/>
 <part name="D1" library="SparkFun-LED" deviceset="LED-RED" device="0603" value="RED"/>
 <part name="GND4" library="SparkFun-Aesthetics" deviceset="GND" device=""/>
 <part name="LED_DISABLE" library="SparkFun-Jumpers" library_urn="urn:adsk.eagle:library:528" deviceset="JUMPER-SMT_2_NC_TRACE" device="_SILK" package3d_urn="urn:adsk.eagle:package:39281/1"/>
 <part name="FRAME1" library="SparkFun-Aesthetics" library_urn="urn:adsk.eagle:library:507" deviceset="FRAME-LETTER" device="NO_PACKAGE" package3d_urn="urn:adsk.eagle:package:37104/1"/>
-<part name="R4" library="SparkFun-Resistors" library_urn="urn:adsk.eagle:library:532" deviceset="10KOHM" device="-0603-1/10W-1%" package3d_urn="urn:adsk.eagle:package:39650/1" value="10k"/>
-<part name="R5" library="SparkFun-Resistors" library_urn="urn:adsk.eagle:library:532" deviceset="10KOHM" device="-0603-1/10W-1%" package3d_urn="urn:adsk.eagle:package:39650/1" value="10k"/>
-<part name="R6" library="SparkFun-Resistors" library_urn="urn:adsk.eagle:library:532" deviceset="10KOHM" device="-0603-1/10W-1%" package3d_urn="urn:adsk.eagle:package:39650/1" value="10k"/>
+<part name="R4" library="SparkFun-Resistors" library_urn="urn:adsk.eagle:library:532" deviceset="20KOHM" device="-0603-1/10W-1%" package3d_urn="urn:adsk.eagle:package:41389018/1" value="20k"/>
+<part name="R5" library="SparkFun-Resistors" library_urn="urn:adsk.eagle:library:532" deviceset="10KOHM" device="-0603-1/10W-1%" package3d_urn="urn:adsk.eagle:package:41389018/1" value="10k"/>
+<part name="R6" library="SparkFun-Resistors" library_urn="urn:adsk.eagle:library:532" deviceset="20KOHM" device="-0603-1/10W-1%" package3d_urn="urn:adsk.eagle:package:41389018/1" value="20k"/>
 <part name="J3" library="SJ-3523-SMT-TR" deviceset="SJ-3523-SMT-TR" device=""/>
 <part name="JP5" library="SparkFun-Jumpers" library_urn="urn:adsk.eagle:library:528" deviceset="JUMPER-SMT_2_NO" device="_NO-SILK" package3d_urn="urn:adsk.eagle:package:39277/1"/>
 <part name="JP6" library="SparkFun-Jumpers" library_urn="urn:adsk.eagle:library:528" deviceset="JUMPER-SMT_2_NO" device="_NO-SILK" package3d_urn="urn:adsk.eagle:package:39277/1"/>
@@ -3075,9 +3248,9 @@ FRAME-LETTER</description>
 <part name="TP6" library="SparkFun-Connectors" library_urn="urn:adsk.eagle:library:513" deviceset="TEST-POINT" device="3X5" package3d_urn="urn:adsk.eagle:package:38285/1" value="TEST-POINT3X5"/>
 <part name="TP7" library="SparkFun-Connectors" library_urn="urn:adsk.eagle:library:513" deviceset="TEST-POINT" device="3X5" package3d_urn="urn:adsk.eagle:package:38285/1" value="TEST-POINT3X5"/>
 <part name="TP8" library="SparkFun-Connectors" library_urn="urn:adsk.eagle:library:513" deviceset="TEST-POINT" device="3X5" package3d_urn="urn:adsk.eagle:package:38285/1" value="TEST-POINT3X5"/>
-<part name="R7" library="SparkFun-Resistors" library_urn="urn:adsk.eagle:library:532" deviceset="10KOHM" device="-0603-1/10W-1%" package3d_urn="urn:adsk.eagle:package:39650/1" value="10k"/>
-<part name="R8" library="SparkFun-Resistors" library_urn="urn:adsk.eagle:library:532" deviceset="10KOHM" device="-0603-1/10W-1%" package3d_urn="urn:adsk.eagle:package:39650/1" value="10k"/>
-<part name="R9" library="SparkFun-Resistors" library_urn="urn:adsk.eagle:library:532" deviceset="10KOHM" device="-0603-1/10W-1%" package3d_urn="urn:adsk.eagle:package:39650/1" value="10k"/>
+<part name="R7" library="SparkFun-Resistors" library_urn="urn:adsk.eagle:library:532" deviceset="20KOHM" device="-0603-1/10W-1%" package3d_urn="urn:adsk.eagle:package:41389018/1" value="20k"/>
+<part name="R8" library="SparkFun-Resistors" library_urn="urn:adsk.eagle:library:532" deviceset="10KOHM" device="-0603-1/10W-1%" package3d_urn="urn:adsk.eagle:package:41389018/1" value="10k"/>
+<part name="R9" library="SparkFun-Resistors" library_urn="urn:adsk.eagle:library:532" deviceset="20KOHM" device="-0603-1/10W-1%" package3d_urn="urn:adsk.eagle:package:41389018/1" value="20k"/>
 <part name="J5" library="SJ-3523-SMT-TR" deviceset="SJ-3523-SMT-TR" device=""/>
 <part name="JP9" library="SparkFun-Jumpers" library_urn="urn:adsk.eagle:library:528" deviceset="JUMPER-SMT_2_NO" device="_NO-SILK" package3d_urn="urn:adsk.eagle:package:39277/1"/>
 <part name="JP10" library="SparkFun-Jumpers" library_urn="urn:adsk.eagle:library:528" deviceset="JUMPER-SMT_2_NO" device="_NO-SILK" package3d_urn="urn:adsk.eagle:package:39277/1"/>

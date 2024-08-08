@@ -291,27 +291,89 @@ void MAX30001G::serviceAllInterrupts() {
 
 // ECG Input Stage 
 // ---------------
-// EMI and ESD protection is built in
-//
+// Hardware:
+//   MUX connnects input or calibration to AFE
+//     Calibration Generator
+//     EMI and ESD protection is built in
+//     Leads on/off detection
+//   Instrumentation Amplifier
+//   Anti aliasing filter
+//   Programmable Gain Amplifier
+//   18 bit Sigma Delta ADC
+
+// ESD protection
+//   +/- 9kV contact discharge
+//   +/- 15kV air discharge
 
 // DC Lead Off
+// ECG channel needs to be powered on
+//
 //  uses programmable current sources to detect lead off conditions. 
 //    0,5,10,20,50,100nA are selectable
 //  if voltage on lead is above or below threshold, lead off is detected 
 //    VMID +/- 300 (default),400,450, 500 mV options
+// ???to enable DC lead off detection, set EN_DCOFF in CNFG_GEN
+// ???to enable DC lead off interrupt, set threshold to V_MIT +/-300mV, set EN_DCOFF in EN_INT1(default)
+// Involved registers: CNFG_GEN and CNFG_EMUX CNFG_EINT or CNFG_ENINT2
+//
+// Table 1:
+// 10nA I_DC any setting of R_BIAS VTH +-300mV
+// Setting ON:
+// 0) ECG Calibration set to off
+// 1) ECGN and ECGP are connected to VMID
+// 2) ECG enabled
+// 3) Current and theshold set
+// 4) DC lead off detection enabled
+// 5) Lead off interrupt handling
+// Setting OFF:
+// 0) Lead off interrupt disabled
+// 1) DC lead off detection disabled
 
-// Lead On check
-//  ECGN is pulled high and ECGP is pulled low with pull up/down resistor, comparator checks if both electrodes are attached
+// Lead On check (ultra low power)
+// Channel needs to be powered off!!
+//
+// ECGN is pulled high and ECGP is pulled low with pull up/down resistor, comparator checks if both electrodes are attached
+//
+// Involved registers LOINT CNFG_GEN
+// Setting ON: currently not supported, would require startup in off conditions and the boot up as soon as lead on is deteted
+// Setting OFF: currentlly not supported 
 
 // Polarity
 //  ECGN and ECGP polarity can be switched internally
 //  ECGN and ECGP can be connected to subject
+// Involved registers:
+// Setting default: 
+//   ECGN is connected to VMID, AFE
+//   ECGP is connected to VMID, AFE
+//   Calibration is off
 
 // Lead Bias to VMID
 //  internal or external lead bias can be enabled 500, 100, 200 MOhm to meet common mode range requirements
+// We have exteral bias resistor on ??? and we will not enable internal bias
+// Invoved registers: ???
+// Setting ON: do not enable internal bias
+// Default settig: make sure register ??? is set to ??? to enable external bias
 
 // Calibration Generator
 //  +/- 0.25, 0.5 mV uni or bi polar, 1/64 to 256 Hz 
+//
+// Involved registers: CNFG_CAL CNFG_EMUX CNFG_ECG
+// Make no current flow out of the leads but disconnecting EMUX
+// Set On:
+// 1) ECGN and ECGP are connected to CALN and CALP
+// 2) ECG enabled
+// 3) CAL enabled
+// 4) CAL rate and amplitude set
+// 5) CALN and CALP are connected to AFE
+// Set Off:
+// 0) ECGN and ECGP are not connected to CALN and CALP ???
+// 1) CAL disabled
+// 2) CALN and CALP are disconnected from AFE
+// Default waveform
+// 1) unipolar
+// 2) 0.5mV
+// 3) 15mHz to 256Hz
+// 4) pulsewidth 0.03ms to 62ms or 50% duty cycle
 
 // Amplifier
 //  ECG external filter for differential DC rejection is 10microF resoluting in corner frequency of 0.05Hz allowing best ECG quality but has motion artifacts

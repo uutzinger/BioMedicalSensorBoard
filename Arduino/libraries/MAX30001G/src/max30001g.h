@@ -477,8 +477,8 @@ typedef union max30001_bioz_burst_reg
 
 } max30001_bioz_burst_t;
 
-// MAX30001 Evaluation Kit User Interface
-// ======================================
+// We want to emulate the MAX30001 Evaluation Kit User Interface
+// =============================================================
 // Max Global
 //   Clock 3276800
 //   Enable ECG, BioZ, RtoR
@@ -623,7 +623,7 @@ class MAX30001 {
         void setInterrupts(uint32_t interrupts);
         void serviceAllInterrupts();
         
-        
+
         // Accessing readings
         void getECGData(int32_t &???);
         void getBIOZData(int32_t &???);

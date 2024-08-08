@@ -8907,7 +8907,7 @@ Source: &lt;a href="https://www.diodes.com//assets/Datasheets/AP3602A.pdf"&gt; D
 <text x="-113.538" y="15.748" size="1.778" layer="91">STEMMA QT Connectors</text>
 <text x="-114.3" y="-9.144" size="1.778" layer="91">I2C Through-Holes</text>
 <text x="43.18" y="-90.17" size="3.81" layer="94">Urs Utzinger</text>
-<text x="35.56" y="76.2" size="1.778" layer="91">You should power on MiCS sensor
+<text x="33.02" y="76.2" size="1.778" layer="91">You should power on MiCS sensor
 then read the resistance on the test points
 and adjust R11-13 for ideal ADC.
 Then close JP1,2,3.</text>

@@ -1,7 +1,0 @@
-{
-    "configuration": "LoopCore=1,EventsCore=1,USBMode=default,CDCOnBoot=cdc,MSCOnBoot=default,DFUOnBoot=default,UploadMode=cdc,PSRAM=enabled,PartitionScheme=tinyuf2,CPUFreq=240,FlashMode=qio,FlashSize=4M,UploadSpeed=921600,DebugLevel=none,EraseFlash=none,ZigbeeMode=default",
-    "board": "esp32:esp32:adafruit_feather_esp32s3",
-    "port": "COM9",
-    "programmer": "esptool",
-    "sketch": "ES8388.ino"
-}

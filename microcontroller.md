@@ -12,7 +12,10 @@ Currently, the Arduino ESP32 supports the peripherals with Arduino APIs as liste
 
 #### Adafruit ESP32-S3 Feather with 2MB of PSRAM
 
-Reset boot loader: Push boot and hold it, push and release reset.
+Reset to boot loader: 
+
+- Push boot button and hold it. Push and release reset button. Release boot button.\
+- If this does not work, switch USB port.
 
 The default setting is for micro python and not working well with Arduino IDE. These will work:
 
@@ -27,6 +30,16 @@ The default setting is for micro python and not working well with Arduino IDE. T
 
 #### Sparkfun ESP32 C WROOM
 
+Reset boot to loader: 
+
+- With power cycle: Push and hold the boot button. Connect the board to a computer through the USB-C connection. Release the booot button.
+
+- Without power cycle: Push and hold boot button. Press and realease the RST button. Rlease the boot button. (not working on Linux)
+- After programming is completed, reboot the MCU.
+    - Press the RST button.
+    - If that does not work Power cycle the board.
+
+If you want to use QWIIC: GPIO 0 controls the power output from the XC6222 LDO regulator to the Qwiic connector. Users must toggle GPIO 0 high to enable power for the Qwiic 
 
 ## EPS32 Variants
 

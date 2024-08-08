@@ -28,6 +28,6 @@ PAD       | Function              | Thing Plus  | Feather
 Require connections are in **bold**.
 
 ### Pinouts
-[Feather ESP32 S3 pinout](https://cdn-learn.adafruit.com/assets/assets/000/110/811/original/adafruit_products_Adafruit_Feather_ESP32-S3_Pinout.png)
+![Feather ESP32 S3 pinout](https://cdn-learn.adafruit.com/assets/assets/000/110/811/original/adafruit_products_Adafruit_Feather_ESP32-S3_Pinout.png)
 
-[Sparkfun ESP32 Thing Plus C pinout](https://cdn.sparkfun.com/assets/3/9/5/f/e/SparkFun_Thing_Plus_ESP32_WROOM_C_graphical_datasheet2.pdf)
+![Sparkfun ESP32 Thing Plus C pinout](../assetts/ThingPlusC_PinOut.png)

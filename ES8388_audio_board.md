@@ -1,5 +1,7 @@
 # [ES8388 PCB Artist Audio Board](https://pcbartists.com/es8388/)
 
+Here we describe the connection between the PCB Artist baord with the EPS32 S3 and the corresponding settings in the AudioTools library.
+
 ## Connecting the Audio Board to ESP32 S3
 
 ![ES8388](./assetts/esp32-es8388-audio-codec-module-interface-connection.jpg)

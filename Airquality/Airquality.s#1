@@ -8917,6 +8917,10 @@ Then close JP1,2,3.</text>
 <text x="30.48" y="45.72" size="1.778" layer="91">CO</text>
 <text x="38.1" y="45.72" size="1.778" layer="91">NH3</text>
 <text x="45.72" y="45.72" size="1.778" layer="91">NO2</text>
+<text x="22.86" y="12.7" size="1.778" layer="91">Measuremet
+Voltage Divider</text>
+<text x="38.1" y="35.56" size="1.778" layer="91">Heater
+Resistor</text>
 </plain>
 <instances>
 <instance part="R1" gate="G$1" x="-91.44" y="38.1" smashed="yes" rot="R90">
