@@ -13,7 +13,7 @@ import matplotlib.pyplot as plt
 # 
 fc_l = 2000  # Cutoff frequency for LPF
 fc_h =   35  # Cutoff frequency for HPF
-fs =  44100  # Sampling Frequency
+fs =  441000  # Sampling Frequency
 
 # Design 2nd order LPF
 b_l, a_l = signal.butter(2, fc_l / (fs / 2), btype='low')

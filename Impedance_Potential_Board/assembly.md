@@ -1,4 +1,4 @@
-# Assembly of MAX Board
+# Assembly of ECG and BioZ Brick
 
 ## Soldering
 
@@ -111,3 +111,10 @@ Driver Leads to Driver connector.
 Measurement Leads to Impednace connector.
 
 (*) Might need to replace R23 with 200kOhm and enable VCM bypass.
+
+#### Pin Outs
+- [Thing Plus C Pinout](https://cdn.sparkfun.com/assets/3/9/5/f/e/SparkFun_Thing_Plus_ESP32_WROOM_C_graphical_datasheet2.pdf)
+- [ESP32 S3 Pinout](https://learn.adafruit.com/assets/110811)
+
+![Thing Plus C Pinout](..\assets\ThingPlusC_PinOut.png)
+![Adafruit Feather ESP32 S3](../assets/adafruit_products_Adafruit_Feather_ESP32-S3_Pinout.png)

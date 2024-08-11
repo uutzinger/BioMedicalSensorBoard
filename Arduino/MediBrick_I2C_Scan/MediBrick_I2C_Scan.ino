@@ -55,6 +55,8 @@ void loop() {
     if (error == 0) {
       if (address ==  0x44){
         Serial.println("MAX17048 Battery Monitor found");
+      } else if (address ==  0x36) {
+        Serial.println("MAX17043 Battery Monitor found");
       } else if (address ==  0x47) {
         Serial.println("BMP581 pressure sensor found");
       } else if (address ==  0x59) {
@@ -65,6 +67,8 @@ void loop() {
         Serial.println("SEN5X particulate matter sensor found");
       } else if (address ==  0x44) {
         Serial.println("SHT45 humidity and temperature sensor found");
+      } else if (address ==  0x10) {
+        Serial.println("ES8388 sound codec found");
       } else {
         Serial.printf("I2C device found at address 0x%02X\n", address);
       }

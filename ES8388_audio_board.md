@@ -4,7 +4,7 @@ Here we describe the connection between the PCB Artist baord with the EPS32 S3 a
 
 ## Connecting the Audio Board to ESP32 S3
 
-![ES8388](./assetts/esp32-es8388-audio-codec-module-interface-connection.jpg)
+![ES8388](./assets/esp32-es8388-audio-codec-module-interface-connection.jpg)
 
 | Name | ESP32 S3 | ES8388   | ES8388 | ESP32 S3 | Name  |
 |---   |---       |---       |---     |---       |---    |  
@@ -24,7 +24,7 @@ $MIC_2$ is connected to RI.
 R/LO are routed.
 R/LI are routed.
 
-![Adafruit Feather ESP32 S3](./assetts/adafruit_products_Adafruit_Feather_ESP32-S3_Pinout.png)
+![Adafruit Feather ESP32 S3](./assets/adafruit_products_Adafruit_Feather_ESP32-S3_Pinout.png)
 
 ## Audio Driver Setup
 
