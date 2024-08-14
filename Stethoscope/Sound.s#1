@@ -5745,9 +5745,9 @@ Source: &lt;a href="https://sensing.honeywell.com/honeywell-sensing-micropressur
 <attribute name="NAME" x="239.776" y="93.98" size="1.778" layer="95" font="vector" rot="R90" align="bottom-center"/>
 <attribute name="VALUE" x="242.824" y="93.98" size="1.778" layer="96" font="vector" rot="R90" align="top-center"/>
 </instance>
-<instance part="R17" gate="G$1" x="248.92" y="91.44" smashed="yes" rot="R90">
-<attribute name="NAME" x="247.396" y="91.44" size="1.778" layer="95" font="vector" rot="R90" align="bottom-center"/>
-<attribute name="VALUE" x="250.444" y="91.44" size="1.778" layer="96" font="vector" rot="R90" align="top-center"/>
+<instance part="R17" gate="G$1" x="248.92" y="96.52" smashed="yes" rot="R90">
+<attribute name="NAME" x="247.396" y="96.52" size="1.778" layer="95" font="vector" rot="R90" align="bottom-center"/>
+<attribute name="VALUE" x="250.444" y="96.52" size="1.778" layer="96" font="vector" rot="R90" align="top-center"/>
 </instance>
 <instance part="GND12" gate="1" x="226.06" y="83.82" smashed="yes">
 <attribute name="VALUE" x="223.52" y="81.28" size="1.778" layer="96"/>
@@ -5923,6 +5923,7 @@ Source: &lt;a href="https://sensing.honeywell.com/honeywell-sensing-micropressur
 </segment>
 <segment>
 <pinref part="R17" gate="G$1" pin="1"/>
+<wire x1="248.92" y1="91.44" x2="248.92" y2="86.36" width="0.1524" layer="91"/>
 <wire x1="248.92" y1="86.36" x2="226.06" y2="86.36" width="0.1524" layer="91"/>
 <pinref part="GND12" gate="1" pin="GND"/>
 </segment>
@@ -6517,7 +6518,7 @@ Source: &lt;a href="https://sensing.honeywell.com/honeywell-sensing-micropressur
 <label x="231.14" y="104.14" size="1.778" layer="95" rot="R180" xref="yes"/>
 <pinref part="R17" gate="G$1" pin="2"/>
 <wire x1="248.92" y1="104.14" x2="231.14" y2="104.14" width="0.1524" layer="91"/>
-<wire x1="248.92" y1="96.52" x2="248.92" y2="104.14" width="0.1524" layer="91"/>
+<wire x1="248.92" y1="101.6" x2="248.92" y2="104.14" width="0.1524" layer="91"/>
 <junction x="248.92" y="104.14"/>
 </segment>
 <segment>
@@ -6530,10 +6531,6 @@ Source: &lt;a href="https://sensing.honeywell.com/honeywell-sensing-micropressur
 </nets>
 </sheet>
 </sheets>
-<errors>
-<approved hash="113,1,89.0626,178.477,J2,,,,,"/>
-<approved hash="113,1,127.163,178.477,J4,,,,,"/>
-</errors>
 </schematic>
 </drawing>
 <compatibility>

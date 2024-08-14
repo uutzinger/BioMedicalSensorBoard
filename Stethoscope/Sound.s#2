@@ -5431,10 +5431,9 @@ Source: &lt;a href="https://sensing.honeywell.com/honeywell-sensing-micropressur
 <part name="C29" library="SparkFun-Capacitors" library_urn="urn:adsk.eagle:library:510" deviceset="10UF" device="-0603-6.3V-20%" package3d_urn="urn:adsk.eagle:package:41385090/1" value="10uF"/>
 <part name="SUPPLY10" library="Power_Symbols" library_urn="urn:adsk.eagle:library:16502351" deviceset="GND-BAR" device="" value="GND"/>
 <part name="C30" library="SparkFun-Capacitors" library_urn="urn:adsk.eagle:library:510" deviceset="1.0NF/1000PF" device="-0603-50V-10%" package3d_urn="urn:adsk.eagle:package:41385090/1" value="1nF"/>
+<part name="R15" library="SparkFun-Resistors" library_urn="urn:adsk.eagle:library:532" deviceset="33OHM" device="-0603-1/10W-1%" package3d_urn="urn:adsk.eagle:package:41389018/1" value="33"/>
+<part name="R17" library="SparkFun-Resistors" library_urn="urn:adsk.eagle:library:532" deviceset="33OHM" device="-0603-1/10W-1%" package3d_urn="urn:adsk.eagle:package:41389018/1" value="33"/>
 <part name="J4" library="SparkFun-Connectors" library_urn="urn:adsk.eagle:library:513" deviceset="CONN_02" device="" package3d_urn="urn:adsk.eagle:package:38039/2"/>
-<part name="R15" library="SparkFun-Resistors" library_urn="urn:adsk.eagle:library:532" deviceset="10KOHM" device="-0603-1/10W-1%" package3d_urn="urn:adsk.eagle:package:41389018/1" value="10k"/>
-<part name="R17" library="SparkFun-Resistors" library_urn="urn:adsk.eagle:library:532" deviceset="10KOHM" device="-0603-1/10W-1%" package3d_urn="urn:adsk.eagle:package:41389018/1" value="10k"/>
-<part name="GND12" library="SparkFun-Aesthetics" deviceset="GND" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -5719,38 +5718,35 @@ Source: &lt;a href="https://sensing.honeywell.com/honeywell-sensing-micropressur
 <attribute name="NAME" x="275.59" y="96.52" size="1.778" layer="95" align="center-left"/>
 <attribute name="VALUE" x="275.59" y="93.98" size="1.778" layer="96" align="center-left"/>
 </instance>
-<instance part="SUPPLY9" gate="G$1" x="302.26" y="83.82" smashed="yes" rot="MR270">
-<attribute name="VALUE" x="304.165" y="83.82" size="1.778" layer="96" rot="MR270" align="center"/>
+<instance part="SUPPLY9" gate="G$1" x="281.94" y="71.12" smashed="yes">
+<attribute name="VALUE" x="281.94" y="69.215" size="1.778" layer="96" align="center"/>
 </instance>
-<instance part="C28" gate="G$1" x="284.48" y="68.58" smashed="yes">
-<attribute name="NAME" x="286.004" y="71.501" size="1.778" layer="95" font="vector"/>
-<attribute name="VALUE" x="286.004" y="66.421" size="1.778" layer="96" font="vector"/>
+<instance part="C28" gate="G$1" x="287.02" y="73.66" smashed="yes">
+<attribute name="NAME" x="288.544" y="76.581" size="1.778" layer="95" font="vector"/>
+<attribute name="VALUE" x="288.544" y="71.501" size="1.778" layer="96" font="vector"/>
 </instance>
-<instance part="C29" gate="G$1" x="292.1" y="68.58" smashed="yes">
-<attribute name="NAME" x="293.624" y="71.501" size="1.778" layer="95" font="vector"/>
-<attribute name="VALUE" x="293.624" y="66.421" size="1.778" layer="96" font="vector"/>
+<instance part="C29" gate="G$1" x="294.64" y="73.66" smashed="yes">
+<attribute name="NAME" x="296.164" y="76.581" size="1.778" layer="95" font="vector"/>
+<attribute name="VALUE" x="296.164" y="71.501" size="1.778" layer="96" font="vector"/>
 </instance>
-<instance part="SUPPLY10" gate="G$1" x="288.798" y="58.928" smashed="yes">
-<attribute name="VALUE" x="288.798" y="57.023" size="1.778" layer="96" align="center"/>
+<instance part="SUPPLY10" gate="G$1" x="291.338" y="64.008" smashed="yes">
+<attribute name="VALUE" x="291.338" y="62.103" size="1.778" layer="96" align="center"/>
 </instance>
 <instance part="C30" gate="C1" x="233.68" y="77.724" smashed="yes">
 <attribute name="NAME" x="235.204" y="80.645" size="1.778" layer="95" font="vector"/>
 <attribute name="VALUE" x="235.204" y="75.565" size="1.778" layer="96" font="vector"/>
 </instance>
+<instance part="R15" gate="G$1" x="241.3" y="58.42" smashed="yes">
+<attribute name="NAME" x="241.3" y="59.944" size="1.778" layer="95" font="vector" align="bottom-center"/>
+<attribute name="VALUE" x="241.3" y="56.896" size="1.778" layer="96" font="vector" align="top-center"/>
+</instance>
+<instance part="R17" gate="G$1" x="241.3" y="50.8" smashed="yes">
+<attribute name="NAME" x="241.3" y="52.324" size="1.778" layer="95" font="vector" align="bottom-center"/>
+<attribute name="VALUE" x="241.3" y="49.276" size="1.778" layer="96" font="vector" align="top-center"/>
+</instance>
 <instance part="J4" gate="J1" x="124.46" y="182.88" smashed="yes" rot="R270">
 <attribute name="VALUE" x="119.634" y="185.42" size="1.778" layer="96" font="vector" rot="R270"/>
 <attribute name="NAME" x="130.048" y="185.42" size="1.778" layer="95" font="vector" rot="R270"/>
-</instance>
-<instance part="R15" gate="G$1" x="241.3" y="93.98" smashed="yes" rot="R90">
-<attribute name="NAME" x="239.776" y="93.98" size="1.778" layer="95" font="vector" rot="R90" align="bottom-center"/>
-<attribute name="VALUE" x="242.824" y="93.98" size="1.778" layer="96" font="vector" rot="R90" align="top-center"/>
-</instance>
-<instance part="R17" gate="G$1" x="248.92" y="91.44" smashed="yes" rot="R90">
-<attribute name="NAME" x="247.396" y="91.44" size="1.778" layer="95" font="vector" rot="R90" align="bottom-center"/>
-<attribute name="VALUE" x="250.444" y="91.44" size="1.778" layer="96" font="vector" rot="R90" align="top-center"/>
-</instance>
-<instance part="GND12" gate="1" x="226.06" y="83.82" smashed="yes">
-<attribute name="VALUE" x="223.52" y="81.28" size="1.778" layer="96"/>
 </instance>
 </instances>
 <busses>
@@ -5905,26 +5901,21 @@ Source: &lt;a href="https://sensing.honeywell.com/honeywell-sensing-micropressur
 <wire x1="109.22" y1="111.76" x2="109.22" y2="109.22" width="0.1524" layer="91"/>
 </segment>
 <segment>
-<pinref part="C28" gate="G$1" pin="2"/>
-<wire x1="284.48" y1="66.04" x2="284.48" y2="63.5" width="0.1524" layer="91"/>
-<wire x1="284.48" y1="63.5" x2="288.798" y2="63.5" width="0.1524" layer="91"/>
-<pinref part="C29" gate="G$1" pin="2"/>
-<wire x1="288.798" y1="63.5" x2="292.1" y2="63.5" width="0.1524" layer="91"/>
-<wire x1="292.1" y1="63.5" x2="292.1" y2="66.04" width="0.1524" layer="91"/>
-<pinref part="SUPPLY10" gate="G$1" pin="GND"/>
-<wire x1="288.798" y1="61.468" x2="288.798" y2="63.5" width="0.1524" layer="91"/>
-<junction x="288.798" y="63.5"/>
-</segment>
-<segment>
-<pinref part="U1" gate="G$1" pin="VSS"/>
-<wire x1="279.4" y1="81.28" x2="279.4" y2="83.82" width="0.1524" layer="91"/>
+<pinref part="U1" gate="G$1" pin="VDD"/>
+<wire x1="279.4" y1="76.2" x2="281.94" y2="76.2" width="0.1524" layer="91"/>
 <pinref part="SUPPLY9" gate="G$1" pin="GND"/>
-<wire x1="279.4" y1="83.82" x2="299.72" y2="83.82" width="0.1524" layer="91"/>
+<wire x1="281.94" y1="76.2" x2="281.94" y2="73.66" width="0.1524" layer="91"/>
 </segment>
 <segment>
-<pinref part="R17" gate="G$1" pin="1"/>
-<wire x1="248.92" y1="86.36" x2="226.06" y2="86.36" width="0.1524" layer="91"/>
-<pinref part="GND12" gate="1" pin="GND"/>
+<pinref part="C28" gate="G$1" pin="2"/>
+<wire x1="287.02" y1="71.12" x2="287.02" y2="68.58" width="0.1524" layer="91"/>
+<wire x1="287.02" y1="68.58" x2="291.338" y2="68.58" width="0.1524" layer="91"/>
+<pinref part="C29" gate="G$1" pin="2"/>
+<wire x1="291.338" y1="68.58" x2="294.64" y2="68.58" width="0.1524" layer="91"/>
+<wire x1="294.64" y1="68.58" x2="294.64" y2="71.12" width="0.1524" layer="91"/>
+<pinref part="SUPPLY10" gate="G$1" pin="GND"/>
+<wire x1="291.338" y1="66.548" x2="291.338" y2="68.58" width="0.1524" layer="91"/>
+<junction x="291.338" y="68.58"/>
 </segment>
 </net>
 <net name="3.3V" class="0">
@@ -5994,22 +5985,17 @@ Source: &lt;a href="https://sensing.honeywell.com/honeywell-sensing-micropressur
 <label x="73.66" y="91.44" size="1.778" layer="95" rot="R180" xref="yes"/>
 </segment>
 <segment>
+<pinref part="U1" gate="G$1" pin="VSS"/>
 <pinref part="C29" gate="G$1" pin="1"/>
-<wire x1="284.48" y1="76.2" x2="292.1" y2="76.2" width="0.1524" layer="91"/>
-<wire x1="292.1" y1="76.2" x2="292.1" y2="73.66" width="0.1524" layer="91"/>
+<wire x1="279.4" y1="81.28" x2="287.02" y2="81.28" width="0.1524" layer="91"/>
+<wire x1="287.02" y1="81.28" x2="294.64" y2="81.28" width="0.1524" layer="91"/>
+<wire x1="294.64" y1="81.28" x2="294.64" y2="78.74" width="0.1524" layer="91"/>
 <pinref part="C28" gate="G$1" pin="1"/>
-<wire x1="284.48" y1="73.66" x2="284.48" y2="76.2" width="0.1524" layer="91"/>
-<wire x1="292.1" y1="76.2" x2="299.72" y2="76.2" width="0.1524" layer="91"/>
-<junction x="292.1" y="76.2"/>
-<label x="299.72" y="76.2" size="1.778" layer="95" xref="yes"/>
-<pinref part="U1" gate="G$1" pin="VDD"/>
-<wire x1="279.4" y1="76.2" x2="284.48" y2="76.2" width="0.1524" layer="91"/>
-<junction x="284.48" y="76.2"/>
-</segment>
-<segment>
-<pinref part="R15" gate="G$1" pin="1"/>
-<wire x1="241.3" y1="88.9" x2="231.14" y2="88.9" width="0.1524" layer="91"/>
-<label x="231.14" y="88.9" size="1.778" layer="95" rot="R180" xref="yes"/>
+<wire x1="287.02" y1="78.74" x2="287.02" y2="81.28" width="0.1524" layer="91"/>
+<junction x="287.02" y="81.28"/>
+<wire x1="294.64" y1="81.28" x2="302.26" y2="81.28" width="0.1524" layer="91"/>
+<junction x="294.64" y="81.28"/>
+<label x="302.26" y="81.28" size="1.778" layer="95" xref="yes"/>
 </segment>
 </net>
 <net name="N$26" class="0">
@@ -6043,9 +6029,9 @@ Source: &lt;a href="https://sensing.honeywell.com/honeywell-sensing-micropressur
 <label x="104.14" y="160.02" size="1.778" layer="95" xref="yes"/>
 </segment>
 <segment>
-<label x="233.68" y="55.88" size="1.778" layer="95" rot="R180" xref="yes"/>
-<pinref part="U1" gate="G$1" pin="SCLK/SCL"/>
-<wire x1="261.62" y1="55.88" x2="233.68" y2="55.88" width="0.1524" layer="91"/>
+<pinref part="R15" gate="G$1" pin="1"/>
+<wire x1="236.22" y1="58.42" x2="233.68" y2="58.42" width="0.1524" layer="91"/>
+<label x="233.68" y="58.42" size="1.778" layer="95" rot="R180" xref="yes"/>
 </segment>
 </net>
 <net name="DOUT" class="0">
@@ -6389,10 +6375,9 @@ Source: &lt;a href="https://sensing.honeywell.com/honeywell-sensing-micropressur
 <label x="104.14" y="165.1" size="1.778" layer="95" xref="yes"/>
 </segment>
 <segment>
+<pinref part="R17" gate="G$1" pin="1"/>
+<wire x1="236.22" y1="50.8" x2="233.68" y2="50.8" width="0.1524" layer="91"/>
 <label x="233.68" y="50.8" size="1.778" layer="95" rot="R180" xref="yes"/>
-<wire x1="233.68" y1="50.8" x2="264.16" y2="50.8" width="0.1524" layer="91"/>
-<pinref part="U1" gate="G$1" pin="MOSI/SDA"/>
-<wire x1="264.16" y1="50.8" x2="264.16" y2="55.88" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="N$3" class="0">
@@ -6492,15 +6477,30 @@ Source: &lt;a href="https://sensing.honeywell.com/honeywell-sensing-micropressur
 <wire x1="233.68" y1="73.66" x2="233.68" y2="75.184" width="0.1524" layer="91"/>
 </segment>
 </net>
+<net name="N$6" class="0">
+<segment>
+<pinref part="R17" gate="G$1" pin="2"/>
+<wire x1="246.38" y1="50.8" x2="264.16" y2="50.8" width="0.1524" layer="91"/>
+<pinref part="U1" gate="G$1" pin="MOSI/SDA"/>
+<wire x1="264.16" y1="50.8" x2="264.16" y2="55.88" width="0.1524" layer="91"/>
+</segment>
+</net>
+<net name="N$7" class="0">
+<segment>
+<pinref part="R15" gate="G$1" pin="2"/>
+<wire x1="246.38" y1="58.42" x2="248.92" y2="58.42" width="0.1524" layer="91"/>
+<wire x1="248.92" y1="58.42" x2="248.92" y2="53.34" width="0.1524" layer="91"/>
+<pinref part="U1" gate="G$1" pin="SCLK/SCL"/>
+<wire x1="248.92" y1="53.34" x2="261.62" y2="53.34" width="0.1524" layer="91"/>
+<wire x1="261.62" y1="53.34" x2="261.62" y2="55.88" width="0.1524" layer="91"/>
+</segment>
+</net>
 <net name="RST" class="0">
 <segment>
 <pinref part="U1" gate="G$1" pin="RES"/>
-<wire x1="266.7" y1="96.52" x2="266.7" y2="99.06" width="0.1524" layer="91"/>
-<wire x1="266.7" y1="99.06" x2="241.3" y2="99.06" width="0.1524" layer="91"/>
-<label x="231.14" y="99.06" size="1.778" layer="95" rot="R180" xref="yes"/>
-<pinref part="R15" gate="G$1" pin="2"/>
-<wire x1="241.3" y1="99.06" x2="231.14" y2="99.06" width="0.1524" layer="91"/>
-<junction x="241.3" y="99.06"/>
+<wire x1="266.7" y1="96.52" x2="266.7" y2="101.6" width="0.1524" layer="91"/>
+<wire x1="266.7" y1="101.6" x2="274.32" y2="101.6" width="0.1524" layer="91"/>
+<label x="274.32" y="101.6" size="1.778" layer="95" xref="yes"/>
 </segment>
 <segment>
 <pinref part="J4" gate="J1" pin="2"/>
@@ -6512,13 +6512,9 @@ Source: &lt;a href="https://sensing.honeywell.com/honeywell-sensing-micropressur
 <net name="EOC" class="0">
 <segment>
 <pinref part="U1" gate="G$1" pin="EOC"/>
-<wire x1="264.16" y1="96.52" x2="264.16" y2="104.14" width="0.1524" layer="91"/>
-<wire x1="264.16" y1="104.14" x2="248.92" y2="104.14" width="0.1524" layer="91"/>
-<label x="231.14" y="104.14" size="1.778" layer="95" rot="R180" xref="yes"/>
-<pinref part="R17" gate="G$1" pin="2"/>
-<wire x1="248.92" y1="104.14" x2="231.14" y2="104.14" width="0.1524" layer="91"/>
-<wire x1="248.92" y1="96.52" x2="248.92" y2="104.14" width="0.1524" layer="91"/>
-<junction x="248.92" y="104.14"/>
+<wire x1="264.16" y1="96.52" x2="264.16" y2="106.68" width="0.1524" layer="91"/>
+<wire x1="264.16" y1="106.68" x2="274.32" y2="106.68" width="0.1524" layer="91"/>
+<label x="274.32" y="106.68" size="1.778" layer="95" xref="yes"/>
 </segment>
 <segment>
 <pinref part="J4" gate="J1" pin="1"/>
@@ -6530,10 +6526,6 @@ Source: &lt;a href="https://sensing.honeywell.com/honeywell-sensing-micropressur
 </nets>
 </sheet>
 </sheets>
-<errors>
-<approved hash="113,1,89.0626,178.477,J2,,,,,"/>
-<approved hash="113,1,127.163,178.477,J4,,,,,"/>
-</errors>
 </schematic>
 </drawing>
 <compatibility>

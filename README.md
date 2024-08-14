@@ -114,24 +114,44 @@ We considered the following microcontrollers and emloyed the following manufactu
 - [Mechanical Design and 3D printing](3Dprinting.md) Approach to convert the mechanical models to 3D printing instructions
 
 ## OnShape CAD Models
-- [Brick Top](https://cad.onshape.com/documents/5771a0816900fd12aa2ba4f2/w/387be7e09136f1fec5311adb/e/18e94dd1ad8a0983591cdd9f)
-- [Brick Bottom](https://cad.onshape.com/documents/1aa6b482eeab92aeed454246/w/ff77b38fbcbbca58607625e2/e/808c84513e7a48627605ce9b)
+- [Brick Top](https://cad.onshape.com/documents/be6b7e5f847d89f3ec5eb9d5/w/761fee9865ca7ef709028476/e/ff897b4f359cec83b782ff14)
+- [Brick Bottom](https://cad.onshape.com/documents/92ad78475e8f0b17ff5e260b/w/88a02abbcb12cdbd4d9de3ad/e/fb79ca58ad2b6a0298e9d1b6)
+- [Brick Assembly](https://cad.onshape.com/documents/11cbfe9c3c739b6e8ecbf3d7/w/989b564ecd7f6d069e643ac0/e/85542f706be8cc7554218e8d)
+- [Face Plate IMU](https://cad.onshape.com/documents/eb58e78174fdb2053487973b/w/903e17c4126fb90e8782ab92/e/f4b50a954b0de64bf397a15c)
 - Receiver Top
 - Receiver Bottom
 - Charging Station
+- [Stethoscope Microphone Bottom](https://cad.onshape.com/documents/f23280f0a46d3d6c755669df/w/b75e085438cd92ba1b26b647/e/00c40c7437b1518e003bac9d)
+- [Stethoscope Microphone Top](https://cad.onshape.com/documents/ef2b037c38f1baa1c0b23c04/w/556b341c46d5852ab7c96559/e/758f32969c2d9c1e8976b746)
 
-Put Images Here
+Brick
+<p float="left">
+    <img src="./Housing Models/Assembly.jpg" height="200" /> 
+    <img src="./Housing Models/Brick-Microcontroller.jpg" width="200" />
+    <img src="./Housing Models/Brick-Board.jpg" width="200" />
+</p>
+
+Receiver
+
+Charging Station
+
+Stethoscope
+<p float="left">
+    <img src="./Stethoscope/Models/Microphone-Bottom.jpg" height="100" /> 
+    <img src="./Stethoscope/Models/Microphone-Top.jpg" height="100" /> 
+</p>
+
 
 ## Project Status
 
 | Brick | Mechanical CAD | Electrical CAD|  Assembled | Test Software | Production Software
 | ------- | ------ |  ------ | ------ | ------ | ------ |
-| **Temperature** | Brick Plate needs update | Completed | Completed | Completed | Working on |
-| **$SPO_2$** | Brick Plate needs update | Completed | Completed | Completed| Working on
-| **Stethoscope** | Brick Plate needs update | Completed | Pressure incomplete| Sound Completed | Working on
-| **Environment** | Brick Plate needs update | Completed| Completed | MICS sensor incomplete| Working on
+| **Temperature** | Brick Plate missing | Completed | Completed | Completed | Working on |
+| **$SPO_2$** | Brick Plate missing | Completed | Completed | Completed| Working on
+| **Stethoscope** | Brick Plate missing | Completed | Pressure incomplete| Sound Completed | Working on
+| **Environment** | Brick Plate missing | Completed| Completed | MICS sensor incomplete| Working on
 | **IMU** | Brick Plate nedds update | Completed | Completed | Completed | Working on
-| **Bio Potential and BIOZ** | Brick Plate needs update | Completed | Completed | Driver working on | Not started yet
+| **Bio Potential and BIOZ** | Brick Plate missing | Completed | Completed | Driver working on | Not started yet
 | Protoype Sound w third arty ES8388 | Completed | Completed | Comleted | Completed | |  
 | Impedance w AD 5933 network analyzer | Completed | Completed | Completed | Incomplete | |
 | ECG w Sparkfun Breakout | Completed | Completed | Completed | Completed |  |

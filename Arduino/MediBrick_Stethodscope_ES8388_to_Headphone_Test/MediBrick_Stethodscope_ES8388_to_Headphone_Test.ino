@@ -122,7 +122,7 @@ void setup() {
   CodecConfig cfg;
   cfg.output_device = DAC_OUT;
   cfg.input_device  = ADC_IN;  
-  cfg.i2s.bits      = BIT_LENGTH_16BITS;
+  cfg.i2s.bits      = BIT_DEPTH;
   cfg.i2s.rate      = RATE_44K; 
   cfg.i2s.channels  = CHANNELS2;
   cfg.i2s.fmt       = I2S_NORMAL;
@@ -133,6 +133,14 @@ void setup() {
   auto i2s_config = i2s_stream.defaultConfig(RXTX_MODE); //RXTX for douplex //RX for sink //TX for source
   i2s_config.copyFrom(info_i2s_in);
   i2s_stream.begin(i2s_config); // this should apply I2C and I2S configuration
+
+  // Volume Control
+  //audio_board.setVolume(100); // 0 to 100
+  LOGI("Output volume set to: %d", audio_board.getVolume());
+  //audio_board.setInputVolume(0); // 0 to 100
+  //LOGI("Input volume set to: %d", 0); 
+  //float volume = i2s_stream.voume();
+  //float volume = i2s_stream.setVoume();
 
   // Filter -----------------
   //filtered_stream.setFilter(0, new IIR<float>(b_coefficients, a_coefficients));
