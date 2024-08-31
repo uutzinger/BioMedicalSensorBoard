@@ -40,7 +40,7 @@ Absorption in the blue would be much stronger, however optical penetration is al
 
 To simply detect heart rate, measurements in the green create stronger oscillations with heartbeat as compared to the red, however the largest differences between oxy and deoxy hemoglobin are in the red and near infrared.
 
-**Molar attenunation coeficient** $a(\lambda)$ with units [ $[\frac{1}{cm M}$ ] expresses the attenuation properties as function of concentration and pathlenght. Relevant examples at two wavelengths are given below. 
+**Molar attenunation coeficient** $a(\lambda)$ with units [ $\frac{1}{cm M}$ ] expresses the attenuation properties as function of concentration and pathlenght. Relevant examples at two wavelengths are given below. 
 
 | Wavelenght [nm] | Deoxyhemoglobin  | Oxyhemoglobin | Water [$\frac{1}{cm}$]
 | -----------| --------------- | -------------| -----------------
