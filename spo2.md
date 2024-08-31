@@ -69,7 +69,7 @@ Light passing through a piece of tissue is attenuated with:
 
 $\frac{I}{I_0} = 10^{-A}$
 
-With $A$ being the sum of all absorbing components in the tissue such as 
+With $I_0$ the light incident to the tissue, $I$ the light leaving the tissue and $A$ being the sum of all absorbing components in the tissue such as 
 
 $A_{skin} + A_{bone}+ A_{muscle} + A_{fat} + A_{water} + L_{venous} \cdot \left[ a_{Hb} \cdot c_{Hb_{venous}} + a_{HbO_2} \cdot c_{HbO_{2_{venous}}} \right] +  L_{aterial} \cdot \left[ a_{Hb} \cdot c_{Hb_{arterial}} + a_{HbO_2} \cdot c_{HbO_{2_{arterial}}} \right]$
 
