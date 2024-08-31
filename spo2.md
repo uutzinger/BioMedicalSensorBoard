@@ -88,11 +88,11 @@ Lets call the maximum signal $PPG_{relaxed}$ and the minimum signal $PPG_{extend
 
 $PPG_{relaxed} = I_0 \cdot 10^{-const +  L_{aterial_{relaxed}} \cdot \left[ a_{Hb} \cdot c_{Hb_{arterial}} + a_{HbO_2} \cdot c_{HbO_{2_{arterial}}} \right]}$
 
-with $I_0$ being the intial power of the light when entering the tissue and $I$ when it leaves.
+with $I_0$ being the intial power of the light when entering the tissue and $PPG$ when it leaves.
 
 When forming a ratio between extended and relaxed:
 
-$log \frac{PPG_{extended}}{PPG{relaxed}} = -\Delta L \cdot \left[ a_{Hb} \cdot c_{Hb_{arterial}} + a_{HbO_2} \cdot c_{HbO_{2_{arterial}}} \right]$
+$log \frac{PPG_{extended}}{PPG_{relaxed}} = -\Delta L \cdot \left[ a_{Hb} \cdot c_{Hb_{arterial}} + a_{HbO_2} \cdot c_{HbO_{2_{arterial}}} \right]$
 where $\Delta L$ is the difference between $L_{extended}$ and $L_{relaxed}$
 
 We can extract this number from our measurement and call it $R_{lambda}$
