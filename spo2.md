@@ -71,9 +71,9 @@ $\frac{I}{I_0} = 10^{-A}$
 
 With $A$ being the sum of all absorbing components in the tissue such as 
 
-$ A_{skin} + A_{bone}+ A_{muscle} + A_{fat} + A_{water} + L_{venous} \cdot \left[ a_{Hb} \cdot c_{Hb_{venous}} + a_{HbO_2} \cdot c_{HbO_{2_{venous}}} \right] +  L_{aterial} \cdot \left[ a_{Hb} \cdot c_{Hb_{arterial}} + a_{HbO_2} \cdot c_{HbO_{2_{arterial}}} \right] $
+$A_{skin} + A_{bone}+ A_{muscle} + A_{fat} + A_{water} + L_{venous} \cdot \left[ a_{Hb} \cdot c_{Hb_{venous}} + a_{HbO_2} \cdot c_{HbO_{2_{venous}}} \right] +  L_{aterial} \cdot \left[ a_{Hb} \cdot c_{Hb_{arterial}} + a_{HbO_2} \cdot c_{HbO_{2_{arterial}}} \right]$
 
-Assuming that within short time frame only $L_{arterila}$ changes one can lump all the other components into a constant:
+Assuming that within short time frame only $L_{arterial}$ changes one can lump all the other components into a constant:
 
 $A = const +  L_{aterial} \cdot \left[ a_{Hb} \cdot c_{Hb_{arterial}} + a_{HbO_2} \cdot c_{HbO_{2_{arterial}}} \right]$
 
@@ -92,7 +92,7 @@ with $I_0$ being the intial power of the light when entering the tissue and $I$ 
 
 When forming a ratio between extended and relaxed:
 
-$ log \frac{PPG_{extended}}{PPG{relaxed}} = -\Delta L \cdot \left[ a_{Hb} \cdot c_{Hb_{arterial}} + a_{HbO_2} \cdot c_{HbO_{2_{arterial}}} \right]$
+$log \frac{PPG_{extended}}{PPG{relaxed}} = -\Delta L \cdot \left[ a_{Hb} \cdot c_{Hb_{arterial}} + a_{HbO_2} \cdot c_{HbO_{2_{arterial}}} \right]$
 where $\Delta L$ is the difference between $L_{extended}$ and $L_{relaxed}$
 
 We can extract this number from our measurement and call it $R_{lambda}$
