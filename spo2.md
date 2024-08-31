@@ -36,11 +36,11 @@ The color of tissue and skin can be explained with the optical properties of its
   <img src=".\SPO2_Board\assets\Absorption_Spectra.svg" alt="Spectra" width="800"/>
 </div>
 
-Absorption in the blue would be much stronger, however optical penetation is also affected by increased scattering and to maintain a strong signal on the sensor, measurements occur in the wavelegnth range of the "optical window" of tissue. 
+Absorption in the blue would be much stronger, however optical penetration is also affected by increased scattering and to maintain a strong signal on the sensor, measurements occur in the wavelegnth range of the "optical window" of tissue. 
 
 To simply detect heart rate, measurements in the green create stronger oscillations with heartbeat as compared to the red, however the largest differences between oxy and deoxy hemoglobin are in the red and near infrared.
 
-**Molar attenunation coeficient** $a(\lambda)$ [$\frac{1}{cm M}$] expresses the attenuation properties as function of concentration and pathlenght. Relevant examples at two wavelengths are given below. 
+**Molar attenunation coeficient** $a(\lambda)$ with units [ $[\frac{1}{cm M}$ ] expresses the attenuation properties as function of concentration and pathlenght. Relevant examples at two wavelengths are given below. 
 
 | Wavelenght [nm] | Deoxyhemoglobin  | Oxyhemoglobin | Water [$\frac{1}{cm}$]
 | -----------| --------------- | -------------| -----------------
