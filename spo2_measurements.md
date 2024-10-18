@@ -36,11 +36,11 @@ The color of tissue and skin can be explained with the optical properties of its
   <img src=".\SPO2_Board\assets\Absorption_Spectra.svg" alt="Spectra" width="800"/>
 </div>
 
-Absorption in the blue would be much stronger, however optical penetation is also affected by increased scattering and to maintain a strong signal on the sensor, measurements occur in the wavelegnth range of the "optical window" of tissue. 
+Absorption in the blue would be much stronger, however optical penetration is also affected by increased scattering and to maintain a strong signal on the sensor, measurements occur in the wavelegnth range of the "optical window" of tissue. 
 
 To simply detect heart rate, measurements in the green create stronger oscillations with heartbeat as compared to the red, however the largest differences between oxy and deoxy hemoglobin are in the red and near infrared.
 
-**Molar attenunation coeficient** $a(\lambda)$ [$\frac{1}{cm M}$] expresses the attenuation properties as function of concentration and pathlenght. Relevant examples at two wavelengths are given below. 
+**Molar attenunation coeficient** $a(\lambda)$ with units [ $\frac{1}{cm M}$ ] expresses the attenuation properties as function of concentration and pathlenght. Relevant examples at two wavelengths are given below. 
 
 | Wavelenght [nm] | Deoxyhemoglobin  | Oxyhemoglobin | Water [$\frac{1}{cm}$]
 | -----------| --------------- | -------------| -----------------
@@ -69,11 +69,11 @@ Light passing through a piece of tissue is attenuated with:
 
 $\frac{I}{I_0} = 10^{-A}$
 
-With $A$ being the sum of all absorbing components in the tissue such as 
+With $I_0$ the light incident to the tissue, $I$ the light leaving the tissue and $A$ being the sum of all absorbing components in the tissue such as 
 
-$ A_{skin} + A_{bone}+ A_{muscle} + A_{fat} + A_{water} + L_{venous} \cdot \left[ a_{Hb} \cdot c_{Hb_{venous}} + a_{HbO_2} \cdot c_{HbO_{2_{venous}}} \right] +  L_{aterial} \cdot \left[ a_{Hb} \cdot c_{Hb_{arterial}} + a_{HbO_2} \cdot c_{HbO_{2_{arterial}}} \right] $
+$A_{skin} + A_{bone}+ A_{muscle} + A_{fat} + A_{water} + L_{venous} \cdot \left[ a_{Hb} \cdot c_{Hb_{venous}} + a_{HbO_2} \cdot c_{HbO_{2_{venous}}} \right] +  L_{aterial} \cdot \left[ a_{Hb} \cdot c_{Hb_{arterial}} + a_{HbO_2} \cdot c_{HbO_{2_{arterial}}} \right]$
 
-Assuming that within short time frame only $L_{arterila}$ changes one can lump all the other components into a constant:
+Assuming that within short time frame only $L_{arterial}$ changes one can lump all the other components into a constant:
 
 $A = const +  L_{aterial} \cdot \left[ a_{Hb} \cdot c_{Hb_{arterial}} + a_{HbO_2} \cdot c_{HbO_{2_{arterial}}} \right]$
 
@@ -88,11 +88,11 @@ Lets call the maximum signal $PPG_{relaxed}$ and the minimum signal $PPG_{extend
 
 $PPG_{relaxed} = I_0 \cdot 10^{-const +  L_{aterial_{relaxed}} \cdot \left[ a_{Hb} \cdot c_{Hb_{arterial}} + a_{HbO_2} \cdot c_{HbO_{2_{arterial}}} \right]}$
 
-with $I_0$ being the intial power of the light when entering the tissue and $I$ when it leaves.
+with $I_0$ being the intial power of the light when entering the tissue and $PPG$ when it leaves.
 
 When forming a ratio between extended and relaxed:
 
-$ log \frac{PPG_{extended}}{PPG{relaxed}} = -\Delta L \cdot \left[ a_{Hb} \cdot c_{Hb_{arterial}} + a_{HbO_2} \cdot c_{HbO_{2_{arterial}}} \right]$
+$log \frac{PPG_{extended}}{PPG_{relaxed}} = -\Delta L \cdot \left[ a_{Hb} \cdot c_{Hb_{arterial}} + a_{HbO_2} \cdot c_{HbO_{2_{arterial}}} \right]$
 where $\Delta L$ is the difference between $L_{extended}$ and $L_{relaxed}$
 
 We can extract this number from our measurement and call it $R_{lambda}$
