@@ -35,14 +35,14 @@ This project currently consists of the following measurement solultions:
 - **Electro Cardiogram Solutions**
     - [ECG Measurement](ecg_measurements.md) &#128214;
     - [ECG Solutions](ecg_solutions.md) &#10004;
-    - [ECG Medibrick v1](ECG_Board\README.md)
-    - [ECG Medibrick v2](Impedance_PotentialBoard\README.md) &#128194;&#128736;
+    - [ECG MediBrick v1](ECG_Board\README.md)
+    - [ECG MediBrick v2](Impedance_Potential_Board\README.md) &#128194;&#128736;
 - **Bio Impedance Solutions**
     - [Impedance Measurement](impedance_measurements.md) &#128214;
     - [Impedance Solutions](impedance_solutions.md) &#10004;
-    - [Impedance Medibrick v1](Impedance_Board/README.md)
-    - [Impedance Medibrick v2](Impedance_Potential_Board/README.md) &#128194;&#128736;
-- **Tempreature and Strain Gauages**
+    - [Impedance MediBrick v1](Impedance_Board/README.md)
+    - [Impedance MediBrick v2](Impedance_Potential_Board\README.md) &#128194;&#128736;
+- **Temperature and Strain Gauges**
     - [Temperature Measurement](temperature_measurements.md) &#128214;
     - [Temperature MediBrick](Thermistor_Board/README.md) &#128194; &#128736;
 - **Stethoscope and Sound**
@@ -50,13 +50,12 @@ This project currently consists of the following measurement solultions:
     - [Pressure Measurement](pressure_measurement.md) &#128214;
     - [Sound Solutions](sound_solutions.md) Sound Recording Solutions &#10004;
     - [Pressure Solutions](pressure_solutions.md) Pressure Recording Solutions &#10004;
-    - [Stethoscope Medibrick V1](Stethoscope_with_3rdparty_Sound\README.md) PCB Artist I2S codec interfacing with ESP
-    - [Stethoscope with Blood Pressure Medibrick V2](Stethoscope_with_Pressure\README.md) &#128194;&#128736;
-
+    - [Stethoscope MediBrick V1](Stethoscope_with_3rdparty_Sound\README.md) PCB Artist I2S codec interfacing with ESP
+    - [Stethoscope with Blood Pressure MediBrick V2](Stethoscope_with_Pressure\README.md) &#128194;&#128736;
 - **Pulse Oximeter**
     - [SpO<sub>2</sub> Measurement](spo2_measurements.md)&#128214;
     - [SpO<sub>2</sub> Solutions](spo2_solutions.md) &#10004;
-    - [SpO<sub>2</sub> Medibrick]() &#128194;
+    - [SpO<sub>2</sub> MediBrick]() &#128194;
 - **Air Quality**
     - [Airquality Measurement](airquality_measurement.md)&#128214;
     - [Airquality Solutions](airquality_solutions.md) &#10004;

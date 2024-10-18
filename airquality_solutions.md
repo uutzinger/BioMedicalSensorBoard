@@ -2,7 +2,7 @@
 
 ## Particulate Matter
 
-SEN5X family of sensors from Sensirion is a platform of compact particel sensors. They have a >10 years lifetime. Because they use a fan to create a steady stream of air in the sensor chamnber, they create 24dB noise at a distance of 0.2m.  Common used parameters are PM1 (0.3-1 $\mu$ partciles), PM2.5 (0.3-2.5 $\mu$), PM4(0.3-4 $\mu$), PM10 (0.3-10 $\mu$). They also measure Humidity and Temperature with an accuracty of $+/-4.5\%$ and $+- 0.45\degree C$.
+SEN5X family of sensors from Sensirion is a platform of compact particel sensors. They have a >10 years lifetime. Because they use a fan to create a steady stream of air in the sensor chamnber, they create 24dB noise at a distance of 0.2m.  Common used parameters are PM1 (0.3-1 $\mu$ partciles), PM2.5 (0.3-2.5 $\mu$), PM4(0.3-4 $\mu$), PM10 (0.3-10 $\mu$). They also measure Humidity and Temperature with an accuracy of $+/-4.5\%$ and $+- 0.45\degree C$.
 
 There are the following models available:
 
@@ -57,7 +57,7 @@ A typical Sensirion MEMS gas sensor consumes 3mA to measure VOC and NOX. It take
 
 Its difficult to find accurate and inexpensive Carbon Monoxide sensors. It is possible to calibrate less expensive sensors by measuring known levels of gases in a test chamber. For example, there should be no Carbon Monoxide in the atmosphere and a sensor signal outdoors indicates the sensor background level.
 
-Carbon Monpoxide is a poisenos gas where as Nitroc Oxide and Methane should be avoided indoors.
+Carbon Monpoxide is a poisenos gas where as Nitric Oxide and Methane should be avoided indoors.
 
 Amphenol produces an multi element MEMS gas sensor:
 

@@ -1,26 +1,105 @@
-# MAX30001G Design
+# Bio Impedance and Bio Potential
 
-## Diagrams
+<a href="..\assets\pictures\ECG_BIOZ_Front_Closed_without_Plugins.jpg" target="_blank" style="float: right; margin-left: 20px;">
+  <img src="..\assets\pictures\ECG_BIOZ_Front_Closed_without_Plugins.jpg" style="width: 500px;">
+</a>
 
-### Block Diagram of MAX 30001G
+For general consideration of bio impedance design and safety: [Analog Devices: Bio-Impedance Circuit Design for Body Worn Systems"](https://www.analog.com/en/resources/analog-dialogue/articles/bioimpedance-circuit-design-challenges.html)
 
-![Block](./assets/Blockdiagram.png)
+For BIOZ and ECG MediBrick we use the MAXIM [MAX30001G](datasheets/max30001g.pdf) analog front end (AFE). It's a modern design with a "waver level packaging" foot print of the sensor which makes is difficult to solder and increases costs for PCB manufacturing.
 
-### External Configurations
+The MAX30001G can measure:
 
-![External](./Design.svg)
+- Biopotential
+  - ECG (waveform)
+  - R-R Time (heart rate and heart rate variability)
+- Bioimpedance
+  - Resp (respiration rate)
+  - GSR (galvanic skin response, stress level)
+  - EDA (electro dermal activity)
 
-## Board Configuration
+Here [MAX3001G](MAX30001G.md) we summary capabilities from datasheet.
 
-- We can operate the board to measure ECG or Impedance or both. 
-- We can operate the board to use only two leads, four leads or six leads. 
-- We can configure the board to measure impedance of a calibration resistor that is soldered onto the board (100 Ohm).
+## Assembly &#128736;
+
+See separate [Assembly Instructions](assembly.md).
+
+## Costs &#36;
+
+| Item        | Quantity at Purchase | Costs  | Source            | Cost per Brick
+|---                          | ---  | ---    | ---               | ---
+| Microcontroller             |  1   | $17.5  | [Adafruit](https://www.adafruit.com/product/5477)          | $17.5
+| Display                     |  5   | $13    | [Amazon](https://a.co/d/1QH0Ab9)            | $3
+| Button                      | 25   | $9     | [Amazon](https://a.co/d/8KAuTwC) | $0.5 
+| Battery                     |  1   | $10     | [Adafruit](https://www.adafruit.com/product/258)        | $10
+| PCB                         |  5   | $145.80 | PCBWay            | $29
+| Parts and Assembly          |  5   | $186.42 | PCBWay            | $38
+| Assorted Wires              |8m    | $15    | [Amazon](https://a.co/d/58djefc) | $1
+| Assorted Screws and Nuts    |100   |  $7    | Amazon            | $0.05
+| Assorted 3D printed parts   |      |        |                   | $3
+| ECG 3.5mm cables | 1  | $5.50 | [Sparkfun](https://www.sparkfun.com/products/12970) | $5.50
+| Electrodes (consumable) | 100 | $25 | [Amazon](https://a.co/d/85M2rC2) | $ 1
+|                             |      |        |                   |
+| **Total**                   |      |        |                   | **$110**
+
+Electronic components are $20 per board. Because of WLP foot print of MAX30001G the PCB is 3 times as expensive as the other PCBs.
+
+## Test Software &#128187;
+Test software is located in the Arduino folder.
+
+| Folder | Description | 
+|--- |---|
+| MAX30001G Driver | under development |
+| not available yet | Test programs |
+
+## Microcontroller Software : &#9000;
+Not available yet.
+
+## Electronics Design &#128268;
+
+<a href="Impedance_Potential_schematic.pdf" target="_blank">
+  <img src="Impedance_Potential_schematic.png" style="width: 400px;">
+</a>
+<a href="Impedance_Potential_board.pdf" target="_blank">
+  <img src="Impedance_Potential_board.png" style="width: 300px;">
+</a>
+
+The following files are needed for PCB manufacturing and assembly.
+
+- [Bill of Materials](Impedance_Potential_BOM.xlsx)
+- [Manufacturing Files](Impedance_Potential_2024-09-12.zip)
+- [Pick and Place](Impedance_Potential_PnP.xlsx)
+
+The Bill of Materials is formatted so that its compatible with PCBWay submissions.
+
+## 3D Printed Parts &#9881;
+These are the links to the OnShape Design files, which you can edit and modify if you have an OnShape account (OnShape has free academic accounts).
+
+- Medi Brick
+  - [Brick Top](https://cad.onshape.com/documents/be6b7e5f847d89f3ec5eb9d5/w/761fee9865ca7ef709028476/e/ff897b4f359cec83b782ff14)
+  - [Brick Bottom](https://cad.onshape.com/documents/92ad78475e8f0b17ff5e260b/w/88a02abbcb12cdbd4d9de3ad/e/fb79ca58ad2b6a0298e9d1b6)
+  - [Brick Assembly](https://cad.onshape.com/documents/11cbfe9c3c739b6e8ecbf3d7/w/989b564ecd7f6d069e643ac0/e/85542f706be8cc7554218e8d)
+  - [Impedance Potential Plate](https://cad.onshape.com/documents/4b23bdc1fe41aa5490b46d9c/w/fd4737f6a1ca7fbcd3b1d7f7/e/89122d5ddac798ebf451ad60)
+
+## MAX30001G Design
+
+## Block Diagram of MAX 30001G
+
+<a href="assets/Blockdiagram.png" target="_blank">
+  <img src="assets/Blockdiagram.png" style="width: 400px;">
+</a>
+
+## External Configuration Options
+
+<a href="./Design.svg" target="_blank">
+  <img src="./Design.svg" style="width: 400px;">
+</a>
 
 We have the following external connectors:
 - ECG, 3,5mm audio
     - ECG_N (middle of plug) e.g. left arm
     - ECG_P (proximal side of plug) e.g. right arm
-    - VCM (common mode) (tip of plug) e.g. leg
+    - VCM/ECG_GND (common mode) (tip of plug) e.g. leg
 
 - Impedance, 3.5mm audio
     - BI_N
@@ -32,7 +111,15 @@ We have the following external connectors:
     - DRV_N
     - GND (tip of plug)
 
-##  Board Designs
+### Options
+- We can operate the board to measure ECG or Impedance or both. 
+- We can operate the board to use only two leads, four leads or six leads. 
+    - 6 leads ECG on ECGP & ECGN, BIOZ on BINP & BINN and DRV on DRVP & DRVN
+    - 4 leads ECG on ECGP & ECGN, BIOZ on BINP & BINN
+    - 2 leads ECG, BIOZ, DRV on ECGP & ECGN
+- We can configure the board to measure impedance of a calibration resistor that is soldered onto the board (100 Ohm).
+
+### Component Values
 
 Typical values and conditions of external components
 
@@ -69,7 +156,7 @@ VMC_UNBAL | open          |
 
 Specifically: 
 
-### Protocentral 30001 Break Out
+### Configuration of Protocentral 30001 Break Out
 Single Connector
 
 - VCM **10k** in series, no capacitor in series
@@ -84,7 +171,7 @@ Single Connector
 - OVDD on 1.8V, logic level conversion to 3.3V
 - no over voltage protection
 
-### Protocentral tinyECG
+### Configuration of Protocentral tinyECG
 ECG and BIOZ different connectors, DRV and BIN on the same connector
 
 - VCM **10k** in series instead of 51k, no capacitor in series
@@ -99,7 +186,7 @@ ECG and BIOZ different connectors, DRV and BIN on the same connector
 - OVDD on 3.3V
 - no over voltage protection
 
-### Evluation Kit
+### Configuration of Evaluation Kit
 - VCM **10k** in series instead of 51k, no capacitor in series, additional offset option
 - VBG same circuit and capacitors
 - RBIAS same circuit, resistor value not given
@@ -113,7 +200,7 @@ ECG and BIOZ different connectors, DRV and BIN on the same connector
 - OVDD on 3.3V
 - no over voltage protection
 
-### Datasheet typical ECG and GSR
+### Configuration form Datasheet for typical ECG and GSR
 - VCM **200k** in series instead of 51k, no capacitor in series
 - VBG same circuit and capacitors
 - RBIAS same circuit, same 324k resistor
@@ -126,112 +213,8 @@ ECG and BIOZ different connectors, DRV and BIN on the same connector
 - ECGN, ECGP connected to BINN, BINP
 - OVDD up to 3.6V
 
-### Datasheet typical simple ECG
+### Configuration from Datasheet for typical simple ECG
 - ECG direct with protection resistor, no capacitor network
 - no DRV and BIN connection
 
-### Jumpers
-
-There are 4 sets of jumper:
-
-1) The following jumpers are available to reduce the numnber of required leads. They create direct conenction between the pins of the plug and the chip IO:
-
-    For single plug operation ECG&BioZ
-    - $ECG_N$ to $BI_N$
-    - $ECG_P$ to $BI_P$
-
-    For single plug BioZ operation
-    - $DRV_N$ to $BI_N$
-    - $DRV_P$ to $BI_P$
-
-2) The unblance filters for Input and Offset can be bypassed. Those are the two input pins for ECG, Bioimedance and VCM :
-
-    - $VCM_{UB}$: $VCM$ unbalance bypass
-    - $EN_{UB}$: $ECG_N$ unbalance bypass
-    - $EP_{UB}$: $ECG_P$ unbalance bypass
-
-3) We can also disable input:
-
-    - $ECG_P$ to $ECG_N$ (this shorts N and P terminal together, for BIOZ measurements only operation)
-    - $BI_P$ to $BI_N$ (this shorts N and P terminal together, for ECG measurements only operation)
-
-4) We can calibrate BIOZ with a 100 Ohm resistor:
-
-    - $R_N$, $R_P$ connect $BI_N$, $BI_P$ to 100 Ohm (R18), for testing purose only, once conencted no external impedance can be measured.
-
-If $V_{CM}$ is used for ECG right leg bias, internal lead bias needs to be disabled. Resistor can be 10k..200kOhm.
-
-For specific hardware configuration setup the following jumpers should be set:
-
-### Configuration Options
-
-Configuration          | $ECG_P$ to $ECG_N$ | $DRV_N$ to $BI_N$ | $DRV_P$ to $BI_P$ | $ECG_N$ to $BI_N$ | $ECG_P$ to $BI_P$ | $R_N$ | $R_P$ | $VCM_{UB}$ | $EN _{UB}$ | $EP_{UB}$ |
------------------------|--------------------|-------------------|-------------------|-------------------|-------------------|-------|-------|------------|------------|-----------|
-(1) 100 Ohm Test       |                    | X                 | X                 |                   |                   | X     | X     |            |            |           | 
-(2) ECG, R to R        |                    |                   |                   |                   |                   |       |       | *          |            |           | 
-(3) ECG & Resp 2 leads |                    | X                 | X                 | X                 | X                 |       |       | *          |            |           | 
-(4) ECG & Resp 4 leads |                    |                   |                   | X                 | X                 |       |       | *          |            |           | 
-(5) GSR                | X                  | X                 | X                 |                   |                   |       |       |            |            |           | 
-(6) BIOZ 2 leads       | X                  | X                 | X                 | X                 | X                 |       |       |            |            |           | 
-(7) BIOZ 4 leads       | X                  |                   |                   |                   |                   |       |       |            |            |           | 
-(8) BIOZ & ECG 2 leads |                    | X                 | X                 | X                 | X                 |       |       | *          |            |           | 
-(9) BIOZ & ECG 4 leads |                    | X                 | X                 |                   |                   |       |       | *          |            |           | 
-(10) BIOZ & ECG 6 leads|                    |                   |                   |                   |                   |       |       | *          |            |           | 
-
-(X) = solder jumper closed
-
-(*) Might need to replace R23 with 200kOhm and enable VCM bypass by soldering the jumper close.
-
-### Lead Connections
-
-(1) **100 Ohm BioZ Test**
-
-    - 100 Ohm test for Driver and Impedance (BioZ)
-    - No external BIOZ leads possible
-    - ECG Measurement leads on ECG connector possible
-    - BioZ frequency is FMSTR/64 = 500Hz
-    - Increase frequency or change internal lower filter cut off
-
-(2) **ECG** 
-    - Measurement Leads on ECG connector.
-
-(3) **2 Leads ECG**
-
-    - Measurement Leads on ECG connector.
-
-(4) **4 Leads ECG**
-
-    - Driver Leads to Driver connector.
-    - Measurement Leads to ECG or Impedance connector.
-
-(5) **GSR, no ECG**
-
-    - Measurement Leads on Impedance connector.
-    - Low current frequency generator at 125, 250 or 500Hz.
-    - BIOZ analog high pass needs to be below current frequency. 
-    - 220nF blocking filter inline in $DRV_P$ and $DRV_N$, other circuits might have 47nF
-
-(6) **2 Leads Bio Z**
-
-    - BioZ Measurement connector connected to Driver connector
-
-(7) **4 Leads Bio Z**
-
-    - Driver Leads to Driver connector.
-    - Measurement Leads to Impedance connector.
-
-(8) **2 leads ECG & Bio Z**
-
-    - You can not measure simultanously but you can reconfigure in software to measure one or the other
-    - BIN and ECG and DRV connected
-
-(9) **4 leads ECG & Bio Z**
-
-    - You can not measure simultanously but you can reconfigure in software to measure one or the other
-    - ECG separate, BIN & DRV connected
-
-(9) **6 leads ECG & Bio Z**
-
-    - You can not measure simultanously but you can reconfigure in software to measure one or the other
-    - No jumper
 

@@ -1,5 +1,9 @@
 # Assembly of Airquality Board
 
+<a href="..\assets\pictures\Environment_Top_Open_with_Plugins.jpg" target="_blank">
+  <img src="..\assets\pictures\Environment_Top_Open_with_Plugins.jpg" style="width: 600px;">
+</a>
+
 ## QWIIC Connector
 
 PAD       | Function       | QWIIC pin | Sparkfun       | Adafruit
@@ -55,10 +59,13 @@ PAD       | Function                  | Thing Plus  | Feather
 ---       |---                        |---          |---
 **VCC**   | Power                     | 3V3         | 3V3 
 **GND**   | Power                     | GND         | GND
-**EN**    | Enable Regulator          | 06   GPIO32 | D6
+**EN**    | Enable Regulator / Power  | 06   GPIO32 | D6
 **NH3***  | Methane                   | A0 ADC2/CH9 | D11 ADC2/CH0
-**CO***   | Carbonmonoxide            | A1 ADC2/CH8 | D12 ADC2/CH1
+**CO***   | Carbon Monoxide           | A1 ADC2/CH8 | D12 ADC2/CH1
 **NO2**   | Nitric Oxide              | 04 ADC2/CH6 | D13 ADC2/CH2
+
+For tuning of the resistors and finalizing the connections refer to [MiCS6814](MICS6814_on_3V.md).
+There are preset resistors as well as jumpers for each sensor. Turn on the power to MiCS and close a jumper. Measure the voltage on the sensor test point. If the voltage is outside the expected range you will need to replace the resistor.
 
 ### BMP 581 Interrupt
 

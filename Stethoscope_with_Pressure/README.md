@@ -1,7 +1,7 @@
-# Stethoscope with Pressure
+# Stethoscope with Pressure Sensor
 
 <a href="..\assets\pictures\Stethoscope_Front_Closed_with_Plugins.jpg" target="_blank" style="float: right; margin-left: 20px;">
-  <img src="..\assets\pictures\Stethoscope_Front_Closed_with_Plugins.jpg" style="width: 600px;">
+  <img src="..\assets\pictures\Stethoscope_Front_Closed_with_Plugins.jpg" style="width: 500px;">
 </a>
 
 This stethoscope pressure solution consists of a sound as well as pressure recorder. For sound the I2S (Inter-Integrade Circuit Sound) bus is used to communicate with the microcontroller. This interface allows streaming and recording audio to an audio codec board. The Everest Semiconductor [ES8388 audio codec](datasheets\ES8388.pdf) was chosen because its supported by Arduino Audio Tools and Arduino Audio Driver and because Espressif created the Lyrat Audio modules with published reference [designs](datasheets\esp32-lyrat-v4-schematic.pdf). Sound is recorded with pui audio analog MEMS microphones [AMM-2742](datasheets\Microphone-AMM-2742-T-R.pdf) that are mounted on the printed circuit board. Two microphones are used where one is connected to the stethoscope and the other recording the background. An [dual differential amplifier](datasheets\opa344.pdf) is used to low pass filter and amplify the signal from the microphone, however amplification would not be needed for the ES8388 codec. Pressure is measured with a Honeywell MPR pressure sensor [MPRLS0300YG](datasheets/MPR_Pressure_HWSC_S_A0016036563_1-3073392.pdf) that convers the physiological range of 0 to 200 mm Hg.  
@@ -14,11 +14,11 @@ See separate [Assembly Instructions](assembly.md).
 
 | Item        | Quantity at Purchase | Costs  | Source            | Cost per Brick
 |---                          | ---  | ---    | ---               | ---
-| Microcontroller             |  1   | $17.5  | Adafruit          | $17.5
-| Display                     |  5   | $13    | Amazon            | $3
-| Button                      | 25   | $9     | Amazon            | $0.5 
-| Battery                     |  1   | $7     | Adafruit          | $7
-| PCB                         |  5   | $45.18 | PCBWay            | $23
+| Microcontroller             |  1   | $17.5  | [Adafruit](https://www.adafruit.com/product/5477)          | $17.5
+| Display                     |  5   | $13    | [Amazon](https://a.co/d/1QH0Ab9)            | $3
+| Button                      | 25   | $9     | [Amazon](https://a.co/d/8KAuTwC) | $0.5 
+| Battery                     |  1   | $10     | [Adafruit](https://www.adafruit.com/product/258)        | $10
+| PCB                         |  5   | $45.18 | PCBWay            | $9
 | Parts and Assembly          |  2   | $56.55 | PCBWay            | $29
 | MPRLS0300YG (pressure)      |  2   | $35    | Sager Electronics | $17.5
 | Stethoscope                 |  1   | $25    | [Amazon](https://a.co/d/7tQgoKs) | $25
@@ -31,8 +31,10 @@ See separate [Assembly Instructions](assembly.md).
 | Stainless Steel Tubing      |250mm | $10    | Amazon            | $2
 | Assorted 3D printed parts   |      |        |                   | $3
 |                             |      |        |                   |
-| **Total with blood pressure**     |      |        |                   | **$150**
-| **Total without blood pressure**  |      |        |                   | **$110**
+| **Total with blood pressure**     |      |        |                   | **$140**
+| **Total without blood pressure**  |      |        |                   | **$100**
+
+Electronic components excluding the pressure sensor are $14 per board.
 
 The pressure sensor was mounted in house as the PCB assembly service did not have access to inexpensive source.
 
@@ -52,7 +54,7 @@ Not available yet.
 
 ## Electronics Design &#128268;
 
-<a href="Sound_scematic.pdf" target="_blank">
+<a href="Sound_schematic.pdf" target="_blank">
   <img src="Sound_schematic.png" style="width: 400px;">
 </a>
 <a href="Sound_board.pdf" target="_blank">
@@ -63,7 +65,7 @@ The following files are needed for PCB manufacturing and assembly.
 
 - [Bill of Materials](Sound_BOM.xlsx)
 - [Manufacturing Files](Sound_2024-10-16.zip)
-- [Sound Pick and Place](Sound_PnP.xlsx)
+- [Pick and Place](Sound_PnP.xlsx)
 
 The Bill of Materials is formatted so that its compatible with PCBWay submissions.
 

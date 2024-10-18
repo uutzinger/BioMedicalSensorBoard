@@ -44,11 +44,11 @@ There are 4 sets of jumper:
     - $ECG_N$ to $BI_N$
     - $ECG_P$ to $BI_P$
 
-    For single plugs BioZ operation
+    For single plug BioZ operation
     - $DRV_N$ to $BI_N$
     - $DRV_P$ to $BI_P$
 
-2) The unblance filters for Input and Offset can be bypassed. Those are the two input pins for ECG, Bioimedance and VCM :
+2) The unbalance filters for Input and Offset can be bypassed. Those are the two input pins for ECG, Bioimedance and VCM :
 
     - $VCM_{UB}$: $VCM$ unbalance bypass
     - $EN_{UB}$: $ECG_N$ unbalance bypass
