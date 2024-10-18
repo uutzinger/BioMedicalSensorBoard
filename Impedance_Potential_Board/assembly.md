@@ -30,87 +30,114 @@ Require connections are in **bold**.
 
 ## Board Configuration
 
-There are many configurations we can select. We can operate the board to measure ECG and Impedance or both. We can operate the board to use only two leads, four leads or 6 leads. We can configure the board to measure impedance of a calibration resistor (100 Ohm).
-
-There are many internal configurations, for example we can attach an oscilator to the ECG channel. 
+There are many configurations we can select. We can operate the board to measure ECG or Impedance or both. We can operate the board to use only two leads, four leads or six leads. We can configure the board to measure impedance of a calibration resistor that is soldered onto the board (100 Ohm).
 
 ### Jumpers
 
-The following jumpers are available to reduce the numnber of leadsto attach to a subject:
+![Jumpers](./Design.svg)
 
-- $ECG_N$ to $BI_N$
-- $ECG_P$ to $BI_P$
-- $DRV_N$ to $BI_N$
-- $DRV_P$ to $BI_P$
+There are 4 sets of jumper:
 
-The unblance filters for Input and Offset can be bypassed:
+1) The following jumpers are available to reduce the numnber of required leads. They create direct conenction between the pins of the plug and the chip IO:
 
-- $VCM_{UB}$: $VCM$ unbalance bypass
-- $EN_{UB}$: $ECG_N$ unbalance bypass
-- $EP_{UB}$: $ECG_P$ unbalance bypass
+    For single plug operation ECG&BioZ
+    - $ECG_N$ to $BI_N$
+    - $ECG_P$ to $BI_P$
 
-We can also disable input:
+    For single plugs BioZ operation
+    - $DRV_N$ to $BI_N$
+    - $DRV_P$ to $BI_P$
 
-- $ECG_P$ to $ECG_N$ (for BIOZ measurements only operation)
-- $BI_P$ to $BI_N$ (for ECG measurements only operation)
+2) The unblance filters for Input and Offset can be bypassed. Those are the two input pins for ECG, Bioimedance and VCM :
 
-We can calibrate BIOZ with a 100 Ohm resistor:
+    - $VCM_{UB}$: $VCM$ unbalance bypass
+    - $EN_{UB}$: $ECG_N$ unbalance bypass
+    - $EP_{UB}$: $ECG_P$ unbalance bypass
 
-- $R_N$, $R_P$ connect $BI_N$, $BI_P$ to 100R18
+3) We can also disable input:
 
-When the calibration resistor is in place we can no longer measure BIOZ on subjects.
+    - $ECG_P$ to $ECG_N$ (this shorts N and P terminal together, for BIOZ measurements only operation)
+    - $BI_P$ to $BI_N$ (this shorts N and P terminal together, for ECG measurements only operation)
 
-If $V_CM$ is used for ECG right leg bias, internal lead bias needs to be disabled. Resistor should be 200kOhm, and $V_CM$ bypassed.
+4) We can calibrate BIOZ with a 100 Ohm resistor:
+
+    - $R_N$, $R_P$ connect $BI_N$, $BI_P$ to 100 Ohm (R18), for testing purose only, once conencted no external impedance can be measured.
+
+If $V_{CM}$ is used for ECG right leg bias, internal lead bias needs to be disabled. Resistor can be 10k..200kOhm.
 
 For specific hardware configuration setup the following jumpers should be set:
 
 ### Configuration Options
-Configuration       | $ECG_P$ to $ECG_N$ | $DRV_N$ to $BI_N$ | $DRV_P$ to $BI_P$ | $ECG_N$ to $BI_N$ | $ECG_P$ to $BI_P$ | $R_N$ | $R_P$ | $VCM_{UB}$ | $EN _{UB}$ | $EP_{UB}$ |
-------------------|--------------------|-------------------|-------------------|-------------------|-------------------|-------|-------|------------|------------|-----------|
-(1) Default       |                    | X                 | X                 |                   |                   | X     | X     |            | X          | X         | 
-(2) 100 Ohm Test  |                    | X                 | X                 |                   |                   | X     | X     |            |            |           | 
-(3) ECG, R to R   |                    |                   |                   |                   |                   |       |       | *          | ?          | ?         | 
-(4) ECG & Resp 2  |                    | X                 | X                 | X                 | X                 |       |       | *          | ?          | ?         | 
-(5) ECG & Resp 4  |                    |                   |                   | X                 | X                 |       |       | *          | ?          | ?         | 
-(6) GSR           | ?                  | X                 | X                 |                   |                   |       |       | ?          |            |           | 
-(7) BIOZ 2        | ?                  | X                 | X                 | X                 | X                 |       |       | ?          |            |           | 
-(8) BIOZ 4        | ?                  |                   |                   | X                 | X                 |       |       | ?          |            |           | 
+
+Configuration          | $ECG_P$ to $ECG_N$ | $DRV_N$ to $BI_N$ | $DRV_P$ to $BI_P$ | $ECG_N$ to $BI_N$ | $ECG_P$ to $BI_P$ | $R_N$ | $R_P$ | $VCM_{UB}$ | $EN _{UB}$ | $EP_{UB}$ |
+-----------------------|--------------------|-------------------|-------------------|-------------------|-------------------|-------|-------|------------|------------|-----------|
+(1) 100 Ohm Test       |                    | X                 | X                 |                   |                   | X     | X     |            |            |           | 
+(2) ECG, R to R        |                    |                   |                   |                   |                   |       |       | *          |            |           | 
+(3) ECG & Resp 2 leads |                    | X                 | X                 | X                 | X                 |       |       | *          |            |           | 
+(4) ECG & Resp 4 leads |                    |                   |                   | X                 | X                 |       |       | *          |            |           | 
+(5) GSR                | X                  | X                 | X                 |                   |                   |       |       |            |            |           | 
+(6) BIOZ 2 leads       | X                  | X                 | X                 | X                 | X                 |       |       |            |            |           | 
+(7) BIOZ 4 leads       | X                  |                   |                   |                   |                   |       |       |            |            |           | 
+(8) BIOZ & ECG 2 leads |                    | X                 | X                 | X                 | X                 |       |       | *          |            |           | 
+(9) BIOZ & ECG 4 leads |                    | X                 | X                 |                   |                   |       |       | *          |            |           | 
+(10) BIOZ & ECG 6 leads|                    |                   |                   |                   |                   |       |       | *          |            |           | 
+
+(X) = solder jumper closed
+
+(*) Might need to replace R23 with 200kOhm and enable VCM bypass by soldering the jumper close.
 
 ### Lead Connections
 
-(1) **Default**
-100 Ohm test for Driver and Impedance, No BIOZ leads.
-ECG Measurement Leads on ECG connector.
+(1) **100 Ohm BioZ Test**
 
-(2) **No Leads**, 100 Ohm Test configuration. 
-The default BioZ frequency is FMSTR/64 = 500Hz, To measure 100 Ohm increase frequency or change internal lower filter cut off.
+    - 100 Ohm test for Driver and Impedance (BioZ)
+    - No external BIOZ leads possible
+    - ECG Measurement leads on ECG connector possible
+    - BioZ frequency is FMSTR/64 = 500Hz
+    - Increase frequency or change internal lower filter cut off
 
-(3) **ECG** Measurement Leads on ECG connector.
+(2) **ECG** 
+    - Measurement Leads on ECG connector.
 
-(4) **2 Leads ECG**
-Measurement Leads on ECG connector.
+(3) **2 Leads ECG**
 
-(5) **4 Leads ECG**
-Driver Leads to Driver connector.
-Measurement Leads to ECG or Impedance connector.
+    - Measurement Leads on ECG connector.
 
-(6) **GSR**
-Measurement Leads on Impedance connector.
+(4) **4 Leads ECG**
 
-Low current frequency generator at 125, 250 or 500Hz.
+    - Driver Leads to Driver connector.
+    - Measurement Leads to ECG or Impedance connector.
 
-BIOZ analog high pass needs to be below current frequency. 
+(5) **GSR, no ECG**
 
-220nF blocking filter between $DRV_P$ and $DRV_N$.
+    - Measurement Leads on Impedance connector.
+    - Low current frequency generator at 125, 250 or 500Hz.
+    - BIOZ analog high pass needs to be below current frequency. 
+    - 220nF blocking filter inline in $DRV_P$ and $DRV_N$, other circuits might have 47nF
 
-(7) **2 Leads Bio Z**
-Leads to Driver connector or Impedance connector.
+(6) **2 Leads Bio Z**
 
-(8) **4 Leads Bio Z**
-Driver Leads to Driver connector.
-Measurement Leads to Impednace connector.
+    - BioZ Measurement connector connected to Driver connector
 
-(*) Might need to replace R23 with 200kOhm and enable VCM bypass.
+(7) **4 Leads Bio Z**
+
+    - Driver Leads to Driver connector.
+    - Measurement Leads to Impedance connector.
+
+(8) **2 leads ECG & Bio Z**
+
+    - You can not measure simultanously but you can reconfigure in software to measure one or the other
+    - BIN and ECG and DRV connected
+
+(9) **4 leads ECG & Bio Z**
+
+    - You can not measure simultanously but you can reconfigure in software to measure one or the other
+    - ECG separate, BIN & DRV connected
+
+(9) **6 leads ECG & Bio Z**
+
+    - You can not measure simultanously but you can reconfigure in software to measure one or the other
+    - No jumper
 
 #### Pin Outs
 - [Thing Plus C Pinout](https://cdn.sparkfun.com/assets/3/9/5/f/e/SparkFun_Thing_Plus_ESP32_WROOM_C_graphical_datasheet2.pdf)
@@ -118,3 +145,5 @@ Measurement Leads to Impednace connector.
 
 ![Thing Plus C Pinout](..\assets\ThingPlusC_PinOut.png)
 ![Adafruit Feather ESP32 S3](../assets/adafruit_products_Adafruit_Feather_ESP32-S3_Pinout.png)
+
+

@@ -17,6 +17,15 @@ It is not necessary to push the wires into the holes and you can simply strip a 
 
 Suggested connecctions for the Sparkfun Thing Plus (USB-C) and the Adafruit Feather ESP32-S3.
 
+### Button
+
+The button is configured to pull a pin high. One button pin is connected to 3.3V and the other to the input pin on the microcontroller. In software that pin is pulled low.
+
+PAD       | Function        | Thing Plus    | Feather
+---       |---              |---            |---
+**3.3V**  | Button          | 3V3           | 3V3
+**Button**| Button          | 9 or A0       | 12
+
 ### 6pin SEN5X Connector
 
 This connector is for the Particula Matter sensor from Sensirion. I use the following premade [Sparkfun Cable](https://cdn.sparkfun.com/assets/8/7/b/c/8/ACCA-3479_Model__1_.pdf)
@@ -40,7 +49,7 @@ PAD       | Function                  | Thing Plus  | Feather
 **GND**   | Power                     | GND         | GND
 **DIN**   | Data In                   | SCK GPIO18  | A0 GPIO18
 
-#### SGX MiCS 6814 sensor
+### SGX MiCS 6814 Sensor
 
 PAD       | Function                  | Thing Plus  | Feather
 ---       |---                        |---          |---
@@ -51,7 +60,19 @@ PAD       | Function                  | Thing Plus  | Feather
 **CO***   | Carbonmonoxide            | A1 ADC2/CH8 | D12 ADC2/CH1
 **NO2**   | Nitric Oxide              | 04 ADC2/CH6 | D13 ADC2/CH2
 
+### BMP 581 Interrupt
+
+PAD       | Function                  | Thing Plus  | Feather
+---       |---                        |---          |---
+INT       | Interrupt                 | 10   GPIO35 | D10
+
 
 Require connections are in **bold**.
 
+- [Thing Plus C Pinout](https://cdn.sparkfun.com/assets/3/9/5/f/e/SparkFun_Thing_Plus_ESP32_WROOM_C_graphical_datasheet2.pdf)
+- [ESP32 S3 Pinout](https://learn.adafruit.com/assets/110811)
+
+![Thing Plus C Pinout](..\assets\ThingPlusC_PinOut.png)
+
+![Adafruit Feather ESP32 S3](../assets/adafruit_products_Adafruit_Feather_ESP32-S3_Pinout.png)
 

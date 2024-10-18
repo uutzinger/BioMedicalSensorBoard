@@ -34,34 +34,34 @@
 
 
 int toSamplingFreq(samplerate_t rate) {
-    switch (rate) {
-        case RATE_8K:   return 8000;
-        case RATE_11K:  return 11025;
-        case RATE_16K:  return 16000;
-        case RATE_22K:  return 22050;
-        case RATE_24K:  return 24000;
-        case RATE_32K:  return 32000;
-        case RATE_44K:  return 44100;
-        case RATE_48K:  return 48000;
-        case RATE_64K:  return 64000;
-        case RATE_88K:  return 88200;
-        case RATE_96K:  return 96000;
-        case RATE_128K: return 128000;
-        case RATE_176K: return 176400;
-        case RATE_192K: return 192000;
-        default:        return -1;  // Handle error for unknown rate
-    }
+  switch (rate) {
+    case RATE_8K:   return 8000;
+    case RATE_11K:  return 11025;
+    case RATE_16K:  return 16000;
+    case RATE_22K:  return 22050;
+    case RATE_24K:  return 24000;
+    case RATE_32K:  return 32000;
+    case RATE_44K:  return 44100;
+    case RATE_48K:  return 48000;
+    case RATE_64K:  return 64000;
+    case RATE_88K:  return 88200;
+    case RATE_96K:  return 96000;
+    case RATE_128K: return 128000;
+    case RATE_176K: return 176400;
+    case RATE_192K: return 192000;
+    default:        return -1;  // Handle error for unknown rate
+  }
 }
 
 int toBitDepth(sample_bits_t bits) {
-    switch (bits) {
-        case BIT_LENGTH_16BITS: return 16;
-        case BIT_LENGTH_18BITS: return 18;
-        case BIT_LENGTH_20BITS: return 20;
-        case BIT_LENGTH_24BITS: return 24;
-        case BIT_LENGTH_32BITS: return 32;
-        default:                return -1;  // Handle error for unknown bit length
-    }
+  switch (bits) {
+    case BIT_LENGTH_16BITS: return 16;
+    case BIT_LENGTH_18BITS: return 18;
+    case BIT_LENGTH_20BITS: return 20;
+    case BIT_LENGTH_24BITS: return 24;
+    case BIT_LENGTH_32BITS: return 32;
+    default:                return -1;  // Handle error for unknown bit length
+  }
 }
 
 int sample_rate = toSamplingFreq(SAMPLE_RATE);
@@ -71,23 +71,19 @@ AudioInfo               info_i2s_in(    sample_rate, NUM_CHANNELS, bit_depth);
 AudioInfo               info_serial_out(sample_rate, NUM_CHANNELS, bit_depth);
 AudioInfo               info_i2s_out(   sample_rate, NUM_CHANNELS, bit_depth);
 
-DriverPins              ES8388pins; // board pins
+// I2S ---
+DriverPins              ES8388pins;                                 // board pins
 AudioBoard              audio_board(AudioDriverES8388, ES8388pins); // audio board
-I2SCodecStream          i2s_stream(audio_board); // i2s coded
-TwoWire                 ES8388Wire = TwoWire(0); // universal I2C interface
+I2SCodecStream          i2s_stream(audio_board);                    // i2s coded
+TwoWire                 ES8388Wire = TwoWire(0);                    // universal I2C interface
 
-CsvOutput<int16_t>      serial_out(Serial); // serial output
-
-//FilteredStream<int16_t, float> filtered_stream(i2s_stream, NUM_CHANNELS);
-
+// Out ---
+CsvOutput<int16_t>      serial_out(Serial);                         // serial output
 MultiOutput             out; // allows multiplke outputs
 
-// StreamCopy             copier(out, filtered_stream); // stream the filtered i2s input to serial port and i2s output
-// StreamCopy             copier(out, i2s_stream); // stream the i2s input to serial port and i2s output
-// StreamCopy              copier(i2s_stream, i2s_stream); // stream the i2s input to  i2s output
-// StreamCopy             copier(i2s_stream, filtered_stream); // stream the filtered i2s input to i2s output
-StreamCopy              copier(out, i2s_stream); // stream the i2s input to serial port and i2s output
-
+// Filter ---
+// FilteredStream<int16_t, float> filtered_stream(i2s_stream, NUM_CHANNELS);
+//
 // See Python program to compute coefficients
 // fc_l =    2000  # Cutoff frequency for LPF
 // fc_h =      35  # Cutoff frequency for HPF
@@ -101,24 +97,30 @@ StreamCopy              copier(out, i2s_stream); // stream the i2s input to seri
 //const float b_coefficients[] = { 0.2872550426, 0.0000000000, -0.5745100852,  0.0000000000, 0.2872550426 };
 //const float a_coefficients[] = { 1.0000000000,-1.9611295301,  1.1334435942, -0.3364766322, 0.1650309249 };
 
+StreamCopy              copier(out, i2s_stream); // stream the i2s input to serial port and i2s output
+// StreamCopy              copier(out, filtered_stream); // stream the filtered i2s input to serial port and i2s output
+// StreamCopy              copier(i2s_stream, i2s_stream); // stream the i2s input to  i2s output
+// StreamCopy              copier(i2s_stream, filtered_stream); // stream the filtered i2s input to i2s output
+
 void setup() {
   
-  // Serial Interface ------------
+  // Serial Interface ---
   Serial.begin(500000);
-  while(!Serial){} // Wait for Serial to be ready
+  while(!Serial){} // Wait for Serial to be ready, do not use for autotonous operation
   delay(500);
 
-  // Logging level ---------------
+  // Logging level ---
   AudioLogger::instance().begin(Serial, AudioLogger::Warning); // Debug, Info, Warning, Error
   LOGLEVEL_AUDIODRIVER = AudioDriverInfo;
 
-  LOGI("Defining I2C pins for codec");
+  // ES8388 ---
+  LOGln("Defining I2C pins for codec");
   ES8388pins.addI2C(PinFunction::CODEC, SCLPIN, SDAPIN, ES8388ADDR, I2CSPEED, ES8388Wire);
-  LOGI("Defining I2S pins for codec");
+  LOGln("Defining I2S pins for codec");
   ES8388pins.addI2S(PinFunction::CODEC, MCLKPIN, BCLKPIN, WSPIN, DIPIN, DOPIN);
   ES8388pins.begin();
 
-  LOGI("Defining ES8388 In/Out lines")
+  LOGln("Defining ES8388 In/Out lines")
   CodecConfig cfg;
   cfg.output_device = DAC_OUT;
   cfg.input_device  = ADC_IN;  
@@ -129,20 +131,24 @@ void setup() {
   cfg.i2s.mode      = MODE_SLAVE;
   audio_board.begin(cfg);
 
-  LOGI("I2S config and begin");
+  // I2S ---
+  LOGln("I2S config and begin");
   auto i2s_config = i2s_stream.defaultConfig(RXTX_MODE); //RXTX for douplex //RX for sink //TX for source
   i2s_config.copyFrom(info_i2s_in);
   i2s_stream.begin(i2s_config); // this should apply I2C and I2S configuration
 
-  // Volume Control
-  //audio_board.setVolume(100); // 0 to 100
-  LOGI("Output volume set to: %d", audio_board.getVolume());
-  //audio_board.setInputVolume(0); // 0 to 100
-  //LOGI("Input volume set to: %d", 0); 
-  //float volume = i2s_stream.voume();
-  //float volume = i2s_stream.setVoume();
+  // Volume Control ---
+  audio_board.setVolume(100); // 0 to 100
+  LOGln("Output volume set to: %d", audio_board.getVolume());
+  audio_board.setInputVolume(80); // 0 to 100
+  LOGln("Input volume set to: %d", audio_board.getVolume()); 
+  
+  // Experiment with volume settings on the i2s stream
+  // Not sure if we can change MIC and Line with that also
+  //float volume = i2s_stream.volume();
+  //float volume = i2s_stream.setVolume();
 
-  // Filter -----------------
+  // Filter ---
   //filtered_stream.setFilter(0, new IIR<float>(b_coefficients, a_coefficients));
   //filtered_stream.setFilter(1, new IIR<float>(b_coefficients, a_coefficients));
 
@@ -150,33 +156,15 @@ void setup() {
   out.add(i2s_stream);
 
   // CSV Out --------------------
-  LOGI("Configuring Serial");
+  LOGln("Configuring Serial");
   serial_out.begin(info_serial_out);
-  LOGI("Serial initialized");
+  LOGln("Serial initialized");
 
-  LOGI("Setup complete");
+  LOGln("Setup complete");
 }
 
 void loop() {
 
-// #ifdef PROCESS
-
-// GET THIS FROM TEMPRATURE TEST PROGRAM
-
-//   // Read the values from the conversion stream to the temperature processing buffer
-//   size_t bytes_read   = converted_stream.readBytes((uint8_t*) process_buffer, BYTES_PER_SAMPLE * NUM_CHANNELS);
-//   size_t samples_read = bytes_read / BYTES_PER_SAMPLE; 
-//   int16_t* sample_buffer = (int16_t*) process_buffer;
-
-//   assert (samples_read == NUM_CHANNELS);
-
-//   for (size_t ch = 0; ch < NUM_CHANNELS; ch++) {
-//     sample_buffer[ch] = (int16_t) calctemp(sample_buffer[ch], A_COEFF, B_COEFF, C_COEFF, V_IN, R1[ch], R2[ch], R3[ch]); // Temperature 
-//   }
-
-//   serial_out.write((uint8_t*)sample_buffer, NUM_CHANNELS * BYTES_PER_SAMPLE); // stream to output as byte type
-
-// #else
   copier.copy();
-// #endif
+
 } 

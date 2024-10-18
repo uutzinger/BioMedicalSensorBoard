@@ -1,5 +1,5 @@
 /******************************************************************************************************/
-// Include file for the MAX30001 ECG and Bioimpedance module
+// Include file for the MAX30001G ECG and Bioimpedance module
 //
 // Urs Utzinger, July 2024
 /******************************************************************************************************/
@@ -9,93 +9,122 @@
 #include "Arduino.h"
 #include <SPI.h>
 #include "logger.h"
+#include <cstddef>
+
+/******************************************************************************************************/
+/* Ring Buffer */
+/******************************************************************************************************/
+
+class RingBuffer {
+public:
+    // Constructor and destructor
+    explicit RingBuffer(size_t size);
+    ~RingBuffer();
+
+    // Public methods
+    void push(float value);
+    float pop();
+    bool isFull() const;
+    bool isEmpty() const;
+    bool isOverflow() const;
+    void resetOverflow();
+    size_t size() const;
+
+private:
+    // Private members
+    float* buffer;
+    size_t capacity;
+    size_t start;
+    size_t end;
+    size_t count;
+    bool overflow;
+};
+
+/******************************************************************************************************/
+/* MAX30001G */
+/******************************************************************************************************/
 
 // Define SPI speed
 #define MAX30001_SPI_SPEED 1000000
 
 // MAX30001 Register definitions
 // Table 12
-///////////////////////////////
-#define NO_OP           0x00 // No operation R/W
-#define STATUS          0x01 // Status register R   
-#define EN_INT          0x02 // INT B output R/W
-#define EN_INT2         0x03 // INT2B output R/W
-#define MNGR_INT        0x04 // Interrupt management R/W
-#define MNGR_DYN        0x05 // Dynamic modes managememt R/W
-#define SW_RST          0x08 // Software reset W
-#define SYNCH           0x09 // Synchronize, begins new operations W
-#define FIFO_RST        0x0A // FIFO reset W
-#define INFO            0x0F // Information on MAX30001 R
-#define CNFG_GEN        0x10 // General settings R/W
-#define CNFG_CAL        0x12 // Internal calibration settings R/W
-#define CNFG_EMUX       0x14 // Input multiplexer for ECG R/W 
-#define CNFG_ECG        0x15 // ECG channle R/W
-#define CNFG_BMUX       0x17 // Input multiplext for BIOZ R/W
-#define CNFG_BIOZ       0x18 // BIOZ channel R/W
-#define CNFG_BIOZ_LC    0x1A // BIOZ low current ranges R/W
-#define CNFG_RTOR1      0x1D // R to R heart rate dection R/W
-#define CNFG_RTOR2      0x1E // second part of Register R/W
-#define NO_OP           0x7F // Same as 0x00
+///////////////////////////////////////////////////
+#define MAX30001_NO_OP           0x00 // No operation R/W
+#define MAX30001_STATUS          0x01 // Status register R   
+#define MAX30001_EN_INT1         0x02 // INT B output R/W
+#define MAX30001_EN_INT2         0x03 // INT2B output R/W
+#define MAX30001_MNGR_INT        0x04 // Interrupt management R/W
+#define MAX30001_MNGR_DYN        0x05 // Dynamic modes managememt R/W
+#define MAX30001_SW_RST          0x08 // Software reset W
+#define MAX30001_SYNCH           0x09 // Synchronize, begins new operations W
+#define MAX30001_FIFO_RST        0x0A // FIFO reset W
+#define MAX30001_INFO            0x0F // Information on MAX30001 R
+#define MAX30001_CNFG_GEN        0x10 // General settings R/W
+#define MAX30001_CNFG_CAL        0x12 // Internal calibration settings R/W
+#define MAX30001_CNFG_EMUX       0x14 // Input multiplexer for ECG R/W 
+#define MAX30001_CNFG_ECG        0x15 // ECG channle R/W
+#define MAX30001_CNFG_BMUX       0x17 // Input multiplext for BIOZ R/W
+#define MAX30001_CNFG_BIOZ       0x18 // BIOZ channel R/W
+#define MAX30001_CNFG_BIOZ_LC    0x1A // BIOZ low current ranges R/W
+#define MAX30001_CNFG_RTOR1      0x1D // R to R heart rate dection R/W
+#define MAX30001_CNFG_RTOR2      0x1E // second part of Register R/W
 
-// FIFO is circular memory of 32*24 bits
-// Interrupt when threshold for number of samples is reached
-// Overflow if write pointer reaches read pointer
-#define ECG_FIFO_BURST  0x20 // 
-#define ECG_FIFO        0x21 //  
-#define BIOZ_FIFO_BURST 0x22 // 
-#define BIOZ_FIFO       0x23 // 
-#define RTOR            0x25 // 
-
-// FIFO Data
-// ECG[23:6] two s complement, 
-// ECG[5:3] Tag: Valid, Fast, Valid EOF, Fast EOF, Empty, Overflow
-// BIOZ[23:4] two s complement
-// BIOZ[2:0] Tag,Valid, Over/Under range, Valid EOF, Over/Under EOF, Empty, Overflow
-// RTOR[23:10]
+// FIFO is a circular memory of 32*24 bits
+// There is interrupt when threshold for number of samples is reached
+// There is overflow if write pointer reaches read pointer
+// FIFO Data:
+// ECG[ 23: 6] two s complement, 
+// ECG[  5: 3] Tag: Valid, Fast, Valid EOF, Fast EOF, Empty, Overflow
+// BIOZ[23: 4] two s complement
+// BIOZ[ 2: 0] Tag,Valid, Over/Under range, Valid EOF, Over/Under EOF, Empty, Overflow
+// RTOR[23:10] two s complement
+#define MAX30001_ECG_FIFO_BURST  0x20 // 
+#define MAX30001_ECG_FIFO        0x21 //  
+#define MAX30001_BIOZ_FIFO_BURST 0x22 // 
+#define MAX30001_BIOZ_FIFO       0x23 // 
+#define MAX30001_RTOR            0x25 // 
 
 // MAX30001 Commands
-#define WRITEREG        0x00
-#define READREG         0x01
+#define MAX30001_WRITEREG        0x00
+#define MAX30001_READREG         0x01
 
-#define RTOR_INTR_MASK  0x04
+#define MAX30001_RTOR_INTR_MASK  0x04
 
-typedef enum
-{
-  SAMPLINGRATE_128 = 128,
-  SAMPLINGRATE_256 = 256,
-  SAMPLINGRATE_512 = 512
-} sampRate;
+// MAX30001 Registers
+///////////////////////////////////////////////////
+// MAX30001 EN_INT Register Bit Masks
+#define MAX30001_EN_INT_EINT             (1 << 23)
+#define MAX30001_EN_INT_EOVF             (1 << 22)
+#define MAX30001_EN_INT_FSTINT           (1 << 21)
+#define MAX30001_EN_INT_DCLOFFINT        (1 << 20)
+#define MAX30001_EN_INT_BINT             (1 << 19)
+#define MAX30001_EN_INT_BOVF             (1 << 18)
+#define MAX30001_EN_INT_BOVER            (1 << 17)
+#define MAX30001_EN_INT_BUNDER           (1 << 16)
+#define MAX30001_EN_INT_BCGMON           (1 << 15)
 
-enum EN_INT_bits
-{
-  EN_EINT             = 0b100000000000000000000000
-  EN_EOVF             = 0b010000000000000000000000
-  EN_FSTINT           = 0b001000000000000000000000
-  EN_DCLOFFINT        = 0b000100000000000000000000
-  EN_BINT             = 0b000010000000000000000000
-  EN_BOVF             = 0b000001000000000000000000
-  EN_BOVER            = 0b000000100000000000000000
-  EN_BUNDER           = 0b000000010000000000000000
-  EN_BCGMON           = 0b000000001000000000000000
-  //
-  EN_LONINT           = 0b000000000000100000000000
-  EN_RRINT            = 0b000000000000010000000000
-  EN_SAMP             = 0b000000000000001000000000
-  EN_PLLINT           = 0b000000000000000100000000
-  //
-  EN_BCGMP            = 0b000000000000000000100000
-  EN_BCGMN            = 0b000000000000000000010000
-  EN_LDOFF_PH         = 0b000000000000000000001000
-  EN_LDOFF_PL         = 0b000000000000000000000100
-  EN_LDOFF_NH         = 0b000000000000000000000010
-  EN_LDOFF_NL         = 0b000000000000000000000001
-};
+#define MAX30001_EN_INT_LONINT           (1 << 11)
+#define MAX30001_EN_INT_RRINT            (1 << 10)
+#define MAX30001_EN_INT_SAMP             (1 << 9)
+#define MAX30001_EN_INT_PLLINT           (1 << 8)
+
+#define MAX30001_EN_INT_BCGMP            (1 << 5)
+#define MAX30001_EN_INT_BCGMN            (1 << 4)
+#define MAX30001_EN_INT_LDOFF_PH         (1 << 3)
+#define MAX30001_EN_INT_LDOFF_PL         (1 << 2)
+#define MAX30001_EN_INT_LDOFF_NH         (1 << 1)
+#define MAX30001_EN_INT_LDOFF_NL         (1 << 0)
+
+/******************************************************************************************************/
+/* Register Structures
+/******************************************************************************************************/
 
 /**
  * @brief STATUS (0x01)
  * page 42
- */
-typedef union max30001_status_reg
+ **/
+typedef union
 {
   uint32_t all;
 
@@ -131,19 +160,19 @@ typedef union max30001_status_reg
     uint32_t eovf      : 1; // 22   ECG FIFO overflow
     uint32_t eint      : 1; // 23   ECG FIFO interrupt
 
-    uint32_t reserved  : 8; //24-31
+    uint32_t reserved3 : 8; //24-31
 
-  } bit;
+  } bits;
 
-} max30001_status_t;
+} max30001_status_reg_t;
 
 /**
  * @brief EN_INT (0x02) and (0x03)
  * page 43
  * we can attach two interrupt lines to functions of the MAX30001
  * multiple interrupts can be enabled at the same time as the bits are OR-ed
- */
-typedef union max30001_en_int_reg
+ **/
+typedef union
 {
   uint32_t all;
   struct
@@ -166,13 +195,13 @@ typedef union max30001_en_int_reg
     uint32_t en_eint      : 1; // 23    ECG FIFO interrupt enable
     uint32_t reserved3    : 8  // 24-31
   } bit;
-} max30001_en_int_t;
+} max30001_en_int_reg_t;
 
 /**
  * @brief MNGR_INT (0x04)
  * page 44
  */
-typedef union max30001_mngr_int_reg
+typedef union
 {
   uint32_t all;
 
@@ -191,13 +220,13 @@ typedef union max30001_mngr_int_reg
     uint32_t reserved  : 8; // 24-31
   } bit;
 
-} max30001_mngr_int_t;
+} max30001_mngr_int_reg_t;
 
 /**
  * @brief MNGR_DYN (0x05)
  * page 45
  */
-typedef union max30001_mngr_dyn_reg
+typedef union
 {
   uint32_t all;
 
@@ -210,7 +239,7 @@ typedef union max30001_mngr_dyn_reg
     uint32_t reserved    : 8; // 24-31
   } bit;
 
-} max30001_mngr_dyn_t;
+} max30001_mngr_dyn_reg_t;
 
 /**
  * @brief INFO (0x0F)
@@ -233,13 +262,13 @@ typedef union max30001_info_reg
 
   } bit;
 
-} max30001_info_t;
+} max30001_info_reg_t;
 
 /**
  * @brief CNFG_GEN (0x10)
  * page 47
  */
-typedef union max30001_cnfg_gen_reg
+typedef union
 {
   uint32_t all;
   struct
@@ -254,7 +283,7 @@ typedef union max30001_cnfg_gen_reg
     uint32_t en_dcloff  : 2; // 12,13 lead off enable
     uint32_t en_bloff   : 2; // 14,15 BIOZ lead off enable
     uint32_t reserved1  : 1; // 16
-    uint32_t en_pace    : 1; // 17 *  ?
+    uint32_t en_pace    : 1; // 17 *  not in the datasheet
     uint32_t en_bioz    : 1; // 18    enable BIOZ channel
     uint32_t en_ecg     : 1; // 19    enable ECG channel
     uint32_t fmstr      : 2; // 20,21 master clock frequency
@@ -262,13 +291,13 @@ typedef union max30001_cnfg_gen_reg
     uint32_t reserved   : 8; // 24-31
   } bit;
 
-} max30001_cnfg_gen_t;
+} max30001_cnfg_gen_reg_t;
 
 /**
  * @brief CNFG_CAL (0x12)
  * page 49
  */
-typedef union max30001_cnfg_cal_reg
+typedef union
 {
   uint32_t all;
   struct
@@ -277,14 +306,14 @@ typedef union max30001_cnfg_cal_reg
     uint32_t fifty      :  1; // 11     calibrationd duty cycle mode
     uint32_t fcal       :  3; // 12-14  calibration frequency selection
     uint32_t reserved1  :  5; // 15-19
-    uint32_t vmag       :  1: // 20     calibration voltage magnitude
+    uint32_t vmag       :  1; // 20     calibration voltage magnitude
     uint32_t vmode      :  1; // 21     calibration voltage mode
     uint32_t vcal       :  1; // 22     calibration voltage enable
-    uint32_t reserved1  :  1; // 23
-    uint32_t reserved   :  8; // 24-31
+    uint32_t reserved2  :  1; // 23
+    uint32_t reserved3  :  8; // 24-31
   } bit;
 
-} max30001_cnfg_cal_t;
+} max30001_cnfg_cal_reg_t;
 
 /**
  * @brief CNFG_EMUX  (0x14)
@@ -302,10 +331,10 @@ typedef union max30001_cnfg_emux_reg
     uint32_t openp     :  1; // 21 open the ECG input switch
     uint32_t reserved2 :  1; // 22 
     uint32_t pol       :  1; // 23 ECG input polarity selection
-    uint32_t reserved  :  8; // 24-31
+    uint32_t reserved3 :  8; // 24-31
   } bit;
 
-} max30001_cnfg_emux_t;
+} max30001_cnfg_emux_reg_t;
 
 /**
  * @brief CNFG_ECG   (0x15)
@@ -326,13 +355,13 @@ typedef union max30001_cnfg_ecg_reg
     uint32_t reserved   :  8;
   } bit;
 
-} max30001_cnfg_ecg_t;
+} max30001_cnfg_ecg_reg_t;
 
 /**
  * @brief CNFG_BMUX   (0x17)
  * page 52
  */
-typedef union max30001_cnfg_bmux_reg
+typedef union
 {
   uint32_t all;
   struct
@@ -353,13 +382,13 @@ typedef union max30001_cnfg_bmux_reg
     uint32_t reserved   : 8; // 24-31
   } bit;
 
-} max30001_cnfg_bmux_t;
+} max30001_cnfg_bmux_reg_t;
 
 /**
  * @brief CNFG_BIOZ   (0x18)
  * page 54
  */
-typedef union max30001_bioz_reg
+typedef union
 {
   uint32_t all;
   struct
@@ -378,13 +407,13 @@ typedef union max30001_bioz_reg
     uint32_t reserved   : 8; // 24-31 
   } bit;
 
-} max30001_cnfg_bioz_t;
+} max30001_cnfg_bioz_reg_t;
 
 /**
  * @brief CNFG_BIOZ_LC (0x1A)
  * page 57
  */
-typedef union max30001_bioz_lc_reg
+typedef union
 {
   uint32_t all;
   struct
@@ -401,13 +430,13 @@ typedef union max30001_bioz_lc_reg
     uint32_t reserved3  : 8; // 24-31 
   } bit;
 
-} max30001_cnfg_bioz_lc_t;
+} max30001_cnfg_bioz_lc_reg_t;
 
 /**
  * @brief CNFG_RTOR1   (0x1D)
  * page 59
  */
-typedef union max30001_cnfg_rtor1_reg
+typedef union
 {
   uint32_t all;
   struct
@@ -422,13 +451,13 @@ typedef union max30001_cnfg_rtor1_reg
     uint32_t reserved   : 8; // 24-31
   } bit;
 
-} max30001_cnfg_rtor1_t;
+} max30001_cnfg_rtor1_reg_t;
 
 /**
  * @brief CNFG_RTOR2 (0x1E)
  * page 59
  */
-typedef union max30001_cnfg_rtor2_reg
+typedef union
 {
   uint32_t all;
   struct
@@ -443,11 +472,11 @@ typedef union max30001_cnfg_rtor2_reg
     uint32_t reserved   : 8; // 24-31
   } bit;
 
-} max30001_cnfg_rtor2_t;
+} max30001_cnfg_rtor2_reg_t;
 
 /**
  * @brief ECG_FIFO_BURST
- * page 51
+ * page 61
  */
 typedef union max30001_ecg_burst_reg
 {
@@ -459,259 +488,372 @@ typedef union max30001_ecg_burst_reg
     uint32_t data      :  18; //  6-23 ECG data  
   } bit;
 
-} max30001_ecg_burst_t;
+} max30001_ecg_burst_reg_t;
 
 /**
  * @brief BIOZ_FIFO_BURST
- * page 51
+ * page 61
  */
-typedef union max30001_bioz_burst_reg
+typedef union
 {
   uint32_t all;
   struct
   {
-    uint32_t btag     :   3;  //  0-2 BIOZ tag
-    uint32_t reserved :   1;  //  3
-    uint32_t data      :  18; //  4-23 BIOZ data  
+    uint32_t btag     :   3; //  0-2 BIOZ tag
+    uint32_t reserved :   1; //  3
+    uint32_t data     :  20; //  4-23 BIOZ data  
   } bit;
 
-} max30001_bioz_burst_t;
+} max30001_bioz_burst_reg_t;
 
-// We want to emulate the MAX30001 Evaluation Kit User Interface
-// =============================================================
-// Max Global
-//   Clock 3276800
-//   Enable ECG, BioZ, RtoR
-//
-//
-// Set ECG Channel
-// ---------------
-//  AAF 
-//   Fast Recovery Mode
-//   Fast Recovery Threshold
-//  PGA
-//   Gain
-//  ADC
-//   Sampling Rate
-//  Digital Filters
-//   Low Pass Filter Cut Off
-//   High Pass Filter Cut Off
-//  R to R
-//   Gain (Auto)
-//   Window 12*8ms
-//   Minimum Hold Off 32
-//   Peak Averaging Weight Factor 8
-//   Peak Threshold Scaling Factor 4/16
-//   Interval Hold Off Scaling Factor 4/8
-//   Interval Averaging Weight Factor 8
-//  FIFO 
-//   EFIT 16
-//
-// Set ECG MUX
-// -----------
-// DC Lead Off
-//   Enable
-//   Current Polarity
-//   Current Magnitude
-//   Lead Off Voltage Threshold
-// Load On Check
-//   Enable
-// Switches
-//   ECGP Switch, Isolated
-//   ECGN Switch, Isolated
-//   ECGP/N Polarity, Non-Inverted
-// Lead Bias
-//   Resistive Lead Bias Enable
-//   Resistive Bias Value, 100mOhm
-//   Positive Input Bias Enable, Connected
-//   Negative Input Bias Enable, Connected
-// Calibration Test Value
-//   ECGP Calibration, None
-//   ECGN Calibration, None
-//   Calibration Enable
-//   Mode Enable
-//   Voltage
-//   Frequency
-//   Duty Cycle, 50%
-//   Time High, microseconds
-//
-// BioZ Channel Detection
-// ----------------------
-// HPF
-//   Cut Off Frequency
-// INA Power Mode
-// Modulation Phase Offset
-// Channel Gain
-// ADC
-//   Sampling Rate
-// Digital Filters
-//   Low Pass Filter Cut Off, 4Hz
-//   High Pass Filter Cut Off, bypass
-// BioZ Channel Driver
-// -------------------
-// External Resisistor Bias Enable
-// Current Generator Frequency
-// Mode
-// CM Resistor, 40MOhm
-// Monitor, disabled
-// Drive Current Select 55to550nA
-// Low Driver Current Range 110/220nA
-// High Drive Current Magnitude, 8microA
-//
-// Set BIOZ MUX
-// -----------
-// DC Lead Off
-//   Enable
-//   Current Polarity
-//   Current Magnitude
-//   Lead Off Voltage Threshold
-// Load On Check
-//   Enable
-// Switches
-//   BIP Switch, Connected
-//   BIN Switch, Connected
-// Lead Bias
-//   Resistive Lead Bias Enable
-//   Resistive Bias Value, 100mOhm
-//   Positive Input Bias Enable, Connected
-//   Negative Input Bias Enable, Connected
-// Calibration Test Value
-//   BIP Calibration, None
-//   BIN Calibration, None
-//   Calibration Enable
-//   Mode Enable, Unipolar
-//   Voltage
-//   Frequency
-//   Duty Cycle, 50%
-//   Time High, microseconds
-//
-// BIOZ Load
-// ---------
-// RMOD BIST enable, 
-// Normal Resistance, 5000Ohm
-// Frequency
-// BIST resistor enable
-// BIST resistor value 27kOhm
-//
-// Check Status
-// ---------------
-// ECG Parameter
-// BIOZ Parameter
-// R to R Parameter
-// FMSTR Parameter
-// Interrupts
-//
-// Read Registers
-// --------------
-// Read all
 
+/**
+ * @brief R to R FIFO
+ * page 61
+ */
+typedef union max30001_rtor_reg
+{
+  uint32_t all;
+  struct
+  {
+    uint32_t reserved :  10; // 
+    uint32_t data     :  14; //  10-23 BIOZ data  
+  } bit;
+
+} max30001_rtor_reg_t;
+
+/******************************************************************************************************/
+/* Structures */
+/******************************************************************************************************/
+
+struct ImpedanceModel {
+    float magnitude;
+    float phase;
+};
+
+/******************************************************************************************************/
+/* Device Driver */
+/******************************************************************************************************/
 
 class MAX30001 {
 
     public:
         MAX30001(int csPin);
 
+        // Clock
+        void setFMSTR(uint8_t fmstr);
+
         // Setup Functions
-        void beginECGonly(); // initialize driver for ECG
-        void beginECGandBIOZ(); // initialize driver for ECG and BIOZ
-        void beginBIOZonly(); // initialize driver for BIOZ
-        void beginRtoR(); // initialize driver ECG RTOR
+        void setupECG();          // initialize AFE for ECG & RtoR mode
+        void setupECGCal();       // initialize AFE for ECG calibration mode
+        void setupBIOZ();         // initialize AFE for BIOZ
+        void setupBIOZcalibrationInternal();
+        void setupBIOZcalibrationExternal();
+        void setupECGandBIOZ();   // initialize AFE for ECG and BIOZ
+        void scanBIOZ();          // impedance scan from 1..100kHz
 
-        // Configuration
-        void setSamplingRate(uint8_t ECG_samplingRate, uint8_t BIOZ_samplingRate);
-
-        void setInterrupts(uint32_t interrupts);
+        // Interrupt
         void serviceAllInterrupts();
-        
+        void setInterrupt1(bool ecg, bool bioz, bool leadon, bool leadoff, bool fourwire);
+        void setInterrupt2(bool ecg, bool bioz, bool leadon, bool leadoff, bool fourwire);
+        void setInterruptClearing(void);
+        void setFIFOInterruptThreshold(uint8_t ecg,  uint8_t bioz);
 
-        // Accessing readings
-        void getECGData(int32_t &???);
-        void getBIOZData(int32_t &???);
-        void getHRandRtoRData(int32_t &???);
+        // Update globals based on master clock and settings
+        void updateGlobalECG_samplingRate(void);
+        void updateGlobalBIOZ_samplingRate(void);
+        void updateGlobalCAL_fcal(void);
+        void updateGlobalECG_latency(void);
+        void updateGlobalBIOZ_frequency(void);
+        void updateGlobalECG_lpf(void);
+        void updateGlobalBIOZ_lpf(void);
+        void updateGlobalRCAL_freq(void);
 
+        // ECG and BIOZ settings
+        // ---------------------
+        void enableAFE(bool ECG, bool BIOZ, bool RtoR);
+        // enable subsystems
+        void setLeadDetection(bool off_detect, bool on_detect, bool bioz_4, int electrode_impedance);
+        // set after systems are enabled
+        // bioz_4: 4 wire or 2 wire bioz
+    -   // Impedance in MOhm 
+        // 0     0        0nA    
+        // 2  <= 2 MOhm 100nA
+        // 4  <= 4 MOhm  50nA
+        // 10 <=10 MOhm  20nA
+        // 20 <=20 MOhm  10nA
+        // 40  >20 MOhm   5nA
+        void setLeadBias(bool enableECG, bool enableBIOZ, uint8_t resistance);
+        // Internal Lead Bias if VMC is not used
+        // enable ECG
+        // enable BIOZ
+        // 0..75MOhm, 75..150MOhm, >150MOhm
+        void setCalibration(bool enableECGCal, bool enableBIOZCal, bool unipolar, bool cal_vmag, uint8_t freq, uint8_t dutycycle)
+        // apply calibration signal to input stage
+        // cal_vmag true for ±0.5 mV, false for ±0.25 mV 
+        // frequ 0..7 approx 250..0.01 Hz
+  -     // dutycycle: default 50%
+        void setDefaultNoCalibration(); // off
+        void setDefaultECGCalibration(); // 1Hz
+        void setDefaultBiozCalibration() // 1Hz
+
+
+        // ECG settings
+        // ------------
+        void setECGSamplingRate(uint8_t  ECG);
+        // 0:125, 1:256, 2:512sps
+        void setECGfilter(uint8_t lpf, uint8_t hpf);
+        // 0:bypass, 1:40, 2:200 3:150Hz LPF
+        // 0:bypass, 1:0.5Hz HPF
+        void setECGgain(uint8_t gain);
+        // 0:  20V/V
+        // 1:  40V/V
+        // 2:  80V/V
+        // 3: 160V/V 
+        void setECGLeadPolarity(bool inverted, bool open);
+        // 0: normal, 1: inverted
+        // 0: open for calibration, 1: closed to measure samples
+        void setECGAutoRecovery(int threshold_voltage);
+        // should be set to <= 98% of the V_ref / ECG_gain
+        // 0.98 * 1V / 80V/V * 1000 mV/V = 12.25 mV
+        void setECGNormalRecovery();
+        // recovery disabled
+        void startECGManualRecovery();
+        // call after saturation detected with your own program
+        void stopECGManualRecovery();
+        // manual start needs manual stop
+    
+        // RtoR
+        // ----
+        void setRtoR(bool enable, uint8_t ptsf, uint8_t pavg, uint8_t gain, uint8_t wndw, uint8_t hoff, uint8_t ravg, uint8_t rhsf);
+        void setDefaultRtoR();
+        // ptsf: 0b0011 (4) (4/16) or 6
+        // pavg: 0b10 (8)
+        // gain: 0b1111 (Auto-Scale)
+        // wndw: 0b011 12 (96ms)
+        // hoff: 0b100000 (32)
+        // ravg: 0b10 (8)
+        // rhsf: 0b100 (4/8)
+
+        // BIOZ settings
+        // -------------
+        void setBIOZSamplingRate(uint8_t BIOZ);
+        // 0 =  low   25-32 sps * default
+        // 1 =  high  50-64 sps
+        void setBIOZgain(uint8_t gain);
+        // 0 = 10V/V * default
+        // 1 = 20V/V
+        // 2 = 40V/V
+        // 3 = 80V/V
+        void setBIOZModulationFrequencyByFrequency(uint16_t frequency);
+        //idx    freq          nA
+        //  0 128 000  55 - 96000
+        //  1  80 000  55 - 96000
+        //  2  40 000  55 - 96000
+        //  3  18 000  55 - 96000
+        //  4   8 000  55 - 80000
+        //  5   4 000  55 - 32000
+        //  6   2 000  55 - 16000
+        //  7   1 000  55 -  8000
+        //  8     500  55 -  8000
+        //  9     250  55 -  8000
+        // 10     125  55 -  8000
+        void setBIOZModulationFrequencyByIndex(uint8_t index);
+        void setBIOZmag(uint32_t current);
+        // Set modulation frequency first
+        //     nA
+        // high current
+        // 96 000
+        // 80 000
+        // 64 000
+        // 48 000
+        // 32 000
+        // 16 000
+        //  8 000 works with all frequencies
+        // low current
+        //  1 100
+        //    880
+        //    660
+        //    440
+        //    330
+        //    220
+        //    110
+        //     55
+        //      0
+        // also sets common mode current appropriate feedback
+        void setBIOZPhaseOffset(uint8_t selector);
+        // Freq   FCGEN  Phase               Phase selector.
+        // lower  other  0.. 11.25 ..168.75  0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
+        //  80kHz 0b0001 0.. 22.5  ..157.50  0,1,2,3,4,5,6,7
+        // 128kHz 0b0000 0.. 45.0  ..135     0,1,2,3
+        void setBIOZfilter(uint8_t ahpf, unit8_t lpf, uint8_t hpf);
+        // Analog high pass is
+        //  [6,7]  0 Hz
+        //  [0]   60 Hz
+        //  [1]  150 Hz
+        //  [2]  500 Hz * default
+        //  [3] 1000 Hz
+        //  [4] 2000 Hz 
+        //  [5] 4000 Hz
+        // Digital low pass
+        //  [0] 0 
+        //  [1] 4 * default
+        //  [2] 8
+        //  [3] 16Hz 
+        // Digital high pass 
+        //  [0] 0 Hz * default
+        //  [1] 0.05 Hz 
+        //  [2] 0.5 Hz
+        void setBIOZmodulation(uint8_t mode);
+        // 0 = Unchopped Sources with Low Pass Filter * default
+        //  (higher noise, excellent 50/60Hz rejection, recommended for ECG, BioZ applications)
+        // 1 = Chopped Sources without Low Pass Filter
+        //  (low noise, no 50/60Hz rejection, recommended for BioZ applications with digital LPF, possibly battery powered ECG, BioZ applications)
+        // 2 = Chopped Sources with Low Pass Filter
+        //  (low noise, excellent 50/60Hz rejection)
+        // 3 = Chopped Sources with Resistive CM
+        //  (Not recommended to be used for drive currents >32µA, low noise, excellent 50/60Hz rejection, lower input impedance)
+        void setBIOZImpedanceTest(bool enable, bool useHighResistance, bool enableModulation, uint8_t resistance, uint8_t rmodValue,  uint8_t modFreq);
+        // high resistance
+        //  0 00 =    27 kΩ
+        //  1 01 =   108 kΩ
+        //  2 10 =   487 kΩ
+        //  3 11 =  1029 kΩ
+        // low resistance
+        //  0 000 =    5 kΩ
+        //  1 001 =    2.5kΩ
+        //  2 010 =    1.667kΩ
+        //  3 011 =    1.25kΩ
+        //  4 100 =    1kΩ
+        //  5 101 =    0.833kΩ
+        //  6 110 =    0.714kΩ
+        //  7 111 =    0.625kΩ
+        void setDefaultBIOZImpedanceTest(); // 1k, 3 mod at 1 Hz
+        void setNoBIOZImpedanceTest();
+
+        // Calibration
+        void setCalibration(bool ECGenable, bool BIOZenable, bool unipolar, bool cal_vmag, uint8_t freq, uint8_t dutycycle) {
+        void setDefaultECGCalibration();
+        void setDefaultBIOZCalibration();
+        void setDefaultNoCalibration();
 
         // Diagnostics
-        bool readInfo(void);
-        bool readStatus(void);
-        void printStatus(uint32_t &status);
-        // bool selfCheck();
-        // void dumpRegisters();
+        void readAllRegisters();
+        void dumpRegisters();
+        void readInfo();
+        void readStatusRegisters();
+        void printStatus();
+        void printEN_INT();
+        void printMNGR_INT();
+        void printMNGR_DYN();
+        void printInfo();
+        void printCNFG_CAL();
+        void printCNFG_EMUX();
+        void printCNFG_ECG();
+        void printCNFG_BMUX();
+        void printCNFG_BIOZ();
+        void printCNFG_BIOZ_LC();
+        void printCNFG_RTOR1();
+        void printCNFG_RTOR2();
+
+        bool spiCheck(void);  // check if SPI is working
 
         // Data Variables
         // --------------
-        volatile int ecg_available;
-        volatile int bioz_available;
+        volatile bool ecg_available;   // ECG data available interrupt
+        volatile bool bioz_available;  // BIOZ data available interrupt
+        volatile bool rtor_available;  // R to R data available interrupt
 
-        float   ECG_data[128];
-        int32_t BIOZ_dataData[128];
-        int     ecg_counter;
-        int     bioz_counter;
-        
-        volatile int rtor_available;
-        int32_t heart_rate;
-        int32_t rr_interval;
+        RingBuffer ECG_data;
+        RingBuffer BIOZ_data;
+        int        ecg_counter;           // number of ECG samples in buffer
+        int        bioz_counter;          // number of BIOZ samples in buffer
+        float      heart_rate;            // in beats per minute
+        float      rr_interval;           // in milliseconds
+
+        float impedance_magnitude[8];
+        float impedance_phase[8]; 
+        float impedance_frequency[8];
+
+        volatile bool ecg_lead_off;              // ECG lead off detection interrupt
+        volatile bool ecg_overflow_occured;      // ECG FIFO overflow
+        volatile bool bioz_cgm_occured;          // BIOZ current generator monitor
+        volatile bool bioz_undervoltage_occured; // BIOZ under voltage
+        volatile bool bioz_overvoltage_occured;  // BIOZ over voltage
+        volatile bool bioz_overflow_occured;     // BIOZ FIFO overlow
+        volatile bool leads_on_detected;         // Ultra low power leads on
+        volatile bool pll_unlocked_occured;      // PLL is not locked
+
+        bool over_voltage_detected;
+        bool under_voltage_detected;
+        bool valid_data_detected;
+        bool EOF_detected;
 
         // Status of the MAX30001 timing
+        // and measurement settings
         // -----------------------------
-        float    ECG_samplingRate;
-        float    BIOZ_samplingRate;
-        float    RtoR_resolution;
-        float    CAL_resolution;
-        float    fmstr;
-        float    tres;
-        float    ECG_progression;
-        float    ECG_hpf;
-        float    ECG_lpf;
-        int      ECG_gain;
-        int      BIOZ_gain;
-        int      BIOZ_cgmag;
-        float    BIOZ_frequency;// HZ
-        uint32_t BIOZ cmres;    // [kOhm]
-        int32_t  V_ref = 1000;  // [mV]
+        float    ECG_samplingRate;     // [sps]
+        float    BIOZ_samplingRate;    // [sps] 
+        float    RtoR_resolution;      // [ms] R to R resolution time
+        float    CAL_resolution;       // [ms] calibration resolition time
+        float    CAL_fcal;             // 
+        float    fmstr;                // [Hz] main clock frequency
+        float    tres;                 // [micro s] R to R peak detection threshold
+        float    ECG_progression;      // [Hz] ECG progression rate
+        float    ECG_hpf;              // [Hz] ECG high pass filter
+        float    ECG_lpf;              // [Hz] ECG low pass filter
+        int      ECG_gain;             // [V/V] ECG gain
+        int      BIOZ_gain;            // [V/V] BIOZ gain
+        int      BIOZ_cgmag;           // [nano A] BIOZ current generator magnitude 
+        float    BIOZ_frequency;       // [HZ]
+        float    BIOZ_phase;           // [degrees]
+        uint32_t BIOZ cmres;           // [kOhm] common mode feedback resistance
+        int32_t  V_ref = 1000;         // [mV]
+        int32_t  V_AVDD = 18000;       // [mV]
+        float    RCAL_freq = 0;        // Hz resistance modulation for test impedance
 
         // All Configuration and Status Registers
 
-        max30001_status_t status;                   // 0x01
-        max30001_en_int_t en_int;                   // 0x02
-        max30001_en_int_t en_int2;                  // 0x03
-        max30001_mngr_int_t mngr_int;               // 0x04
-        max30001_mngr_dyn_t mngr_dyn;               // 0x05
-        max30001_info_t info;                       // 0x0f
-        max30001_cnfg_gen_t cnfg_gen;               // 0x10
-        max30001_cnfg_cal_t cnfg_cal;               // 0x12
-        max30001_cnfg_emux_t cnfg_emux;             // 0x14
-        max30001_cnfg_ecg_t cnfg_ecg;               // 0x15
-        max30001_cnfg_bmux_t cnfg_bmux;             // 0x17
-        max30001_cnfg_bioz_t cnfg_bioz;             // 0x18
-        max30001_cnfg_bioz_lc_t cnfg_bioz_lc;       // 0x1A
-        max30001_cnfg_rtor1_t cnfg_rtor1;           // 0x1D
-        max30001_cnfg_rtor2_t cnfg_rtor2;           // 0x1D
+        max30001_status_reg_t       status;           // 0x01
+        max30001_en_int_reg_t       en_int1;          // 0x02
+        max30001_en_int_reg_t       en_int2;          // 0x03
+        max30001_mngr_int_reg_t     mngr_int;         // 0x04
+        max30001_mngr_dyn_reg_t     mngr_dyn;         // 0x05
+        max30001_info_reg_t         info;             // 0x0f
+        max30001_cnfg_gen_reg_t     cnfg_gen;         // 0x10
+        max30001_cnfg_cal_reg_t     cnfg_cal;         // 0x12
+        max30001_cnfg_emux_reg_t    cnfg_emux;        // 0x14
+        max30001_cnfg_ecg_reg_t     cnfg_ecg;         // 0x15
+        max30001_cnfg_bmux_reg_t    cnfg_bmux;        // 0x17
+        max30001_cnfg_bioz_reg_t    cnfg_bioz;        // 0x18
+        max30001_cnfg_bioz_lc_reg_t cnfg_bioz_lc;     // 0x1A
+        max30001_cnfg_rtor1_reg_t   cnfg_rtor1;       // 0x1D
+        max30001_cnfg_rtor2_reg_t   cnfg_rtor2;       // 0x1D
         
     private:
 
-        // Higher level
-        void readECGFIFO(int num_bytes);
-        void readBIOZFIFO(int num_bytes);
-        void synch(void);
-        void swReset(void);
-        void fifoReset(void);
+        void readECG_FIFO_BURST(bool reportRaw);
+        void readBIOZ_FIFO_BURST(bool reportRaw);
+        void readBIOZ_FIFO(bool_reportRaw);
+        void readHRandRR(void);
+
+        void synch(void);            // synchronize ECG and BIOZ measurements, needed after config changes, starts measurements
+        void swReset(void);          // reset entire device
+        void FIFOReset(void);        // reset FIFO after overflow
 
         // SPI service functions
         void     writeRegister(uint8_t address, uint32_t data);
-        uint32_t readRegister(uint8_t address);
-        uint8_t  readRegister(uint8_t address);
+        uint32_t readRegister24(uint8_t address);
+        uint8_t  readRegisterByte(uint8_t address);
 
-        // void     spiWrite(uint8_t address, uint32_t data);
-        // uint32_t spiRead(uint8_t address);
-
-        // Interrupt service routine
-        // static void dataReadyISR();
+        // BIOZ functions
+        int32_t closestCurrent(int32_t current); // given a desired current, find the closest valid current
+        float impedancemodel(float theta, float magnitude, float phase); // calculate impedance for a given phase offset theta
+        ImpedanceModel fitImpedance(const float* phases, const float* impedances, int num_points);
 
         // Global Variables
-        max30001_status_reg status;  // content of status register
         int _csPin;                  // chip select for SPI
-        uint32_t _bufferECG[32];  // 32 samples
-        uint32_t _bufferBIOZ[32]; // 32 samples
+
 };
 
 #endif // MAX30001_H

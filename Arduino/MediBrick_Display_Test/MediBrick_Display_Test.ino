@@ -29,7 +29,7 @@ SFE_MAX1704X lipo(MAX1704X_MAX17048); // Create a MAX17048
 #define CHRG_X 1
 #define CHRG_Y 1
 
-// const unsigned char Battery_haldsize [] = {
+// const unsigned char Battery_halfsize [] = {
 // 0x00, 0x00, 0x00, 0x00,   // 00000000, 00000000, 00000000, 00000000
 // 0x3F, 0xFF, 0xFF, 0xF0,   // 00111111, 11111111, 11111111, 11110000
 // 0x40, 0x00, 0x00, 0x10,   // 01000000, 00000000, 00000000, 00010000

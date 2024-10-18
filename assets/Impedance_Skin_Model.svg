@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Generator: Circuit Diagram, cdlibrary.dll 4.0.0.0 -->
+
+<svg
+   version="1.1"
+   width="300"
+   height="160"
+   id="svg50"
+   sodipodi:docname="Impedance_Skin_Model.svg"
+   inkscape:version="1.1.2 (0a00cf5339, 2022-02-04)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs54" />
+  <sodipodi:namedview
+     id="namedview52"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     showgrid="false"
+     inkscape:zoom="3.9866667"
+     inkscape:cx="150"
+     inkscape:cy="80.016722"
+     inkscape:window-width="2560"
+     inkscape:window-height="1299"
+     inkscape:window-x="0"
+     inkscape:window-y="32"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg50" />
+  <line
+     x1="30"
+     y1="90"
+     x2="60"
+     y2="90"
+     style="stroke:rgb(0, 0, 0);stroke-linecap:square;stroke-width:2"
+     id="line2" />
+  <line
+     x1="250"
+     y1="90"
+     x2="280"
+     y2="90"
+     style="stroke:rgb(0, 0, 0);stroke-linecap:square;stroke-width:2"
+     id="line4" />
+  <line
+     x1="210"
+     y1="120"
+     x2="250"
+     y2="120"
+     style="stroke:rgb(0, 0, 0);stroke-linecap:square;stroke-width:2"
+     id="line6" />
+  <line
+     x1="250"
+     y1="60"
+     x2="250"
+     y2="120"
+     style="stroke:rgb(0, 0, 0);stroke-linecap:square;stroke-width:2"
+     id="line8" />
+  <line
+     x1="180"
+     y1="60"
+     x2="250"
+     y2="60"
+     style="stroke:rgb(0, 0, 0);stroke-linecap:square;stroke-width:2"
+     id="line10" />
+  <line
+     x1="60"
+     y1="60"
+     x2="130"
+     y2="60"
+     style="stroke:rgb(0, 0, 0);stroke-linecap:square;stroke-width:2"
+     id="line12" />
+  <line
+     x1="60"
+     y1="60"
+     x2="60"
+     y2="120"
+     style="stroke:rgb(0, 0, 0);stroke-linecap:square;stroke-width:2"
+     id="line14" />
+  <line
+     x1="60"
+     y1="120"
+     x2="80"
+     y2="120"
+     style="stroke:rgb(0, 0, 0);stroke-linecap:square;stroke-width:2"
+     id="line16" />
+  <line
+     x1="130"
+     y1="120"
+     x2="160"
+     y2="120"
+     style="stroke:rgb(0, 0, 0);stroke-linecap:square;stroke-width:2"
+     id="line18" />
+  <line
+     x1="160"
+     y1="120"
+     x2="181"
+     y2="120"
+     style="stroke:rgb(0, 0, 0);stroke-linecap:square;stroke-width:2"
+     id="line20" />
+  <line
+     x1="189"
+     y1="120"
+     x2="210"
+     y2="120"
+     style="stroke:rgb(0, 0, 0);stroke-linecap:square;stroke-width:2"
+     id="line22" />
+  <line
+     x1="181"
+     y1="106"
+     x2="181"
+     y2="134"
+     style="stroke:rgb(0, 0, 0);stroke-linecap:square;stroke-width:2"
+     id="line24" />
+  <line
+     x1="189"
+     y1="106"
+     x2="189"
+     y2="134"
+     style="stroke:rgb(0, 0, 0);stroke-linecap:square;stroke-width:2"
+     id="line26" />
+  <text
+     x="185"
+     y="100"
+     style="font-family:Arial;font-size:11px;text-anchor:middle"
+     dominant-baseline="baseline"
+     transform="rotate(0, 185, 100)"
+     id="text28">C</text>
+  <line
+     x1="80"
+     y1="120"
+     x2="85"
+     y2="120"
+     style="stroke:rgb(0, 0, 0);stroke-linecap:square;stroke-width:2"
+     id="line30" />
+  <line
+     x1="125"
+     y1="120"
+     x2="130"
+     y2="120"
+     style="stroke:rgb(0, 0, 0);stroke-linecap:square;stroke-width:2"
+     id="line32" />
+  <path
+     d="M 85,120 L 87,120 L 90,113 L 96,127 L 102,113 L 108,127 L 114,113 L 120,127 L 123,120 L 125,120"
+     style="fill-opacity:0;fill:rgb(0, 0, 0);stroke:rgb(0, 0, 0);stroke-linecap:square;stroke-width:2"
+     id="path34" />
+  <text
+     x="105"
+     y="106"
+     style="font-family:Arial;font-size:11px;text-anchor:middle"
+     dominant-baseline="baseline"
+     transform="rotate(0, 105, 106)"
+     id="text36">r</text>
+  <line
+     x1="130"
+     y1="60"
+     x2="135"
+     y2="60"
+     style="stroke:rgb(0, 0, 0);stroke-linecap:square;stroke-width:2"
+     id="line38" />
+  <line
+     x1="175"
+     y1="60"
+     x2="180"
+     y2="60"
+     style="stroke:rgb(0, 0, 0);stroke-linecap:square;stroke-width:2"
+     id="line40" />
+  <path
+     d="M 135,60 L 137,60 L 140,53 L 146,67 L 152,53 L 158,67 L 164,53 L 170,67 L 173,60 L 175,60"
+     style="fill-opacity:0;fill:rgb(0, 0, 0);stroke:rgb(0, 0, 0);stroke-linecap:square;stroke-width:2"
+     id="path42" />
+  <text
+     x="155"
+     y="46"
+     style="font-family:Arial;font-size:11px;text-anchor:middle"
+     dominant-baseline="baseline"
+     transform="rotate(0, 155, 46)"
+     id="text44">R</text>
+  <ellipse
+     cx="60"
+     cy="90"
+     rx="2"
+     ry="2"
+     style="fill-opacity:1;fill:rgb(0, 0, 0);stroke:rgb(0, 0, 0);stroke-width:2"
+     id="ellipse46" />
+  <ellipse
+     cx="250"
+     cy="90"
+     rx="2"
+     ry="2"
+     style="fill-opacity:1;fill:rgb(0, 0, 0);stroke:rgb(0, 0, 0);stroke-width:2"
+     id="ellipse48" />
+  <text
+     xml:space="preserve"
+     style="font-size:8px;line-height:1.25;font-family:sans-serif"
+     x="159.04782"
+     y="48.239426"
+     id="text2161"><tspan
+       sodipodi:role="line"
+       id="tspan2159"
+       x="159.04782"
+       y="48.239426">extracellular</tspan></text>
+  <text
+     xml:space="preserve"
+     style="font-size:8px;line-height:1.25;font-family:sans-serif"
+     x="106.81084"
+     y="109.89736"
+     id="text19567"><tspan
+       sodipodi:role="line"
+       id="tspan19565"
+       x="106.81084"
+       y="109.89736">intracellular</tspan></text>
+  <text
+     xml:space="preserve"
+     style="font-size:8px;line-height:1.25;font-family:sans-serif"
+     x="189.65799"
+     y="101.97028"
+     id="text23753"><tspan
+       sodipodi:role="line"
+       id="tspan23751"
+       x="189.65799"
+       y="101.97028">membrane</tspan></text>
+</svg>

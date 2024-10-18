@@ -8900,6 +8900,7 @@ Source: &lt;a href="https://www.diodes.com//assets/Datasheets/AP3602A.pdf"&gt; D
 <part name="SUPPLY3" library="SparkFun-PowerSymbols" library_urn="urn:adsk.eagle:library:530" deviceset="VOUT" device=""/>
 <part name="R15" library="SparkFun-Resistors" library_urn="urn:adsk.eagle:library:532" deviceset="10KOHM" device="-0603-1/10W-1%" package3d_urn="urn:adsk.eagle:package:39650/1" value="10k"/>
 <part name="FLG" library="SparkFun-Connectors" library_urn="urn:adsk.eagle:library:513" deviceset="TEST-POINT" device="3X4" package3d_urn="urn:adsk.eagle:package:38287/1"/>
+<part name="GND21" library="SparkFun-PowerSymbols" library_urn="urn:adsk.eagle:library:530" deviceset="GND" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -8914,7 +8915,7 @@ Then close JP1,2,3.</text>
 <text x="-121.92" y="-33.02" size="1.778" layer="91">Connector for SEN5X.
 5V for power, I2C is 3.3V tolerant</text>
 <text x="-119.38" y="-88.9" size="1.778" layer="91">NeoPixel strip</text>
-<text x="30.48" y="45.72" size="1.778" layer="91">CO</text>
+<text x="32.004" y="45.72" size="1.778" layer="91">CO</text>
 <text x="38.1" y="45.72" size="1.778" layer="91">NH3</text>
 <text x="45.72" y="45.72" size="1.778" layer="91">NO2</text>
 <text x="22.86" y="12.7" size="1.778" layer="91">Measuremet
@@ -9293,6 +9294,9 @@ Resistor</text>
 <attribute name="NAME" x="25.4" y="76.2" size="1.778" layer="95" font="vector"/>
 <attribute name="VALUE" x="33.02" y="73.66" size="1.778" layer="96" font="vector" rot="R90" display="off"/>
 </instance>
+<instance part="GND21" gate="1" x="17.78" y="50.292" smashed="yes">
+<attribute name="VALUE" x="17.78" y="49.784" size="1.778" layer="96" align="top-center"/>
+</instance>
 </instances>
 <busses>
 </busses>
@@ -9583,6 +9587,12 @@ Resistor</text>
 <junction x="78.74" y="66.04"/>
 <wire x1="76.2" y1="66.04" x2="78.74" y2="66.04" width="0.1524" layer="91"/>
 </segment>
+<segment>
+<pinref part="R15" gate="G$1" pin="1"/>
+<pinref part="GND21" gate="1" pin="GND"/>
+<wire x1="20.32" y1="58.42" x2="17.78" y2="58.42" width="0.1524" layer="91"/>
+<wire x1="17.78" y1="58.42" x2="17.78" y2="52.832" width="0.1524" layer="91"/>
+</segment>
 </net>
 <net name="3.3V" class="0">
 <segment>
@@ -9693,9 +9703,6 @@ Resistor</text>
 <wire x1="20.32" y1="71.12" x2="10.668" y2="71.12" width="0.1524" layer="91"/>
 <wire x1="20.32" y1="76.2" x2="20.32" y2="71.12" width="0.1524" layer="91"/>
 <pinref part="SUPPLY4" gate="G$1" pin="3.3V"/>
-<pinref part="R15" gate="G$1" pin="1"/>
-<wire x1="20.32" y1="66.04" x2="20.32" y2="58.42" width="0.1524" layer="91"/>
-<junction x="20.32" y="66.04"/>
 </segment>
 <segment>
 <pinref part="U5" gate="G$1" pin="VIN"/>
@@ -10222,12 +10229,12 @@ Resistor</text>
 <wire x1="30.48" y1="58.42" x2="30.48" y2="60.96" width="0.1524" layer="91"/>
 <pinref part="U4" gate="G$1" pin="EN"/>
 <wire x1="30.48" y1="60.96" x2="33.02" y2="60.96" width="0.1524" layer="91"/>
-<wire x1="30.48" y1="58.42" x2="30.48" y2="53.34" width="0.1524" layer="91"/>
+<wire x1="30.48" y1="58.42" x2="30.48" y2="33.02" width="0.1524" layer="91"/>
 <junction x="30.48" y="58.42"/>
-<wire x1="30.48" y1="53.34" x2="20.32" y2="53.34" width="0.1524" layer="91"/>
+<wire x1="30.48" y1="33.02" x2="20.32" y2="33.02" width="0.1524" layer="91"/>
 <pinref part="J4" gate="G$1" pin="2"/>
 <wire x1="15.24" y1="-2.54" x2="20.32" y2="-2.54" width="0.1524" layer="91"/>
-<wire x1="20.32" y1="53.34" x2="20.32" y2="-2.54" width="0.1524" layer="91"/>
+<wire x1="20.32" y1="33.02" x2="20.32" y2="-2.54" width="0.1524" layer="91"/>
 </segment>
 </net>
 </nets>

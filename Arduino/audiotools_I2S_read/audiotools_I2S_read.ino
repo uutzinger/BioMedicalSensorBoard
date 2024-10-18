@@ -10,7 +10,7 @@
 // I2C
 #define SDAPIN             SDA // I2C Data,  Adafruit ESP32 S3 3, Sparkfun Thing Plus C 23
 #define SCLPIN             SCL // I2C Clock, Adafruit ESP32 S3 4, Sparkfun Thing Plus C 22
-#define I2CSPEED        100000 // Clock Rate
+#define I2CSPEED        400000 // Clock Rate
 #define ES8388ADDR        0x10 // Address of ES8388 I2C port
 
 // I2S, your configuration for the ES8388 board
@@ -33,8 +33,8 @@ void setup() {
   while(!Serial){delay(50);} // Wait for Serial to be ready
   delay(5000);
 
-  AudioLogger::instance().begin(Serial, AudioLogger::Info); // Debug, Info, Warning, Error
-  LOGLEVEL_AUDIODRIVER = AudioDriverInfo;
+  AudioLogger::instance().begin(Serial, AudioLogger::Debug); // Debug, Info, Warning, Error
+  LOGLEVEL_AUDIODRIVER = AudioDriverDebug;
 
   Serial.println("Setup starting...");
 
@@ -49,6 +49,7 @@ void setup() {
   Serial.println("Board begin ..."); 
   CodecConfig cfg;
   cfg.input_device  = ADC_INPUT_LINE1;  
+  cfg.output_device = DAC_OUTPUT_ALL;  
   cfg.i2s.bits      = BIT_LENGTH_16BITS;
   cfg.i2s.rate      = RATE_44K; 
   cfg.i2s.channels  = CHANNELS2;
@@ -56,21 +57,18 @@ void setup() {
   cfg.i2s.mode      = MODE_SLAVE;  
   audio_board.begin(cfg);
 
-  // audio_board.setInputVolume(1); // 0 to 100
+  Serial.println("Set Volume ...");
+  audio_board.setInputVolume(77); // 0 to 100
+  audio_board.setVolume(100); // 0 to 100
 
-  Serial.println("I2S begin ..."); 
-  auto i2s_config = i2s_stream.defaultConfig(RX_MODE);
-  i2s_config.copyFrom(audio_info);  
-  i2s_config.input_device = ADC_INPUT_LINE1;
-  // i2s_config.output_device = DAC_OUTPUT_ALL;
-  // i2s_config.sd_active = true;
+  Serial.println("I2S begin ...");
+  auto i2s_config = i2s_stream.defaultConfig(RXTX_MODE);
+  i2s_config.copyFrom(audio_info);
   i2s_stream.begin(i2s_config); // this should apply I2C and I2S configuration
 
   Serial.println("Setup completed ...");
 }
 
-// Arduino loop - copy sound to out
-// -----------------------------
 void loop() { 
   // copier.copy(); 
 }

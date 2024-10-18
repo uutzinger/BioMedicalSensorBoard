@@ -1,6 +1,6 @@
-
 #include <Arduino.h>
 #include <Wire.h>
+#include "driver/rtc_io.h"
 
 #include <SparkFun_MAX1704x_Fuel_Gauge_Arduino_Library.h> // Click here to get the library: http://librarymanager/All#SparkFun_MAX1704x_Fuel_Gauge_Arduino_Library
 
@@ -11,18 +11,19 @@
 #include <logger.h>
 
 const int BUTTON_PIN = 9;
+gpio_num_t BUTTON_PIN_GPIO = GPIO_NUM_9;
 const int LED_PIN = 13;
 
 // Button
 //////////////////////////////////////////////////////////////////////////////////////////////
 const unsigned long DEBOUNCE_DELAY = 50;
 const unsigned long GOSLEEP_BUTTON_DURATION = 2000; // Press button for this amount to reset
-volatile bool buttonPressed = false;
+volatile bool buttonChanged = false;
 int buttonState = LOW;
 
 // Interrupt function for different states of OLED when button is pressed 
 void IRAM_ATTR handleButtonPress() {
-  buttonPressed = true;
+  buttonChanged = true;
 }
 
 void print_wakeup_reason(){
@@ -178,7 +179,7 @@ unsigned long dataUpdateInterval = DATA_DELAY;
 void setup() {
 
   // GPIO
-  pinMode(BUTTON_PIN, INPUT);
+  pinMode(BUTTON_PIN, INPUT_PULLDOWN);
   pinMode(LED_PIN, OUTPUT);
   digitalWrite(LED_PIN, LOW); // Ensure the LED is off initially
   pinMode(I2C_POWER, OUTPUT);
@@ -195,12 +196,13 @@ void setup() {
   // Start Wire library for I2C
   Wire.begin();
 
+  // Wake up configuration
+  rtc_gpio_pullup_dis(BUTTON_PIN_GPIO);
+  rtc_gpio_pulldown_en(BUTTON_PIN_GPIO);
+  attachInterrupt(digitalPinToInterrupt(BUTTON_PIN), handleButtonPress, CHANGE);
+  esp_sleep_enable_ext0_wakeup(BUTTON_PIN_GPIO,1);
 
   buttonState = digitalRead(BUTTON_PIN);
-
-  attachInterrupt(digitalPinToInterrupt(BUTTON_PIN), handleButtonPress, CHANGE);
-  // esp_sleep_enable_ext0_wakeup((gpio_num_t)BUTTON_PIN, 1); // Wake up when button is pressed      
-  esp_sleep_enable_ext0_wakeup(GPIO_NUM_9,1); //wake   
 
   // LIPO Battery
   // -------------
@@ -258,8 +260,8 @@ void loop() {
   // User Input with Button
   /////////////////////////
 
-  if (buttonPressed) {
-    buttonPressed = false; // Reset flag from ISR
+  if (buttonChanged) {
+    buttonChanged = false; // Reset flag from ISR
 
     buttonState = digitalRead(BUTTON_PIN);
     //Serial.print("Button changed: ");
@@ -272,11 +274,11 @@ void loop() {
         // button pushed
         lastButtonHighTime = currentTime;
         digitalWrite(LED_PIN, HIGH); // Turn on the LED when the button is pressed
-        //Serial.println("It was high, turning on LED ");
+        Serial.println("Switched to high, turning on LED ");
       } else {
         // button let go
         if ((currentTime - lastButtonHighTime) > GOSLEEP_BUTTON_DURATION) {
-          Serial.println("Button is low after long duration going to sleep ");
+          Serial.println("Switched to low after long duration going to sleep. Turning off LED.");
           Serial.flush(); 
           digitalWrite(LED_PIN, LOW);
           digitalWrite(I2C_POWER, LOW); // power off on QWICC connector
@@ -284,7 +286,7 @@ void loop() {
           esp_deep_sleep_start();
         } else {
           // Switch display state
-          Serial.println("Button has been pressed for short time, switching display");
+          Serial.println("Switched to low for short time, switching display. Turning off LED.");
           oledDisplay = (oledDisplay == Bat) ? Data : Bat;
           displayUpdateInterval = DISPLAY_DATA_UPDATE_INT;
           display.clearDisplay();

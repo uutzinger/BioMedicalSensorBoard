@@ -630,13 +630,16 @@ void handleLowercaseCommand(const char* command) {
         if (tmpuI >= 0 && tmpuI <= 4) {
           currentLogLevel = (unsigned int)tmpuI;
           afe44xx_reporting = false;
+          afe44xx_reporting_simple = false;
           snprintf(tmpStr, sizeof(tmpStr), "Debug level set to: %u", currentLogLevel);
         } else if (tmpuI==99) {
           currentLogLevel = 0;
           afe44xx_reporting = true;
+          afe44xx_reporting_simple = false;
           strcpy(tmpStr, "Reporting enabled");
         } else if (tmpuI==98) {
           currentLogLevel = 0;
+          afe44xx_reporting = false;
           afe44xx_reporting_simple = true;
           strcpy(tmpStr, "Reporting enabled");
         } else {

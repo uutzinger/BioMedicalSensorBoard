@@ -17,7 +17,11 @@ extern int currentLogLevel;
 #define LOGE(...) if (currentLogLevel >= LOG_LEVEL_ERROR) { logPrint("ERROR", __VA_ARGS__); }
 #define LOGW(...) if (currentLogLevel >= LOG_LEVEL_WARN)  { logPrint("WARN",  __VA_ARGS__); }
 #define LOGI(...) if (currentLogLevel >= LOG_LEVEL_INFO)  { logPrint("INFO",  __VA_ARGS__); }
-#define LOGD(...) if (currentLogLevel >= LOG_LEVEL_DEBUG) { logPrint("DEBUG", __VA_ARGS__); }
+#ifdef DEBUG
+    #define LOGD(...) if (currentLogLevel >= LOG_LEVEL_DEBUG) { logPrint("DEBUG", __VA_ARGS__); }
+#else
+    #define LOGD(...)  
+#endif
 
 // Functions to print log messages
 void logPrint(const char* level, const char* format, ...);
