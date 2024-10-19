@@ -1,20 +1,24 @@
 # Assembly of Thermistor Board
 
+<a href="..\assets\pictures\Temp_Top_Open_with_Plugins_2.jpg" target="_blank">
+  <img src="..\assets\pictures\Temp_Top_Open_with_Plugins_2.jpg" style="width: 600px;">
+</a>
+
 ## Board Recommendation
 
 We need 6 ADC from ADC unit 1 exposed. Some boards use I2C pins and ADC unit 1 channels.
 
 There is also difference between ESP32 models. ESP32-S3 as maximum sampling rate of 83kHz where ESP32 has 2MHz. 
 
-I recoomend using Sparkfun Thing Plus or Thing Plus C.
+I recommend using Sparkfun Thing Plus or Thing Plus C.
 
 When setting up the Wheatstone bridge the supply voltage is about 3.3V.
 All resistors are in the range of 10k Ohm.
-If the thermistor is NTC type resistance will decrease with temperature.
-The miniumum at 45C will be 4k and the maximum at freezing bout 35k.
+If the thermistor is NTC type, resistance will decrease with temperature.
+The minimum at 45C will be 4k and the maximum at freezing bout 35k.
 Therefore one Voltage will be constant at about 1.6V and the other 0.9 .. 2.5V.
 
-Therfore ADC setting for ESP32 should be choosen as following:
+Therefore ADC setting for ESP32 should be chosen as following:
 
 | Choice              | Description    | Voltage Range   |
 |---------------------|----------------|-----------------|
@@ -23,19 +27,19 @@ Therfore ADC setting for ESP32 should be choosen as following:
 | ADC_ATTEN_DB_6      |   6 dB         | 0.15 to 1.175 V |
 | **ADC_ATTEN_DB_11** |  11 dB         | 0.15 to 2.45 V  |
 
-Also the bridge resistors should be changed so that R1 and R3 resistor is 20k and R3 is 10k. This would allow more accurate measurement of temperature in physiogical range.
+Also the bridge resistors should be changed so that R1 and R3 resistor is 20k and R3 is 10k. This would allow more accurate measurement of temperature in physiological range.
 
 ## Soldering
 
 Attach color coded wires to the IO pads. E.g. red for power, black or green for ground and blue or white for digital input/output and yellow for analog wires. 
 
-You can insert the wires into the hbloles (perpendicular) or or you can attach a short piece of the wires on top of the pad (perpendicular).
+You can insert the wires into the through holes (perpendicular) or or you can attach a short piece of the wires on top of the pad (perpendicular).
 
-Suggested connecctions for the Sparkfun Thing Plus (USB-C) and the Adafruit Feather ESP32-S3 are given below.
+Suggested connections for the Sparkfun Thing Plus (USB-C) and the Adafruit Feather ESP32-S3 are given below.
 
 ### Connections
 
-Analog input needs to be on same ADC unit in order to use fast contiunous ADC on ESP32.
+Analog input needs to be on same ADC unit in order to use fast continuous ADC on ESP32.
 On Adafruit Feather ESP32-S3 we have only 5 pins available for ADC1 and two are also used for I2C.
 In addition ESP32-S3 has maximum sample rate of 83kHz where as Thing Plus ESP32 has 2MHz
 
@@ -65,8 +69,14 @@ PAD       | Function        | Thing Plus    | Feather
 - [Thing Plus C Pinout](https://cdn.sparkfun.com/assets/3/9/5/f/e/SparkFun_Thing_Plus_ESP32_WROOM_C_graphical_datasheet2.pdf)
 - [ESP32 S3 Pinout](https://learn.adafruit.com/assets/110811)
 
-![Thing Plus C Pinout](..\assets\ThingPlusC_PinOut.png)
-![Adafruit Feather ESP32 S3](../assets/adafruit_products_Adafruit_Feather_ESP32-S3_Pinout.png)
+<a href="../assets/ThingPlusC_PinOut.png" target="_blank"> 
+  <img src="../assets/ThingPlusC_PinOut.png" style="width: 500px;">
+</a>
+
+<a href="../assets/adafruit_products_Adafruit_Feather_ESP32-S3_Pinout.png" target="_blank">
+  <img src="../assets/adafruit_products_Adafruit_Feather_ESP32-S3_Pinout.png" style="width: 500px;">
+</a>
+
 
 ## Calibration
 
@@ -92,12 +102,17 @@ $V_1$ and $V_2$ are measured with a microcontroller's ADC converter and they cor
 
 After measuring the three resistors of each of the channels we need to close all jumpers in the circuit. There are 11 jumpers. 
 
-## Termistor
+## Thermistor
 Amphenol 10kOhm MA100
 https://www.mouser.com/datasheet/2/18/Amphenol_04022020_AAS_920_321E-1826352.pdf
 
-| Temperature | Resistance | 10/R | 10/10 | 20/R | 20/10 |
-|---          |---         |---   |---    |---   |---    |
+
+| Temperature | Resistance | R_3/R_T | R_1/R_2 | R_3/R_T | R_1/R_2 |
+|---          |---         |---      |---      |---      |---      |
+|             |            | 10k/R_T | 10k/10k | 20k/R_T | 20k/10k |
+|             |            | V_1     | V_2     | V_1     | V_2     |
 | 32C         | 32739 Ohm  | 2.70 | 1.76  | 2.19 | 1.18  |
 | 41C         | 25441 Ohm  | 2.53 | 1.76  | 1.97 | 1.18  |
 | 50C         | 19925 Ohm  | 2.35 | 1.76  | 1.76 | 1.18  |
+
+Illustrates that ADC_ATTEN_DB_11 and 2/1 ratio is needed between the resistors so that the measurements are in acceptable linear range of the ADC.

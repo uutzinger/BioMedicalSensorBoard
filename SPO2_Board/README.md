@@ -1,14 +1,10 @@
 # Pulse Oximeter 
 
-<a href="..\assets\pictures\PulseOx_Front_Closed_with_Plugins.jpg" target="_blank" style="float: right; margin-left: 20px;">
-  <img src="..\assets\pictures\PulseOx_Front_Closed_with_Plugins.jpg" style="width: 500px;">
+<a href="../assets/pictures/PulseOx_Front_Closed_with_Plugins.jpg" target="_blank" style="float: right; margin-left: 20px;">
+  <img src="../assets/pictures/PulseOx_Front_Closed_with_Plugins.jpg" style="width: 500px;">
 </a>
 
 This pulesoximeter solution is based on Texas Instruments [AFE4490](datasheets/afe4490.pdf) This is a dual wavelelength pulseoximeter driver that interfaces DB9 connector based Nellcor OxiMax SpO2 Sensor.
-
-## Assembly &#128736;
-
-See separate [Assembly Instructions](assembly.md).
 
 ## Costs &#36;
 

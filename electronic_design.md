@@ -1,10 +1,11 @@
 # Electronic Design
 
-All electronic designs were comleted with EagleCAD. The files can also be imported into KiCAD as EagleCAD will no longer be supported by its owner.
+All electronic designs were completed with EagleCAD. The files can also be imported into KiCAD as EagleCAD will no longer be supported by its owner.
 
-Files ready for submission to PCB manfacutreres are in each project subfolder.
+Files ready for submission to PCB manufacturer (PCBWay) are in each project subfolder.
 
 ## Eagle CAD settings
+The design used the following settings:
 
 ### Grid
 -Size: 1mm
@@ -36,7 +37,7 @@ For micro vias or WLP you likely need to select advanced manufacturing settings 
 
 1) Make sure your board has no errors (Tools->Errors)
 2) Check on Manufacturing Tab the graphical representation of your manufactured board
-3) CAM Processor -> Local CAM Jobs -> examples -> example_2_layer.cam
+3) CAM Processor -> Local CAM Jobs -> Each board has its own file.cam
     Enable ZIP (this creates Gerber file archive)
 4) Upload. 
 

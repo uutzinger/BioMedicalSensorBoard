@@ -18,10 +18,6 @@ The airquality solution uses several sensors:
 
 The MiCS sensor does not have an integrated analog to digital conversion and the device is measured with resistor network. The datasheet shows operation at 5V. In this document the calculations and illustration for the [MiSC operating at 3V](MICS6814_on_3V.md) is explained. The nominal resistor values vary greatly and the detector needs tuning as 
 
-## Assembly &#128736;
-
-See the [Assembly Instructions](assembly.md).
-
 ## Costs &#36;
 
 | Item        | Quantity at Purchase | Costs  | Source            | Cost per Brick

@@ -110,21 +110,3 @@ Recording of the signal occures with two LEDs and a photodiode while an micrcont
 For simplicity, ratios can be calcualted without taking the log and $HbO_2 Sat$ can be estimated using lookup tables.
 
 The above formulas show that pathlength for the two wavelengths is assumed to be the same, however this is not correct when other optical components become more relevant such as Melanin. Typically oscillation of the NIR signal is weaker than the red oscillation and the sensor should be operated so that maximum values are measured at both wavelenghts by adjuting the power when switching between the LEDs.
-
-## Electronic Designs
-
-### Breakout boards
-- [Protocentral Pulse Ox using TI AFE4490](https://protocentral.com/product/protocentral-afe4490-pulse-oximeter-breakout-board-kit/) $80
-
-### Texas Instruments
-- [General](https://www.ti.com/solution/pulse-oximeter) 
-- [AFE4490 for clinical sensors](https://www.ti.com/lit/ds/symlink/afe4490.pdf?ts=1680618647641)
-
-### Analog Devices
-- [General](https://www.analog.com/en/applications/markets/healthcare-pavilion-home/vital-signs-measurement/spo2.html)
--  ADPD105 or ADPD106 for clinical sensor
-  
-### Maxim
-- [MAX30101](https://www.maximintegrated.com/en/products/interface/signal-integrity/MAX30101.html)
-- fully integrated, does not allow connecting to clinical sensor
-

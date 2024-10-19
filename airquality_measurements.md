@@ -48,6 +48,7 @@ Carbon dioxide can be measured electrochemically, aoptically and acoustically. M
 Pressure is commonly recorded with a deforming memrance sealing a gas chamber. Strain gauges measure the deformation. Barometric sensors have a limitted pressure range where as fluid pressure sensors meassure a large pressure range. Altitude can be assessd to the 10th of centimeters where as submersion depth in water can be assessed with milimiter accuracy using these sensors.
 
 ## Humidity and Temperature
+Humidity and well being., to be written
 
 ## NOX & VOC
 Nitrox Oxide in the air is due to high temperature combustion and emission from soil. In the atmosphere it results in acidic rain. It is used to relax smooth muscle cells to widen blood vessels in the lung.

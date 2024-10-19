@@ -15,10 +15,11 @@ SerialUI has similar functions as Arduino IDE serial monitor and serial plotter.
 ## Arduino Libraries
 | Chip          | Manfacturere           |  Type | Source | Example Program | Limitations
 | ---           | ---                    | --- | --- | --- | --- |
-| AFE44X        | Texas Instrumente      | Pulseoxi | Utzinger | Yes | No $SP_{O_2}$ yet |
-| MAX30001G     | Maxim / Analog Devices | Bioimpedance and ECG | Utzinger | No | **in progress** |
-| ES8336        | Everest                | Stethoscope | [audiodriver Schatzman](https://github.com/uutzinger/arduino-audio-driver) | Yes | tested |
-| MPRLS0300YG   | Honeywell              | Pressure |  [Sparkfun](https://github.com/sparkfun/SparkFun_MicroPressure_Arduino_Library) | No | **to be worked on** |
+| AFE44X        | Texas Instrumente      | Pulseoxi | [Utzinger](https://github.com/uutzinger/Arduino_AFE44XX) | Yes | No $SP_{O_2}$ yet |
+| MAX30001G     | Maxim / Analog Devices | Bioimpedance and ECG | Utzinger | No | in progress |
+| ES8336        | Everest                | Stethoscope | [Audio Driver Schatzman](https://github.com/pschatzmann/arduino-audio-driver) | Yes | tested |
+| ES8336        | Everest                | Stethoscope | [Audio Tools, Schatzman](https://github.com/pschatzmann/arduino-audio-tools) | Yes | tested |
+| MPRLS0300YG   | Honeywell              | Pressure |  [Sparkfun](https://github.com/sparkfun/SparkFun_MicroPressure_Arduino_Library) | No | to be worked on |
 | ICM20948      | TDK                    | IMU | [Sparkfun](https://github.com/uutzinger/Arduino_ICM-20948) | Yes | need to decide on DMP or custom fusion (AHRS Madgwick) |
 | BMP581        | Bosch                  | Pressure | [Sparkfun](https://github.com/uutzinger/Arduino_BMP581) | Yes | sometimes fails to start in SPI mode
 | WS2812B       | World Semi             | Color LED strip | [Neopixel](https://github.com/uutzinger/Arduino_NeoPixel) | Yes | figure out individual pixel animation |
@@ -27,7 +28,7 @@ SerialUI has similar functions as Arduino IDE serial monitor and serial plotter.
 | SCD41D        | Sensirion              | CO2 | [Sensirion](https://github.com/uutzinger/Arduino_SCD4x) | Yes |  |  
 | SGP41D        | Sensirion              | eVOC, eNOx | [Sensirion](https://github.com/uutzinger/Arduino_SGP41) | Yes | uses Gas Index |
 | SEN5X         | Sensirion              | Particulate Matter | [Sensirion](https://github.com/uutzinger/Arduino_SEN5x) | Yes | |
-| MICS 6814     | SGX Sensortech         | CO, NH3, NO2 | Utzinger | No | **to be worked on** (needs manual  calibration and soldering)| 
+| MICS 6814     | SGX Sensortech         | CO, NH3, NO2 | Utzinger | No | to be worked on (needs manual  calibration and soldering)| 
 | SSD1306       | Solomon Systems        | LCD display | [Adafruit](https://github.com/uutzinger/Arduino_SSD1306) | Yes |  |
 | MAX1740X      | Maxim / Analog Devices | Battery monitor | [Sparkfun](https://github.com/uutzinger/Arduino_MAX1704x) | Yes | need to look into how to detect that system is on battery |
 | LC709203F     | ON Semiconductor       | Battery monitor | [Adafruit](https://github.com/uutzinger/Arduino_LC709203F) | No | not available in newer boards from Adafruit and Sparkfun|

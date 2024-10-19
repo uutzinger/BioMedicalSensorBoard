@@ -30,7 +30,7 @@ Example suppliers for medical grade thermistors are:
 
 For accurate readings, a Wheatstone bridge is needed to record the resistance of a thermistor. This is a full bridge with 4 resistors. Such bridge will be insensitive to temperature changes at the location of R1, R2 and R3 as long as they are kept close to each other.
 
-<img src="./assetts/Wheatstone.svg" alt="drawing" height="300"/>
+<img src="assets/Wheatstone.svg" alt="drawing" height="300"/>
 
 made with https://www.circuit-diagram.org/editor
 
@@ -50,7 +50,10 @@ int32_t R_thermistor = int32_t ( ( uint64_t(R3) * uint64_t(Vin*R2 - Vdiff*(R1+R2
 
 ### Steinhart-Hart Equation
 
-The cuation provides a formula to model the resistance of the thermistor based on 3 calibration values A, B and C. These are manufacturer provided and material constants but they vary for each type of thermistor. The equation is an approximation of the semiconductors resistance model.
+<a href="https://www.thinksrs.com/downloads/programs/therm%20calc/ntccalibrator/ntccalculator.html" target="_blank"> <img src="assets/Steinhart.png"  height="300px"></a> 
+
+
+The equation provides a formula to model the resistance of the thermistor based on 3 calibration values A, B and C. These are manufacturer provided and material constants but they vary for each type of thermistor. The equation is an approximation of the semiconductors resistance model.
 
 $\frac{1}{T} = A + B ln(R) + C (ln(R))^3$
 
@@ -67,7 +70,7 @@ return int16_t(Temp*100.0);                         // convert temperature e.g. 
 
 When high precision measurements are needed we can use a differential AD converter:
 
-<img src="./assetts/LTC2471-8586.png" alt="drawing" height="200"/>
+<img src="assets/LTC2471-8586.png" alt="drawing" height="300"/>
 
 Product [LTC2473](https://www.analog.com/en/products/ltc2473.html) has [LTC2473 data sheet](https://www.analog.com/media/en/technical-documentation/data-sheets/24713fb.pdf) and example [Arduino Software](https://github.com/analogdevicesinc/Linduino).
 

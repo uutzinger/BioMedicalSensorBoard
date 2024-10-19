@@ -13,12 +13,12 @@
 
 ### Costs PCB Way
 
-- Minimum number of PC Boardss is 5 and costs $45.18
-- Minimum number for assempty is 1
-- Assembly of 1 to 20 costs $88
-- Assembly of 50 costs $154
+- Minimum number of PC Boards is 5 and costs are $45.18 for WLP this will increase by 3 times
+- Minimum number for assembly is 1
+- Assembly of 1 to 20 costs up to $88
+- Assembly of 50 costs up to $154
 - Parts costs are separate
-- Through hole component assembly costs exta
+- Through hole component creates additional assembly costs
 - Shipping costs are often equivalent to a discount you receive with your order
 
 ### PCB Way Assembly Service Settings

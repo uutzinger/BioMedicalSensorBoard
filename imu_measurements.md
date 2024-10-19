@@ -47,8 +47,8 @@ WHen an electric potential is applied the electrostatic forces from the charge o
 If an oscuillating potential is applied the comb will resonate and and through tuning of the frequency it can be drive at its eigen freuqency. 
 A similar principle can be employed to measre the structures position by measuring the capacitance. 
 
-<img src="assets/MEMS_Comb_Actuator.png" alt="Comb Actuator" width="$350px">
-<img src="assets/MEMS_Comb_Capacitor.jpg" alt="Comb Capacitor" width="350px">
+<img src="assets/MEMS_Comb_Actuator.png" alt="Comb Actuator" width="350px">
+<img src="assets/MEMS_Comb_Capacitor.jpg" alt="Comb Capacitor" width="250px">
 
 
 https://ieeexplore.ieee.org/abstract/document/6495768
@@ -64,18 +64,27 @@ Buffa et al. Compact MEMS magnetometers for inertial measurement units https://d
 
 ### Gyroscope
 
-<img src="assets/MEMS_Gyroscope_TuningFork.png" alt="Gyro Type 1" width="350px">
-<img src="assets/MEMS_Gyroscope_Principle_2.png" alt="Gyro Type 2" width="350px">
-<img src="assets/MEMS_Gyroscope_Implementation.png" alt="Gyroscope" width="350px">
+<img src="assets/MEMS_Gyro_TuningFork.png" alt="Gyro Type 1" width="350px">
+<img src="assets/MEMS_Gyro_Principle_2.png" alt="Gyro Type 2" width="350px">
+<img src="assets/MEMS_Gyro_Implementation.png" alt="Gyroscope" width="350px">
 
 Shel, Type I and Type II Micromachined Vibratory Gyroscopes https://www.researchgate.net/publication/228641584
 
 ### Mangetometer
 
+<img src="assets/MEMS_Mag_Diagram.png" alt="Gyro Type 1" width="350px">
+
 Bahreyni, Behraad, Univ. of Cambridge,,   Sensors Journal, IEEE 7(9), 2007 
 
 ### Pressure Sensor
 
+<img src="assets/MEMS_Pressure_Crosssection.jpg" alt="Gyro Type 1" width="350px">
+<img src="assets/MEMS_Pressure_Top_Bridge.jpg" alt="Gyro Type 1" width="350px">
+
 ## Fusion Algorithm
 
-Magdewik
+<img src="assets/Magdwick.png" alt="Gyro Type 1" width="400px">
+
+Magdewick, An efficient orientation filter for inertial and inertial/magnetic sensor arrays
+
+https://forums.parallax.com/uploads/attachments/41167/106661.pdf

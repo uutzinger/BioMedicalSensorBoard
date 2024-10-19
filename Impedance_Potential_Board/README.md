@@ -4,9 +4,7 @@
   <img src="..\assets\pictures\ECG_BIOZ_Front_Closed_without_Plugins.jpg" style="width: 500px;">
 </a>
 
-For general consideration of bio impedance design and safety: [Analog Devices: Bio-Impedance Circuit Design for Body Worn Systems"](https://www.analog.com/en/resources/analog-dialogue/articles/bioimpedance-circuit-design-challenges.html)
-
-For BIOZ and ECG MediBrick we use the MAXIM [MAX30001G](datasheets/max30001g.pdf) analog front end (AFE). It's a modern design with a "waver level packaging" foot print of the sensor which makes is difficult to solder and increases costs for PCB manufacturing.
+For BIOZ and ECG MediBrick we use the MAXIM/Analog Devices [MAX30001G](datasheets/max30001g.pdf) analog front end (AFE). It's a modern design with a "waver level packaging" foot print of the sensor which makes is difficult to solder and increases costs for PCB manufacturing.
 
 The MAX30001G can measure:
 
@@ -20,9 +18,7 @@ The MAX30001G can measure:
 
 Here [MAX3001G](MAX30001G.md) we summary capabilities from datasheet.
 
-## Assembly &#128736;
-
-See separate [Assembly Instructions](assembly.md).
+For general consideration of bio impedance design and safety: [Analog Devices: Bio-Impedance Circuit Design for Body Worn Systems"](https://www.analog.com/en/resources/analog-dialogue/articles/bioimpedance-circuit-design-challenges.html)
 
 ## Costs &#36;
 
@@ -91,8 +87,8 @@ These are the links to the OnShape Design files, which you can edit and modify i
 
 ## External Configuration Options
 
-<a href="./Design.svg" target="_blank">
-  <img src="./Design.svg" style="width: 400px;">
+<a href="Design.svg" target="_blank">
+  <img src="Design.svg" style="width: 400px;">
 </a>
 
 We have the following external connectors:

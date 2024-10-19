@@ -84,7 +84,7 @@ The phase property will result in a phase delay between alternating current and 
 In review articles attempting to fit body composition with impedance measurements, the following common variables are used:
 
 - $H$ Height in [cm]
-- $R$ Resistance in [$\Omega$]
+- $R$ Resistance in [$\Omega$], $R_{50}$ Resistance at 50kHz
 - $X$ Reactance in [$\Omega$]
 - $Z$ Impedance $Z = R + jX$
 - $W$ Weight [kg]
@@ -157,7 +157,7 @@ Paco et al [1] used the electrode model to describe measurements on the calf. Th
 | Calf Tissue        |  10 |  56k |  47  |
 
 
-## Example Electric Equivalent Circuit with MAX30001G
+## Electric Equivalent Circuit with MAX30001G
 
 <img src="assets/Impedance_MAX3001G.svg" alt="Skin" width="750px">
 
