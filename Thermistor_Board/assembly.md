@@ -6,17 +6,15 @@
 
 ## Board Recommendation
 
-We need 6 ADC from ADC unit 1 exposed. Some boards use I2C pins and ADC unit 1 channels.
+We need 6 ADC channels from ADC unit 1 exposed. Some boards use I2C pins overlaid on ADC unit 1 channels.
 
-There is also difference between ESP32 models. ESP32-S3 as maximum sampling rate of 83kHz where ESP32 has 2MHz. 
+There is also difference in sampling rates between ESP32 models. ESP32-S3 has a maximum sampling rate of 83kHz where ESP32 has 2MHz. 
 
-I recommend using Sparkfun Thing Plus or Thing Plus C.
+I recommend using Sparkfun Thing Plus or Thing Plus C as they have a 2MHz max sampling rate.
 
 When setting up the Wheatstone bridge the supply voltage is about 3.3V.
-All resistors are in the range of 10k Ohm.
 If the thermistor is NTC type, resistance will decrease with temperature.
-The minimum at 45C will be 4k and the maximum at freezing bout 35k.
-Therefore one Voltage will be constant at about 1.6V and the other 0.9 .. 2.5V.
+The minimum resistance is at 45C and will be 4k Ohm and the maximum at freezing about 35k.Therefore one Voltage will be constant at about 1.6V and the other between 0.9 .. 2.5V.
 
 Therefore ADC setting for ESP32 should be chosen as following:
 
@@ -27,7 +25,7 @@ Therefore ADC setting for ESP32 should be chosen as following:
 | ADC_ATTEN_DB_6      |   6 dB         | 0.15 to 1.175 V |
 | **ADC_ATTEN_DB_11** |  11 dB         | 0.15 to 2.45 V  |
 
-Also the bridge resistors should be changed so that R1 and R3 resistor is 20k and R3 is 10k. This would allow more accurate measurement of temperature in physiological range.
+The bridge resistors should be at a ratio of 2 to 1 so that R2 and R3 resistor are 20k and R1 is 10k. This would allow more accurate measurement of temperature in physiological range.
 
 ## Soldering
 
@@ -88,11 +86,11 @@ made with https://www.circuit-diagram.org/editor
 
 The Wheatstone bridge resistors should be measured for greater accuracy.
 
-- TP1 - TP3 R1
-- TP1 - TP2 R2
-- TP2 - TP3 R3
+- TP1 - TP3: R1
+- TP1 - TP2: R2
+- TP2 - TP3: R3
 
-The thermistor resitance is
+The thermistor resistance is
 
 $R_{Thermistor} = \frac{R_3 (V_{in} R_2 - V_{diff} (R_1+R_2))}{Vin R1 + Vdiff (R_1+R_2)}$
 

@@ -1,0 +1,62 @@
+### Configuration of Protocentral 30001 Break Out
+Single Connector
+
+- VCM **10k** in series, no capacitor in series
+- VBG same circuit and capacitors
+- RBIAS same circuit, resistor value not given
+- CAPN, CAPP same circuit, same capacitor
+- DRVN, DRVP same circuit **47nF** in stead of 220nF
+- DRVN, DRVP, hardwired to ECGN and ECGP
+- BINN, BINP same design, no calibration resistor, 
+- BINN, BINP hardwired to ECGN and ECGP
+- ECGN, ECGP same design 47pF to GND instead of 10pF, 51k inline but no capacitor
+- OVDD on 1.8V, logic level conversion to 3.3V
+- no over voltage protection
+
+### Configuration of Protocentral tinyECG
+ECG and BIOZ different connectors, DRV and BIN on the same connector
+
+- VCM **10k** in series instead of 51k, no capacitor in series
+- VBG same circuit and capacitors
+- RBIAS same circuit, resistor value not given
+- CAPN, CAPP same circuit, same capacitor
+- DRVN, DRVP same circuit **47nF** in stead of 220nF
+- BINN, BINP same design, no calibration resistor, 
+- BINN, BINP hardwired to DRVN and DRVP
+- BINN, BINP **200** Ohm resistor instead of 0 Ohm R19, R20
+- ECGN, ECGP same design **47pF** to GND instead of 10pF, same inline resistor but no capacitor
+- OVDD on 3.3V
+- no over voltage protection
+
+### Configuration of Evaluation Kit
+- VCM **10k** in series instead of 51k, no capacitor in series, additional offset option
+- VBG same circuit and capacitors
+- RBIAS same circuit, resistor value not given
+- CAPN, CAPP same circuit, same capacitor
+- DRVN, DRVP same circuit, 47nF in general example, 220nF BioZ, GSR
+- BINN, BINP same design
+- BINN, BINP jumper option to DRVN and DRVP
+- BINN, BINP 0 Ohm R19, R20
+- ECGN, ECGP same design, same inline resistor and capacitor
+- ECGN, ECGP jumper option to BINN, BINP
+- OVDD on 3.3V
+- no over voltage protection
+
+### Configuration form Datasheet for typical ECG and GSR
+- VCM **200k** in series instead of 51k, no capacitor in series
+- VBG same circuit and capacitors
+- RBIAS same circuit, same 324k resistor
+- CAPN, CAPP same circuit, same capacitor
+- DRVN, DRVP same circuit, 47nF 
+- BINN, BINP separate connector
+- BINN, BINP same design
+- BINN, BINP resistor not specified Ohm R19, R20
+- ECGN, ECGP same design
+- ECGN, ECGP connected to BINN, BINP
+- OVDD up to 3.6V
+
+### Configuration from Datasheet for typical simple ECG
+- ECG direct with protection resistor, no capacitor network
+- no DRV and BIN connection
+
+

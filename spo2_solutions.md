@@ -13,9 +13,10 @@
 
 - **Analog Devices**
     - [General](https://www.analog.com/en/applications/markets/healthcare-pavilion-home/vital-signs-measurement/spo2.html)
-    - ADPD105 for clinical sensors 
-    - ADPD106 for clinical sensors
+    - [ADPD105](https://www.analog.com/en/products/adpd105.html) for clinical sensors 
+    - [ADPD106](https://www.analog.com/en/products/adpd106.html) for clinical sensors
   
 - **Maxim**
     - [MAX30101](https://www.maximintegrated.com/en/products/interface/signal-integrity/MAX30101.html), fully integrated, does not allow connecting to clinical sensor
+    - [MAX86180](https://www.analog.com/en/products/max86180.html), driver for 8 external LEDs and 8 photodiodes  
 

@@ -6,7 +6,7 @@
   <img src="../assets/pictures/IMU_Front_Closed_without_Plugins.jpg" style="width: 500px;">
 </a>
 
-This board is based on latest TDK IMU ICM20948 and BOSCH precision pressure sensors BMP581 and uses SPI interface accommodating a sampling rate exceeding 1000 samples per second.
+This board is based on latest TDK IMU [ICM20948](datasheest/DS-000189-ICM-20948-v1.3.pdf) and BOSCH precision pressure sensors [BMP581](datasheets/BSS138-D.pdf) and uses SPI interface accommodating a sampling rate exceeding 1000 samples per second.
 
 
 ## Costs &#36;

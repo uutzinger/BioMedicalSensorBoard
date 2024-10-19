@@ -1,6 +1,6 @@
 # Pulse Oximeter 
 
-<a href="../assets/pictures/PulseOx_Front_Closed_with_Plugins.jpg" target="_blank" style="float: right; margin-left: 20px;">
+<a href="../assets/pictures/PulseOx_Front_Closed_with_Plugins.jpg" target="_blank" >
   <img src="../assets/pictures/PulseOx_Front_Closed_with_Plugins.jpg" style="width: 500px;">
 </a>
 
@@ -26,7 +26,7 @@ This pulesoximeter solution is based on Texas Instruments [AFE4490](datasheets/a
 
 *Electronic components without DB9 connecter are $12 per board. 
 
-**The DB9 connector was soldered on manually. 
+**The DB9 connector was soldered on manually after receiving the populated board.
 
 ## Test Software &#128187;
 Test software is located in the Arduino folder.

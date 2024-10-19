@@ -26,7 +26,7 @@ INT2B     | Interrupt 2 Output        | 11   GIPO27 | 13 GPIO13
 Pin 10 (Feather, Thing Plus)  is reserved for system button.
 Require connections are in **bold**.
 
-*The MAX30001G Aanalog Front End uses the MOSI and MISO on diagrams showing a microcontroller. POCI and PICO should be used for "peripheral out controller in" and "perpherial in controller out".
+*The MAX30001G Analog Front End uses the MOSI and MISO on diagrams showing a microcontroller. POCI and PICO should be used for "peripheral out controller in" and "peripheral in controller out".
 
 ## Board Configuration
 
@@ -34,7 +34,10 @@ There are many configurations we can select. We can operate the board to measure
 
 ### Jumpers
 
-![Jumpers](./Design.svg)
+<a href="./Design.svg" target="_blank">
+  <img src="./Design.svg" style="width: 500px;">
+</a>
+
 
 There are 4 sets of jumper:
 
@@ -97,6 +100,7 @@ Configuration          | $ECG_P$ to $ECG_N$ | $DRV_N$ to $BI_N$ | $DRV_P$ to $BI
     - Increase frequency or change internal lower filter cut off
 
 (2) **ECG** 
+
     - Measurement Leads on ECG connector.
 
 (3) **2 Leads ECG**

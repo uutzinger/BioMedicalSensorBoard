@@ -16,7 +16,7 @@ The airquality solution uses several sensors:
 | Carbon Monoxide, Amonia, Nitrogenoxide | Amphenol SGX Sensortech | [MiCS-6814 MEMS]((datasheets\1143_Datasheet-MiCS-6814-rev-8,pdf)) | $17 |
 | Status Lights | XING Light | [Neopixel](datasheets\2301111010_XINGLIGHT-XL-2020RGBC-WS2812B_C5349955.pdf)| |
 
-The MiCS sensor does not have an integrated analog to digital conversion and the device is measured with resistor network. The datasheet shows operation at 5V. In this document the calculations and illustration for the [MiSC operating at 3V](MICS6814_on_3V.md) is explained. The nominal resistor values vary greatly and the detector needs tuning as 
+The MiCS sensor does not have an integrated analog to digital conversion and the device is measured with a resistor network. The datasheet shows operation at 5V. In this [document](MICS6814_on_3V.md) the calculations and illustration for the MiSC operating at 3V is explained. The nominal resistor values vary greatly and the detector needs tuning.
 
 ## Costs &#36;
 
@@ -38,6 +38,8 @@ The MiCS sensor does not have an integrated analog to digital conversion and the
 | **Total**                   |      |        |                   | **$180**
 
 *Electronic components excluding SEN50 are $128 per board. 
+
+The airquality solution has been optimized for accuracy and not cost. There are sensor options for half or third of the price but they require a different board design.
 
 ## Test Software &#128187;
 Test software is located in the Arduino folder.
@@ -61,6 +63,8 @@ An integrative software reading all sensors is not finalized yet.
 <a href="Airquality_board.pdf" target="_blank">
   <img src="Airquality_board.png" style="width: 300px;">
 </a>
+
+The particulate matter sensor is placed in the middle of the PCB and should not touch the PCB to avoid vibrations on the CO<sub>2</sub> sensor.
 
 The following files are needed for PCB manufacturing and assembly.
 

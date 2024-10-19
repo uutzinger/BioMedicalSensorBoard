@@ -1,28 +1,10 @@
 # Temperature Sensor
 
-Temperature regulation is essential for mamlian organisms as well as culture of cells and tissues. The phsyilogic temperature range is narrown with about $20\degree C$. Relevant environmental temperature is between $-/+50\degree C$.
+Temperature regulation is essential for mamalian organisms as well as culture of cells and tissues. The physiologic temperature range is narrow with about $37\degree C$. Relevant environmental temperatures are between $-/+50\degree C$.
 
-Temperature can be measured using thermoelectric effect using thermo couples. Most common is the use thermistors which change their resistance based on temperature either in negative or positive direction. The negative thermistor with room temperature resistanvce of $20\degree C$ is one of common thermistors.
+Temperature can be measured using thermoelectric effect using thermo couples. Most common is the use thermistors which change their resistance based on temperature either in negative or positive direction. The negative thermistor with room temperature resistance specified at $20\degree C$ is a common thermistor.
 
-For medical pplications the sensor is encapsualted and electricaly isolated so that it can be exposed to body fluids and disinfected.
-
-## Thermistors
-
-Example suppliers for medical grade thermistors are: 
-
-- Amphenol
-    - [General](https://www.amphenol-sensors.com/en/product-spotlights/3468-temperature-sensing-for-medical-devices)
-    - [MA100BF103AN or MA100GG103AN](https://www.mouser.com/datasheet/2/18/Amphenol_04022020_AAS_920_321E-1826352.pdf)
-
-- Smith Medical
-    - [Probes](https://www.smiths-medical.com/en-us/products/temperature-management/temperature-probes)
-
-- Variohm
-    - [Probes](https://www.variohm.com/products/temperature-sensors/medical-temperature-probes)
-
-## ICS with integrated thermistor 
-- [Max30205](https://www.analog.com/media/en/technical-documentation/data-sheets/max30205.pdf)
-- [Protocentral MAX30205](https://protocentral.com/product/protocentral-max30205-body-temperature-sensor-breakout-board/)
+For medical applications the sensor is encapsulated and electrically isolated so that it can be exposed to body fluids and disinfected.
 
 ## Full bridge circuit to measure Thermistors accurately
 

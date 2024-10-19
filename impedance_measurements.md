@@ -47,9 +47,9 @@ Besides **Impedance Analysis** there is **Impedance Spectroscopy** where impedan
 
 - $R$: Resistance (real part of impedance, measured in Ohms)
 - $X$: Reactance (imaginary part of impedance, measured in Ohms)
-- $j = \sqrt{-1}$* (the imaginary unit)
+- $j = \sqrt{-1}$ (the imaginary unit)
 
-The impedance $( Z )$ is defined as comlpext number:
+The impedance $( Z )$ is defined as comlpex number:
 
 $$
 Z = R + jX
@@ -84,8 +84,8 @@ The phase property will result in a phase delay between alternating current and 
 In review articles attempting to fit body composition with impedance measurements, the following common variables are used:
 
 - $H$ Height in [cm]
-- $R$ Resistance in [$\Omega$], $R_{50}$ Resistance at 50kHz
-- $X$ Reactance in [$\Omega$]
+- $R$ Resistance in [Ω], $R_{50}$ Resistance at 50kHz
+- $X$ Reactance in [Ω]
 - $Z$ Impedance $Z = R + jX$
 - $W$ Weight [kg]
 - $A$ Age in [years]
@@ -96,7 +96,7 @@ In review articles attempting to fit body composition with impedance measurement
 - $FFM$ Fat Free Mass in [kg]
 - sex, with 0 for male and 1 for female tissue
 
-For comparison with a simple resistor with a given resistivity $\rho$  [$\Omega$ cm], its resistance is $R=\rho L / A$ with A the crossection and L the length of the resistor.
+For comparison with a simple resistor with a given resistivity $\rho$  [Ω cm], its resistance is $R=\rho L / A$ with A the crossection and L the length of the resistor.
 
 ### Fat Free Mass, Total Body Water, Total Body Potassium
 
@@ -140,7 +140,7 @@ There are models to describe the tissue impedance and also the electrode to skin
 
 Ferreira et al [2] used the tissue model  to describe Total Body Composition (TBC), Respiratory Rate (RR) and Lung Composition (LC) and used the following values:
 
-| Model   | R [$\Omega$]    | r [$\Omega$]  | C [nF] |
+| Model   | R [Ω]    | r [Ω]  | C [nF] |
 |---      |---    |---     |---   |
 | TBC     | 917.5 | 665.4  | 3.42 |
 | RR      |  58.5 |  25.58 | 75.7 |
@@ -150,7 +150,7 @@ Here $R$ represents the extracellular current resistance, $r$ the interacellular
 
 Paco et al [1] used the electrode model to describe measurements on the calf. The MAX30001G data sheet lists values for an electrode model that is used for a calculation where the ideal current is computed:
 
-| Model   | R [$\Omega$]    | r [$\Omega$]  | C [nF] |
+| Model   | R [Ω]    | r [Ω]  | C [nF] |
 |---                 |---  |---   |---   |
 | Electrode (Paco)   | 2k2 | 150k | 150  | 
 | Electrode (30001G) | 100 |   1M |   5  |
@@ -165,22 +165,7 @@ For an example current calculation see page 36 of MAX30001G data sheet.
 
 I should expand the calculations here with values for the actual tissue model as in the datasheet its just a 100 Ohm resistor. Also the computation for expected noise should be included here.
 
-## Literature
-
-1) [Paco Bogonez-Franco et al, 2014, Problems encountered during inappropriate use of commercial bioimpedance devices in novel applications, 7 th International Workshop on Impedance Spectroscopy 2014](https://www.researchgate.net/publication/269571754_Problems_encountered_during_inappropriate_use_of_commercial_bioimpedance_devices_in_novel_applications)
-
-2) [J Ferreira et al 2010 J. Phys.: Conf. Ser. 224 012011](https://iopscience.iop.org/article/10.1088/1742-6596/224/1/012011/pdf)
-
-3) Assessment of fat-free mass using bioelectrical impedance measurements of the human body, H C Lukaski, P E Johnson, W W Bolonchuk, G I Lykken, PMID: 3984933 DOI: https://doi.org/10.1093/ajcn/41.4.810, 2500 citations.
-
-4) The Theory and Fundamentals of Bioimpedance Analysis in Clinical Status Monitoring and Diagnosis of Diseases by Sami F. Khalil, Mas S. Mohktar and Fatimah Ibrahim, Sensors 2014, 14(6), 10895-10928; https://doi.org/10.3390/s140610895
-
-5) Body fluid volumes measurements by impedance: A review of bioimpedance spectroscopy (BIS) and bioimpedance analysis (BIA) methods, Michel Y. Jaffrin, Hélène Morel, Medical Engineering & Physics
-Volume 30, Issue 10 , December 2008, Pages 1257-1269 https://doi.org/10.1016/j.medengphy.2008.06.009
-
-9) [Kassanos et al 2021, IEEE Tutorial](https://ieeexplore.ieee.org/document/9529213) or https://doi.org/10.1109/JSEN.2021.3110283
-
-## Appendix: Mathmatical Derviations
+## Appendix: Mathematical Derivations
 
 ### Applying Oscillating Current
 
@@ -195,41 +180,41 @@ When:
 - $\omega = 2 \pi f$ is the angular frequency in radians per second.
 
 We define the oscillating current as:
+
 $$
 I(t) = I_0 \sin(\omega t)
 $$
+
 or, in **Euler's form**:
+
 $$
 I(t) = \text{Re} \left\{ I_0 e^{j\omega t} \right\}
 $$
 
 The measured voltage across the impedance becomes:
 
-1. In **Euler's form** (complex exponential form):
-   $$
-   V(t) = I_0 \cdot |Z| \cdot e^{j(\omega t + \theta)}
-   $$
+1. In **Euler's form** (complex exponential form): $V(t) = I_0 \cdot |Z| \cdot e^{j(\omega t + \theta)}$
 
-2. In **real form** (sinusoidal):
-   $$
-   V(t) = I_0 \cdot |Z| \cdot \sin(\omega t + \theta)
-   $$
+2. In **real form** (sinusoidal): $V(t) = I_0 \cdot |Z| \cdot \sin(\omega t + \theta)$
 
 ### Demodulation
 
 When we demodulate the measured voltage by mixing it with an oscillating signal that has the same frequency but a phase offset, we multiply the measured signal with the demodulation signal:
 
 The demodulation signal is:
+
    $$
    \sin(\omega t + \phi_{\text{offset}})
    $$
 
 The demodulated Voltage becomes:
+
    $$
    V_{\text{demod}}(t) = I_0 \cdot |Z| \cdot \sin(\omega t + \theta) \cdot \sin(\omega t + \phi_{\text{offset}})
    $$
 
 Using the trigonometric identity:
+
    $$
    \sin(\alpha) \cdot \sin(\beta) = \frac{1}{2} \left[ \cos(\alpha - \beta) - \cos(\alpha + \beta) \right]
    $$
@@ -242,7 +227,9 @@ we have:
 
 After applying a low-pass filter, which removes the high-frequency term $( \cos(2\omega t + \theta + \phi_{\text{offset}}) )$, the demodulated voltage becomes:
 
-$$V_{\text{demod}} = \frac{I_0 \cdot |Z|}{2} \cos(\theta - \phi_{\text{offset}})$$
+$$
+V_{\text{demod}} = \frac{I_0 \cdot |Z|}{2} \cos(\theta - \phi_{\text{offset}})
+$$
 
 Thus, the demodulated voltage depends on the phase difference between the Impedance's phase $( \theta )$ and the demodulation signal's phase $( \phi_{\text{offset}} )$ and  can be measured with a simple DC reading.
 
@@ -250,7 +237,7 @@ Thus, the demodulated voltage depends on the phase difference between the Impeda
 
 At a given frequency the unknonw tissue impedance is given as magnitude $∣Z∣$ and phase $\theta$.
 
-When measurements are conducted at several phase offsets we will record the following values:
+When measurements are conducted at several phase offsets we can determine the impedance with a least squares fit. We will record the following values:
 
 - $\text{measurement}[i] = |Z| \cdot \cos(\theta - \phi_i)$
 
@@ -286,7 +273,7 @@ To solve the full set of normal equations. we use the following steps:
 - $A \cdot S_{\cos\sin} + B \cdot S_{\sin\sin} = S_{\text{imp}\sin}$
 
 3) Compute the determinant
-- $ \text{determinant} = S_{\cos\cos} \cdot S_{\sin\sin} - (S_{\cos\sin})^2$ [1,2]
+- $\text{determinant} = S_{\cos\cos} \cdot S_{\sin\sin} - (S_{\cos\sin})^2$ [1,2]
 
 4) Solve for $A$ and $B$
 - $A = \frac{S_{\text{imp}\cos} \cdot S_{\sin\sin} - S_{\text{imp}\sin} \cdot S_{\cos\sin}}{\text{determinant}}$
@@ -298,5 +285,19 @@ To solve the full set of normal equations. we use the following steps:
 
 Two conditions should be considered resulting in the following simplifications:
 - Two measurements at 0 and 90 degrees phase offset. $S_{\cos\cos}$ and $S_{\sin\sin}$ will become 1 [1] and $S_{\cos\sin}$ 0 [2]. The determinant is 1. 
-- When the phase offsets are spread unifromly over the full range of offsets which is from 0 to 360 degrees the $\cos(\phi_i) \cdot \sin(\phi_i)$ term can be neglected as the sum will become zero.
+- When the phase offsets are spread uniformly over the full range of offsets which is from 0 to 360 degrees the $\cos(\phi_i) \cdot \sin(\phi_i)$ term can be neglected as the sum will become zero.
 
+## Literature
+
+1) [Paco Bogonez-Franco et al, 2014, Problems encountered during inappropriate use of commercial bioimpedance devices in novel applications, 7 th International Workshop on Impedance Spectroscopy 2014](https://www.researchgate.net/publication/269571754_Problems_encountered_during_inappropriate_use_of_commercial_bioimpedance_devices_in_novel_applications)
+
+2) [J Ferreira et al 2010 J. Phys.: Conf. Ser. 224 012011](https://iopscience.iop.org/article/10.1088/1742-6596/224/1/012011/pdf)
+
+3) Assessment of fat-free mass using bioelectrical impedance measurements of the human body, H C Lukaski, P E Johnson, W W Bolonchuk, G I Lykken, PMID: 3984933 DOI: https://doi.org/10.1093/ajcn/41.4.810, 2500 citations.
+
+4) The Theory and Fundamentals of Bioimpedance Analysis in Clinical Status Monitoring and Diagnosis of Diseases by Sami F. Khalil, Mas S. Mohktar and Fatimah Ibrahim, Sensors 2014, 14(6), 10895-10928; https://doi.org/10.3390/s140610895
+
+5) Body fluid volumes measurements by impedance: A review of bioimpedance spectroscopy (BIS) and bioimpedance analysis (BIA) methods, Michel Y. Jaffrin, Hélène Morel, Medical Engineering & Physics
+Volume 30, Issue 10 , December 2008, Pages 1257-1269 https://doi.org/10.1016/j.medengphy.2008.06.009
+
+9) [Kassanos et al 2021, IEEE Tutorial](https://ieeexplore.ieee.org/document/9529213) or https://doi.org/10.1109/JSEN.2021.3110283

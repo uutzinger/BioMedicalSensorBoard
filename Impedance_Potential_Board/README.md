@@ -4,7 +4,7 @@
   <img src="..\assets\pictures\ECG_BIOZ_Front_Closed_without_Plugins.jpg" style="width: 500px;">
 </a>
 
-For BIOZ and ECG MediBrick we use the MAXIM/Analog Devices [MAX30001G](datasheets/max30001g.pdf) analog front end (AFE). It's a modern design with a "waver level packaging" foot print of the sensor which makes is difficult to solder and increases costs for PCB manufacturing.
+In the BIOZ and ECG MediBrick we use the MAXIM [MAX30001G](datasheets/max30001g.pdf) analog front end (AFE). It's a modern IC with a "waver level packaging" foot print which makes is difficult to solder and requires precise PCB manufacturing.
 
 The MAX30001G can measure:
 
@@ -16,7 +16,7 @@ The MAX30001G can measure:
   - GSR (galvanic skin response, stress level)
   - EDA (electro dermal activity)
 
-Here [MAX3001G](MAX30001G.md) we summary capabilities from datasheet.
+Here [MAX3001G](MAX30001G.md) we summary capabilities from the datasheet.
 
 For general consideration of bio impedance design and safety: [Analog Devices: Bio-Impedance Circuit Design for Body Worn Systems"](https://www.analog.com/en/resources/analog-dialogue/articles/bioimpedance-circuit-design-challenges.html)
 
@@ -46,7 +46,7 @@ Test software is located in the Arduino folder.
 | Folder | Description | 
 |--- |---|
 | MAX30001G Driver | under development |
-| not available yet | Test programs |
+| Test programs    | not available yet |
 
 ## Microcontroller Software : &#9000;
 Not available yet.
@@ -82,13 +82,13 @@ These are the links to the OnShape Design files, which you can edit and modify i
 ## Block Diagram of MAX 30001G
 
 <a href="assets/Blockdiagram.png" target="_blank">
-  <img src="assets/Blockdiagram.png" style="width: 400px;">
+  <img src="assets/Blockdiagram.png" style="width: 800px;">
 </a>
 
 ## External Configuration Options
 
 <a href="Design.svg" target="_blank">
-  <img src="Design.svg" style="width: 400px;">
+  <img src="Design.svg" style="width: 500px;">
 </a>
 
 We have the following external connectors:
@@ -123,94 +123,30 @@ Name      | typical value | Comment
 ----------|---------------|--------
 C_ECG     | 2.2nF         | datasheet
 C_ECG-G   | 10pF          | datasheet, 47pF protocentral
-EP_EN     | open          | disable ECG
+EP_EN     | open          | if closed disable ECG
 R_ECG     | 0,51k,200k Ohm | 0, 200k shown in datasheet (200k when ECG conencted with BIOZ), 51k protocentral, 0 Ohm evaluation kit
 R_ECG-B   | 51k           | evaluation kit
 C_ECG_B   | 47nF          | evaluation kit
-ECG_UNBAL | open          | disable balancing by closing
+ECG_UNBAL | open          | if closed disable balancing
 ||
-EP_BP     | open          | Impedance and ECG is on same plug
-EN_BN     | open          | Impedance and ECG is on same plug
+EP_BP     | open          | impedance and ECG is on different plug
+EN_BN     | open          | impedance and ECG is on different plug
 ||
 C_BIN     | 47pF          | datasheet
 C_BIN_G   | 10pF          | datasheet
-BP_BN     | open          | disable BioZ
+BP_BN     | open          | if closed disable BioZ
 R_BIN     | 0, 200 Ohm    | 200 protocentral where ECG is connected to BIN, 0 evaluation kit
 R_CAL     | 100 Ohm       | evaluation kit
 RP        | open          | if closed no external impedance
 RN        | open          | "
 ||
-BP_DP     | open          | Impedance and Driver on same plug
-BN_DN     | open          | Impedance and Driver on same plug
+BP_DP     | open          | impedance and driver on different plug
+BN_DN     | open          | impedance and driver on different plug
 ||
 C_DRV     | 200nF, 47nF   | 47nF protocentral, 47nF evaluation kit
 ||
-R_VCM     | 0 Ohm,10k,200k| 10k protocentral, evaluation kit has buffer driver cirtuit, 200k datasheet
-R_VCM-B   | 51k, none     | none potocentral & evaluation kit
-C_VCM-B   | 47nF, none    | none protocontral & evaluation kit, 47nF datasheet
+R_VCM     | 0 Ohm,10k,200k| 10k protocentral, evaluation kit has buffer driver circuit, 200k datasheet
+R_VCM-B   | 51k, none     | none protocentral & evaluation kit
+C_VCM-B   | 47nF, none    | none protocentral & evaluation kit, 47nF datasheet
 VMC_UNBAL | open          | 
-
-Specifically: 
-
-### Configuration of Protocentral 30001 Break Out
-Single Connector
-
-- VCM **10k** in series, no capacitor in series
-- VBG same circuit and capacitors
-- RBIAS same circuit, resistor value not given
-- CAPN, CAPP same circuit, same capacitor
-- DRVN, DRVP same circuit **47nF** in stead of 220nF
-- DRVN, DRVP, hardwired to ECGN and ECGP
-- BINN, BINP same design, no calibration resistor, 
-- BINN, BINP hardwired to ECGN and ECGP
-- ECGN, ECGP same design 47pF to GND instead of 10pF, 51k inline but no capacitor
-- OVDD on 1.8V, logic level conversion to 3.3V
-- no over voltage protection
-
-### Configuration of Protocentral tinyECG
-ECG and BIOZ different connectors, DRV and BIN on the same connector
-
-- VCM **10k** in series instead of 51k, no capacitor in series
-- VBG same circuit and capacitors
-- RBIAS same circuit, resistor value not given
-- CAPN, CAPP same circuit, same capacitor
-- DRVN, DRVP same circuit **47nF** in stead of 220nF
-- BINN, BINP same design, no calibration resistor, 
-- BINN, BINP hardwired to DRVN and DRVP
-- BINN, BINP **200** Ohm resistor instead of 0 Ohm R19, R20
-- ECGN, ECGP same design **47pF** to GND instead of 10pF, same inline resistor but no capacitor
-- OVDD on 3.3V
-- no over voltage protection
-
-### Configuration of Evaluation Kit
-- VCM **10k** in series instead of 51k, no capacitor in series, additional offset option
-- VBG same circuit and capacitors
-- RBIAS same circuit, resistor value not given
-- CAPN, CAPP same circuit, same capacitor
-- DRVN, DRVP same circuit, 47nF in general example, 220nF BioZ, GSR
-- BINN, BINP same design
-- BINN, BINP jumper option to DRVN and DRVP
-- BINN, BINP 0 Ohm R19, R20
-- ECGN, ECGP same design, same inline resistor and capacitor
-- ECGN, ECGP jumper option to BINN, BINP
-- OVDD on 3.3V
-- no over voltage protection
-
-### Configuration form Datasheet for typical ECG and GSR
-- VCM **200k** in series instead of 51k, no capacitor in series
-- VBG same circuit and capacitors
-- RBIAS same circuit, same 324k resistor
-- CAPN, CAPP same circuit, same capacitor
-- DRVN, DRVP same circuit, 47nF 
-- BINN, BINP separate connector
-- BINN, BINP same design
-- BINN, BINP resistor not specified Ohm R19, R20
-- ECGN, ECGP same design
-- ECGN, ECGP connected to BINN, BINP
-- OVDD up to 3.6V
-
-### Configuration from Datasheet for typical simple ECG
-- ECG direct with protection resistor, no capacitor network
-- no DRV and BIN connection
-
 

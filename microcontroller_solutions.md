@@ -1,8 +1,8 @@
 # Microcontroller
 
-During development, **Adafruit ESP32-S3 Feather** was primarily used but also **SparkFun Thing Plus** to test an older hardware version.
+During development, **Adafruit ESP32-S3 Feather** was primarily used but also **SparkFun Thing Plus** to test an older hardware version that offers faster analog to digital conversion.
 
-## EPS32 Variants
+## ESP Variants
 
 ### ESP 8266
 - released in 2014
@@ -16,7 +16,7 @@ During development, **Adafruit ESP32-S3 Feather** was primarily used but also **
 ### ESP32 
 - released in 2016
 - about 100 times faster than ESP8266
-- Xtensa dual-core (or single-core) 32-bit LX6 microprocesso
+- Xtensa dual-core (or single-core) 32-bit LX6 microprocessor
 - Wi-Fi: 802.11 b/g/n
 - Bluetooth: v4.2 BR/EDR and BLE (shares the radio with Wi-Fi)
 - I2C, SPI, I2S
@@ -52,14 +52,13 @@ During development, **Adafruit ESP32-S3 Feather** was primarily used but also **
   
 ### ESP32-C6
 - released in 2023
-- Arduino IDE support expected in ESP Arduino version 3.0
+- Arduino IDE support with ESP Arduino version 3.0 and later
 - RISC-V dual core 32-bit 160MHz
 - WiFi 6
 - Bluetooth LE 5
 - Zigbeee
 - 8 Mbytes
 - Has I2S peripheral
-- BLE Audio not supported currently
 - $10
 
 ## Teensy Variants

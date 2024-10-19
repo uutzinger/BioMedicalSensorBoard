@@ -4,7 +4,7 @@
   <img src="../assets/pictures/Temp_Front_Closed_with_Plugins.jpg" style="width: 500px;">
 </a>
 
-This Thermistor solution is based on a simple calibrated Wheatstone bridge. The Voltage potential over the thermistor is measured  and compared to fixed voltage divider. 3 thermistors can be measured using the micro controllers internal analog to digital converter. In order to achieve accuracy, the ADC is run a audio frequencies and many measurements are averaged. Although ESP32 internal ADC is not of high quality, with the help of linearization and signal averaging accurate temperature readings are achieved. 
+This Thermistor solution is based on a calibrated Wheatstone bridge. The Voltage potential over the thermistor is measured  and compared to a fixed voltage divider. Three thermistors can be measured using the micro controllers internal analog to digital converter. In order to achieve accuracy, the ADC is run a audio frequencies and measurements are averaged. Although ESP32 internal ADC is not of high quality, with the help of linearization and signal averaging, accurate temperature readings are achieved. 
 
 
 ## Costs &#36;
@@ -17,7 +17,7 @@ This Thermistor solution is based on a simple calibrated Wheatstone bridge. The 
 | Battery                     |  1   | $10     | [Adafruit](https://www.adafruit.com/product/258)        | $10
 | PCB                         |  5   | $45.20  | PCBWay            | $9
 | Parts and Assembly          |  2   | $99.16* | PCBWay            | $50
-| Thermistors MA1000GG103AN                |  1   | $6      | [Amphenol](https://www.mouser.com/ProductDetail/Amphenol-Advanced-Sensors/MA100BF103AN?qs=wrT8kFYR7791l5TjYdzP%252BA%3D%3D) | $6
+| Thermistors MA1000GG103AN **|  1   | $6      | [Amphenol](https://www.mouser.com/ProductDetail/Amphenol-Advanced-Sensors/MA100BF103AN?qs=wrT8kFYR7791l5TjYdzP%252BA%3D%3D) | $6
 | 3.5mm male audio connector  | 10   | $10    | [Amazon](https://a.co/d/bbEIi9s) | $1
 | Assorted Wires              |8m    | $15    | [Amazon](https://a.co/d/58djefc) | $1
 | Assorted Screws and Nuts    |100   |  $7    | Amazon            | $0.05
@@ -27,7 +27,7 @@ This Thermistor solution is based on a simple calibrated Wheatstone bridge. The 
 
 *Electronic components are $12 per board. 
 
-MA100BF103 also comes in less accurate and less expensive versions: MA100BF103BN and  MA100BF103CN
+**MA100BF103 also comes in less accurate and less expensive versions: MA100BF103BN and  MA100BF103CN.
 
 ## Test Software &#128187;
 Test software is located in the Arduino folder.

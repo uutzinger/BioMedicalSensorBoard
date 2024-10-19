@@ -2,13 +2,15 @@
 
 ## Particulate Matter
 
-SEN5X family of sensors from Sensirion is a platform of compact particel sensors. They have a >10 years lifetime. Because they use a fan to create a steady stream of air in the sensor chamnber, they create 24dB noise at a distance of 0.2m.  Common used parameters are PM1 (0.3-1 $\mu$ partciles), PM2.5 (0.3-2.5 $\mu$), PM4(0.3-4 $\mu$), PM10 (0.3-10 $\mu$). They also measure Humidity and Temperature with an accuracy of $+/-4.5\%$ and $+- 0.45\degree C$.
+SEN5X family of sensors from Sensirion is a platform of compact particle sensors. They have a >10 years lifetime. Because they use a fan to create a steady stream of air in the sensor chamber, they create 24dB noise at a distance of 0.2m.  Common used parameters are PM1 (0.3-1 $\mu$ particles), PM2.5 (0.3-2.5 $\mu$), PM4(0.3-4 $\mu$), PM10 (0.3-10 $\mu$). They also measure Humidity and Temperature with an accuracy of $+/-4.5\%$ and $+- 0.45\degree C$.
 
 There are the following models available:
 
 - **SEN50 Particulate Matter** approx. $22.2
 - SEN54 Particulate Matter, rel Humidity, Temperature, VOC Index, approx. $28.1
 - SEN55 Particulate Matter, rel Humidity, Temperature, VOC Index, NOx Index, approx. $32.6
+
+There are less expensive sensors available from [Winsen](https://shop.winsen-sensor.com/collections/particle-sensor)
 
 ## CO2
 
@@ -22,30 +24,33 @@ There are the following models available:
 
 They also measure Humidity $+/-6/%$ and Temperature $+/-0.8 \degree C$ as the sensor signal is affected by those quantities.
 
+There are less expensive sensors available from [Winsen](https://shop.winsen-sensor.com/collections/co2-sensor)
+
 ## Pressure
 
-Bosch makes high quality pressure sensors with an altitude resolution in air of 25 cm..
+Bosch makes high quality pressure sensors with an altitude resolution in air of 25 cm.
 
 - **BMP581**, 30 -125 kPa, ultra low noise of 0.1 Pa RMS, Temperature range of -40 to 85C [datasheet](Airquality\datasheets\bst_bmp581_ds004-2950309.pdf) approx. $4.12
+
 
 ## Humidity and Temperature
 
 ### Bosch
 
-Bosch makes fully integrated airquality sensor that is commonly used for indor airqulity assessment. But their CO2 is usually an electric estimate and the integrated circuits don't measure particulates.
+Bosch makes fully integrated airquality sensor that is commonly used for indor airquality assessment. But their CO2 is usually an electric estimate and the integrated circuits don't measure particulates.
 
 - BME688 Pressure 0.6hPa, Humidity $+/-3\%$ Temperature $+/-0.5 \degree C$
 
 ### High Accuracy Temperature and Humidity Sensors
 
-Many sensors need temperature compensation and some require humidity compensation. The Humidity and Temperature sensors that are integrated into other sensor are not very accurate but there are a few higher quality sensors available such as:
+Many sensors need temperature compensation and some require humidity compensation. The Humidity and Temperature sensors that are integrated into other sensor are not of highest accuracy. higher quality sensors are available:
 
 - SHT40, Humidity $+/- 1.8\%$, Temperature $+/-0.2 \degree C$, approx. $2.5
 - SHT41, Humidity $+/- 1.8\%$, Temperature $+/-0.2 \degree C$, approx. $3.4
 - SHT43, Humidity $+/- 1.8\%$, Temperature $+/-0.2 \degree C$, approx. $5.1
 - **SHT45**, Humidity $+/- 1\%$,   Temperature $+/-0.1 \degree C$, approx. $6.4
 
-## NOX & VOC
+## NOx & VOC
 
 A variety of MEMS sensors can measure electrical equivalents of atmospheric gases through electro chemical reactions where the sensor element is heated and the presence of a gas reduces its resistance. Usually there is cross sensitivity within one element with other gases.
 

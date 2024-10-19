@@ -7,9 +7,6 @@ Biomedical Engineering Department, The University of Arizona.
 
 
 <img src="assets/Concept.png" height="200px">
-
-Posters and Papers: 
-- *Open source platform to measure physiological signals in a classroom setting*, BMES 2024 Annual Meeting: Biomedical Engineering Education - Poster Session C, Poster Q15 
  
 Table of Content:
 <!-- TOC start (generated with https://github.com/derlin/bitdowntoc) -->
@@ -27,6 +24,10 @@ Table of Content:
 <!-- TOC end -->
 
 <!-- TOC --><a name="medibrick"></a>
+
+Posters and Papers: 
+- *Open source platform to measure physiological signals in a classroom setting*, BMES 2024 Annual Meeting: Biomedical Engineering Education - Poster Session C, Poster Q15 
+
 ## Problem Description
 
 Biomedical engineering students need to practice measuring signals from living systems.
@@ -46,9 +47,9 @@ While there are commercial systems available [^fn1] [^fn2], there is no unifying
 - It shall record, display and store common physiological measurements safely in a class room setting.
 
 ## Measurement Solutions
-This project currently consists of the following measurement solultions:
+This project consists of the following measurement solutions:
 
-| ECG and Impedance | Electronic Stethoscope and Blood Pressure | Pulse Oximeter | Temperature | Intertial Measurement Unit | Air Quality | Lung Capacity |
+| ECG and Impedance | Electronic Stethoscope and Blood Pressure | Pulse Oximeter | Temperature | Inertial Measurement Unit | Air Quality | Lung Capacity |
 | --- | --- | --- | --- | --- | --- | --- |
 | <a href="assets/pictures/ECG_BIOZ_Front_Closed_without_Plugins.jpg" target="_blank"> <img src="assets/pictures/ECG_BIOZ_Front_Closed_without_Plugins.jpg" ></a> | <a href="assets/pictures/Stethoscope_Front_Closed_with_Plugins.jpg" target="_blank"><img src="assets/pictures/Stethoscope_Front_Closed_with_Plugins.jpg"></a> | <a href="assets/pictures/PulseOx_Front_Closed_with_Plugins.jpg" target="_blank"><img src="assets/pictures/PulseOx_Front_Closed_with_Plugins.jpg"></a> | <a href="assets/pictures/Temp_Front_Closed_with_Plugins.jpg" target="_blank"><img src="assets/pictures/Temp_Front_Closed_with_Plugins.jpg"></a> | <a href="assets/pictures/IMU_Front_Closed_without_Plugins.jpg" target="_blank"><img src="assets/pictures/IMU_Front_Closed_without_Plugins.jpg"></a> | <a href="assets/pictures/Environment_Front_Closed_without_Plugins.jpg" target="_blank"><img src="assets/pictures/Environment_Front_Closed_without_Plugins.jpg"></a> | N.A. |
 | <a href="assets/pictures/ECG_BIOZ_Front_Open_without_Plugins.jpg" target="_blank"><img src="assets/pictures/ECG_BIOZ_Front_Open_without_Plugins.jpg"></a> | <a href="assets/pictures/Stethoscope_Front_Open_without_Plugins.jpg" target="_blank"><img src="assets/pictures/Stethoscope_Front_Open_without_Plugins.jpg"></a> | <a href="assets/pictures/PulseOx_Front_Open_without_Plugins.jpg" target="_blank"><img src="assets/pictures/PulseOx_Front_Open_without_Plugins.jpg"></a> | <a href="assets/pictures/Temp_Front_Open_with_Plugins_2.jpg" target="_blank"><img src="assets/pictures/Temp_Front_Open_with_Plugins_2.jpg"></a> | <a href="assets/pictures/IMU_Front_Open_with_Plugins.jpg" target="_blank"><img src="assets/pictures/IMU_Front_Open_with_Plugins.jpg"></a> | <a href="assets/pictures/Environment_Front_Open_with_Plugins_2.jpg" target="_blank"><img src="assets/pictures/Environment_Front_Open_with_Plugins_2.jpg"></a> | N.A. |
@@ -74,20 +75,21 @@ Education Content: &#128214;, Sources used to find a solution: &#10004;, Solutio
         - [Assembly Instructions](Impedance_Potential_Board/assembly.md) &#128736;
 - **Stethoscope and Sound**
     - [Sound Measurement](sound_measurement.md)&#128214;
-    - [Pressure Measurement](pressure_measurement.md) &#128214;
+    - [Pressure Measurement](pressure_measurements.md) &#128214;
     - [Sound Solutions](sound_solutions.md) Sound Recording Solutions &#10004;
     - [Pressure Solutions](pressure_solutions.md) Pressure Recording Solutions &#10004;
     - [Stethoscope MediBrick V1](Stethoscope_with_3rdparty_Sound/README.md) PCB Artist I2S codec interfacing with ESP
     - [Stethoscope with Blood Pressure MediBrick V2](Stethoscope_with_Pressure/README.md) &#128194;
         - [Assembly Instructions](Stethoscope_with_Pressure/assembly.md) &#128736;
 - **Pulse Oximeter**
-    - [SpO<sub>2</sub> Measurement](spo2_measurements.md)&#128214;
+    - [SpO<sub>2</sub> Measurement](spo2_measurements.md) &#128214;
     - [SpO<sub>2</sub> Solutions](spo2_solutions.md) &#10004;
     - [SpO<sub>2</sub> MediBrick](SPO2_Board/README.md) &#128194;
         - [Assembly Instructions](SPO2_Board/assembly.md) &#128736;
 - **Temperature and Strain Gauges**
     - [Temperature Measurement](temperature_measurements.md) &#128214;
-    - [Temperature MediBrick](Thermistor_Board/README.md) &#128194; &#128736;
+    - [Temperature Solutions](temperature_solutions.md) &#10004;
+    - [Temperature MediBrick](Thermistor_Board/README.md) &#128194;
         - [Assembly Instructions](Thermistor_Board/assembly.md) &#128736;
 - **Acceleration, Gyration, Compass and Pressure Solution**
     - [Activity Measurements with Inertial Measurement Unit](imu_measurements.md)&#128214;
@@ -133,12 +135,12 @@ Charging Station
 | ------- | ------ |  ------ | ------ | ------ | ------ |
 | **Temperature**     | Completed | Completed | Completed | Completed | Working on |
 | **SpO<sub>2</sub>** | Completed | Completed | Completed | Completed| Working on
-| **Stethoscope**     | Completed | Testing   | Testing   | Sound Completed, Pressure Testing | Working on
-| **Air Quality**     | Completed | Completed| Completed | MICS sensor incomplete| Working on
+| **Stethoscope**     | Completed | Testing   | Testing   | Sound Optimizing, Pressure Testing | Working on
+| **Air Quality**     | Completed | Completed| Completed | MICS sensor support missing | Working on
 | **IMU**             | Completed | Completed | Completed | Completed | Working on
-| **Bio Potential and BIOZ** | Completed | Untested | Untested | Driver incomplete | Not started yet
-| Protoype Sound w third arty ES8388 | Completed | Completed | Comleted | Completed | N.A. |  
-| Impedance w AD 5933 network analyzer | Completed | Untested | Untested | Incomplete | N.A.|
+| **Bio Potential and BIOZ** | Completed | Untested | Untested | Driver incomplete | Working on
+| Protoype Sound w third arty ES8388 | Completed | Completed | Completed | Completed | N.A. |  
+| Impedance w AD 5933 network analyzer | Completed | Optimization | Testing| Incomplete | N.A.|
 | ECG w Sparkfun Breakout | Completed | Completed | Completed | Completed | N.A. |
 | Thermistor/Strain Gauge board using LTC2473 | Completed | Completed | Completed | Completed | N.A. |
 

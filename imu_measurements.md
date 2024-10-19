@@ -68,23 +68,21 @@ Buffa et al. Compact MEMS magnetometers for inertial measurement units https://d
 <img src="assets/MEMS_Gyro_Principle_2.png" alt="Gyro Type 2" width="350px">
 <img src="assets/MEMS_Gyro_Implementation.png" alt="Gyroscope" width="350px">
 
-Shel, Type I and Type II Micromachined Vibratory Gyroscopes https://www.researchgate.net/publication/228641584
+[Shel, Type I and Type II Micromachined Vibratory Gyroscopes](https://www.researchgate.net/publication/228641584)
 
 ### Mangetometer
 
-<img src="assets/MEMS_Mag_Diagram.png" alt="Gyro Type 1" width="350px">
+<img src="assets/MEMS_Mag_Diagram.png"  width="350px">
 
-Bahreyni, Behraad, Univ. of Cambridge,,   Sensors Journal, IEEE 7(9), 2007 
+[Bahreyni, Behraad, Univ. of Cambridge, Sensors Journal, IEEE 7(9), 2007](https://doi.org/10.1109/JSEN.2007.902945)
 
 ### Pressure Sensor
 
-<img src="assets/MEMS_Pressure_Crosssection.jpg" alt="Gyro Type 1" width="350px">
-<img src="assets/MEMS_Pressure_Top_Bridge.jpg" alt="Gyro Type 1" width="350px">
+<img src="assets/MEMS_Pressure_Crosssection.jpg" width="350px">
+<img src="assets/MEMS_Pressure_Top_Bridge.jpg" width="350px">
 
 ## Fusion Algorithm
 
-<img src="assets/Magdwick.png" alt="Gyro Type 1" width="400px">
+<a href="assets/Magdwick.png" target="_blank"> <img src="assets/Magdwick.png" width="500px"></a> 
 
-Magdewick, An efficient orientation filter for inertial and inertial/magnetic sensor arrays
-
-https://forums.parallax.com/uploads/attachments/41167/106661.pdf
+[Magdewick, An efficient orientation filter for inertial and inertial/magnetic sensor arrays](https://forums.parallax.com/uploads/attachments/41167/106661.pdf)
