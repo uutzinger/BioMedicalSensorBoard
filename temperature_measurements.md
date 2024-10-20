@@ -1,4 +1,4 @@
-# Temperature Sensor
+# Temperature
 
 Temperature regulation is essential for mamalian organisms as well as culture of cells and tissues. The physiologic temperature range is narrow with about $37\degree C$. Relevant environmental temperatures are between $-/+50\degree C$.
 

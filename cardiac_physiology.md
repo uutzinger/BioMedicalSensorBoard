@@ -30,3 +30,5 @@
 <img src="assets/Wiggers_Diagram_2.svg" width="800" style="display: block; margin: auto;" />
 
 <p style="text-align: center;">Figure: Wigger's diagram is an excellent tool to teach cardiac physiology, showing pressures found in the ventricle as well as the aorta and atrium. The sharp contraction resulting in the QRS complex and first heart sound as well as the second sound coinciding with the closure of the aortic valve. The repolarization of the heart muscle corresponding to the T wave.</p>
+
+All figures https://commons.wikimedia.org/

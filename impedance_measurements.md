@@ -1,4 +1,4 @@
-# Body Impedance Measurements
+# Body Impedance
 
 <div style="float: right; margin-left: 10px;">
 <img src="assets/ImpedanceMeasurement.svg" alt="Impedance" width="350px">

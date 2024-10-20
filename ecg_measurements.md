@@ -9,6 +9,8 @@ To be written
     <img src="assets/Latidos.gif" height="200" />
 </p>
 
+Figures: https://commons.wikimedia.org/
+
 The heart muscle creates a strong electric field that is measurable on the skin surface. Ion gradients from muscle cells sum up to a potential of ab out 3mV on the skin. To measure this signal with a modern analog to digital converter an ammplification of 100-300 is needed.
 
 The muscle contraction of the left and right ventricle cause a sharp rise in the overall potential allowing for accurate heart rate measurements. 
@@ -17,7 +19,7 @@ Heart rate can also be measured with pelthysmography in a much safer manner. To 
 
 ### Electro Cardio Gram (ECG)
 
-heart muscle acticity
+Heart muscle acticity
 
 <p float="left">
     <img src="assets/Heart_Conduction_System.svg" height="200" /> 
@@ -25,6 +27,8 @@ heart muscle acticity
 </p>
 
 <img src="assets/SinusRhythmLabels.svg" height="400" /> 
+
+Figures https://commons.wikimedia.org/
 
 ## Composition of ECG Waveform
 

@@ -61,6 +61,7 @@ Education Content: &#128214;, Sources used to find a solution: &#10004;, Solutio
 
 - **General Physiology Background**
     - [Cardiac Physiology](cardiac_physiology.md) &#128214;
+    - [Common Physiologic Measurements](physiologic_measurements.md) &#128214;
 - **Electro Cardiogram Solutions**
     - [ECG Measurement](ecg_measurements.md) &#128214;
     - [ECG Solutions](ecg_solutions.md) &#10004;
