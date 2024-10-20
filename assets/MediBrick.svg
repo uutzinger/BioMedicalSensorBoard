@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="43.308475mm"
+   height="22.006277mm"
+   viewBox="0 0 43.308475 22.006277"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.1.2 (0a00cf5339, 2022-02-04)"
+   sodipodi:docname="MediBrick.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:document-units="mm"
+     showgrid="false"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0"
+     inkscape:zoom="1.9509481"
+     inkscape:cx="179.65624"
+     inkscape:cy="9.2262834"
+     inkscape:window-width="2560"
+     inkscape:window-height="1299"
+     inkscape:window-x="0"
+     inkscape:window-y="32"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs2" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-36.235592,-25.542944)">
+    <path
+       fill="#0099b0"
+       d="m 63.932293,40.176909 -1.500087,-0.278957 c -0.0365,-0.0068 -0.07647,-0.04115 -0.08879,-0.07638 l -0.459818,-1.072756 c -0.01715,-0.03312 -0.01387,-0.08514 0.0073,-0.115981 l 0.87401,-1.273875 c 0.0209,-0.03066 0.01679,-0.07729 -0.0096,-0.103661 l -1.091644,-1.091645 c -0.02638,-0.02637 -0.07291,-0.03066 -0.103571,-0.0096 l -1.296231,0.889523 c -0.03066,0.02108 -0.08322,0.02482 -0.116529,0.0084 l -1.039905,-0.425689 c -0.03532,-0.01168 -0.06972,-0.05119 -0.07665,-0.08778 l -0.288812,-1.551554 c -0.0067,-0.03659 -0.04279,-0.06652 -0.08003,-0.06652 h -1.54398 c -0.03714,0 -0.07318,0.02993 -0.07994,0.06652 l -0.288721,1.551554 c -0.0069,0.03659 -0.04125,0.0761 -0.07665,0.08778 l -1.039996,0.425689 c -0.0334,0.01643 -0.08596,0.01269 -0.116529,-0.0084 l -1.29614,-0.889523 c -0.03075,-0.02108 -0.07738,-0.01679 -0.103662,0.0096 l -1.091709,1.091648 c -0.02628,0.02637 -0.03066,0.073 -0.0096,0.103661 l 0.874101,1.273875 c 0.02099,0.03084 0.02428,0.08286 0.0072,0.115981 l -0.459909,1.072756 c -0.01223,0.03522 -0.0521,0.06953 -0.08879,0.07638 l -1.499996,0.278957 c -0.03668,0.0069 -0.06652,0.04289 -0.06652,0.08012 l 9.1e-5,1.543889 c 0,0.03723 0.02993,0.07346 0.06652,0.08012 l 1.463222,0.272295 c 0.03659,0.0067 0.07574,0.04143 0.08687,0.07692 l 0.456806,1.141103 c 0.01633,0.03349 0.0125,0.08587 -0.0087,0.116529 l -0.83112,1.211185 c -0.02099,0.03066 -0.0167,0.07738 0.0096,0.103752 l 1.091828,1.091646 c 0.02628,0.02619 0.07291,0.03047 0.103661,0.0096 l 1.189741,-0.816612 c 0.03066,-0.02098 0.08203,-0.02263 0.114065,-0.0039 l 0.524697,0.280143 c 0.03321,0.01697 0.072,0.0026 0.08623,-0.03176 l 1.081881,-2.61409 c 0.01432,-0.0344 0,-0.07829 -0.03176,-0.09773 l -0.131313,-0.08039 c -0.02427,-0.01478 -0.05722,-0.04024 -0.08304,-0.0636 -0.473688,-0.30332 -0.787959,-0.833949 -0.787959,-1.438219 0,-0.942995 0.764507,-1.707411 1.707412,-1.707411 0.942904,0 1.70732,0.764416 1.70732,1.707411 0,0.60427 -0.31418,1.134899 -0.787959,1.438219 -0.02564,0.02336 -0.05867,0.04882 -0.08286,0.0636 l -0.131311,0.08039 c -0.03158,0.01944 -0.04599,0.06333 -0.03176,0.09773 l 1.081789,2.614181 c 0.01423,0.0344 0.05293,0.04864 0.08623,0.03176 l 0.524698,-0.280143 c 0.03212,-0.01871 0.0834,-0.01715 0.114064,0.0039 l 1.189832,0.816612 c 0.03066,0.0209 0.07738,0.01661 0.103571,-0.0096 l 1.091827,-1.091644 c 0.02637,-0.02637 0.03066,-0.07309 0.0096,-0.103754 L 61.933655,43.48798 c -0.02099,-0.03066 -0.02491,-0.08304 -0.0086,-0.116529 l 0.456806,-1.141103 c 0.01122,-0.0355 0.0501,-0.07026 0.08678,-0.07693 l 1.463222,-0.272295 c 0.0365,-0.0067 0.06652,-0.04289 0.06652,-0.08012 l 1.82e-4,-1.543888 c 9.1e-5,-0.03732 -0.02984,-0.07328 -0.06634,-0.08021"
+       id="path941"
+       style="stroke-width:0.0912516"
+       inkscape:export-filename="/home/uutzinger/Documents/GitHub/BioMedicalSensorBoard/assets/MediBrick.png"
+       inkscape:export-xdpi="356.55557"
+       inkscape:export-ydpi="356.55557" />
+    <text
+       xml:space="preserve"
+       style="font-size:8.46667px;line-height:1.25;font-family:sans-serif;stroke-width:0.264583"
+       x="57.720333"
+       y="34.311214"
+       id="text1904"
+       inkscape:export-filename="/home/uutzinger/Documents/GitHub/BioMedicalSensorBoard/assets/MediBrick.png"
+       inkscape:export-xdpi="356.55557"
+       inkscape:export-ydpi="356.55557"><tspan
+         sodipodi:role="line"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:8.46667px;font-family:'Comic Sans MS';-inkscape-font-specification:'Comic Sans MS';text-align:center;text-anchor:middle;stroke-width:0.264583"
+         x="57.720333"
+         y="34.311214"
+         id="tspan3362">MediBrick</tspan></text>
+    <rect
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none"
+       id="rect8511"
+       width="42.308475"
+       height="21.006277"
+       x="36.735592"
+       y="26.042944"
+       ry="2.7532637" />
+  </g>
+</svg>
