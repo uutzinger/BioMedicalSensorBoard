@@ -11,7 +11,7 @@ The airquality solution uses several sensors:
 | Particulate Matter | Sensirion | [SEN50](datasheets/Sensirion_Datasheet_Environmental_Node_SEN5x.pdf) |  $22.20 |
 | CO<sub>2</sub>               | Sensirion | [SCD40](datasheets/SCD4x_Ver1.4_Feb2023.pdf)| $29.70 |
 | relative Humidity and Temperature |  Sensirion | [SHT45](datasheets/Datasheet_SHT4x_1.pdf) | $6.40|
-| Temperature | Bosch | [BMP581](datasheets\bst_bmp581_ds004-2950309.pdf)| $4.20 |
+| barometric Pressure | Bosch | [BMP581](datasheets\bst_bmp581_ds004-2950309.pdf)| $4.20 |
 | eVOC, eNOX | Sensirion | [SGP41](datasheets\Sensirion_Gas_Sensors_Datasheet_SGP41.pdf) | $9 |
 | Carbon Monoxide, Amonia, Nitrogenoxide | Amphenol SGX Sensortech | [MiCS-6814 MEMS]((datasheets\1143_Datasheet-MiCS-6814-rev-8,pdf)) | $17 |
 | Status Lights | XING Light | [Neopixel](datasheets\2301111010_XINGLIGHT-XL-2020RGBC-WS2812B_C5349955.pdf)| |

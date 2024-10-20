@@ -6,5 +6,8 @@
         "ranges": "cpp",
         "span": "cpp",
         "bitset": "cpp"
-    }
+    },
+    "cSpell.enableFiletypes": [
+        "xml"
+    ]
 }
