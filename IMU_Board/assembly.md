@@ -3,6 +3,10 @@
 Two sensor, the 9 axis IMU ICM20948 and barometric pressure sensor BMP581 need to be connected. Both are communicating through SPI.
 The board contains a 1.8V voltage buck to power the IMU.
 
+<a href="..\assets\pictures\IMU_Top_Open_with_Plugins.jpg" target="_blank">
+  <img src="..\assets\pictures\IMU_Top_Open_with_Plugins.jpg" style="width: 600px;">
+</a>
+
 ## Soldering
 
 Attach color coded wires to the IO pads. E.g. red for power, black or green for ground and blue or white for digital input/output and yellow for analog wires. 

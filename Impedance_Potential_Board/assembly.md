@@ -1,5 +1,9 @@
 # Assembly of ECG and BioZ Brick
 
+<a href="..\assets\pictures\ECG_BIOZ_Top_Open_without_Plugins.jpg" target="_blank">
+  <img src="..\assets\pictures\ECG_BIOZ_Top_Open_without_Plugins.jpg" style="width: 600px;">
+</a>
+
 ## Soldering
 
 ### 3.5mm Connector

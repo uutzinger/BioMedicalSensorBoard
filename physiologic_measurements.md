@@ -34,13 +34,13 @@
 - Lung sounds
 - Bowel sounds
 
-**Activity**
+**Activity** expand here..
 
 - Acceleration, Gyration, Mangnetic field
 - Barometric Pressure
 - GPS
 
-**Respiration**
+**Respiration** .. expand here
 
 - Air Flow
 - Humidity, Temperature
@@ -51,6 +51,6 @@
 - Presence of Volatile Organize Compounts
 - Presence of Carbion Monoxide
 
-**Cellular Structure**
+**Cellular Structure** microscopy, expand here
 
-**Analyte Concentrations**
+**Analyte Concentrations** expand here

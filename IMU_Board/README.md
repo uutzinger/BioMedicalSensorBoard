@@ -1,7 +1,5 @@
 # IMU MediBrick
 
-# Thermistor/Wheatstone Brick
-
 <a href="../assets/pictures/IMU_Front_Closed_without_Plugins.jpg" target="_blank" >
   <img src="../assets/pictures/IMU_Front_Closed_without_Plugins.jpg" style="width: 500px;">
 </a>

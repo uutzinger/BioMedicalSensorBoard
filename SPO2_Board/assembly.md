@@ -1,4 +1,9 @@
 # Assembly of SPO2 Board
+
+<a href="..\assets\pictures\PulseOx_Top_Open_without_Plugins.jpg" target="_blank">
+  <img src="..\assets\pictures\PulseOx_Top_Open_without_Plugins.jpg" style="width: 600px;">
+</a>
+
 ## Soldering
 ### DB 9 Connector
 Firmly press the connector into the holes and solder all pins. Add solder to the mechanical retaining hooks.
