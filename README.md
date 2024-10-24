@@ -101,7 +101,7 @@ Education Content: &#128214;, Sources used to find a solution: &#10004;, Solutio
 - **Air Quality**
     - [Airquality Measurement](airquality_measurements.md)&#128214;
     - [Airquality Solutions](airquality_solutions.md) &#10004;
-    - [Airwqality MediBrick](Airquality/README.md) &#128194;
+    - [Airquality MediBrick](Airquality/README.md) &#128194;
         - [Assembly Instructions](Airquality/assembly.md) &#128736;
 - **Lung Capacity**
     - Not available yet, will be based on Sensirion [SFM3304-D](https://sensirion.com/products/catalog/SFM3304-D)
