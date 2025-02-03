@@ -68,18 +68,23 @@ Reset to boot loader:
 
 The default programming settings are not working well with Arduino IDE and each time the board is selected the following will need to bet chosen:
 
-- USB CDC on Boot: Enabled
-- CPU frequency 240MHz
-- Code Debug Level: None
-- USB DFU on boot: disabled
-- Erase all Flash: disabled
-- Events run on Core 1
-- PSRAM: OPI-PSRAM
-- Flash Mode: QIO 80 MHz
-- Flash Size: 4Mb
-- Partition Scheme: Default 4Mb with spiffs
-- Upload mode: UART0
-- USB mode: Hardware CDC
+- USB CDC on Boot: "Enabled"
+- CPU frequency: "240MHz (WiFi)"
+- Code Debug Level: "None"
+- USB DFU on boot: "Disabled"
+- Erase all Flash: "Disabled"
+- Events run on: "Core 1"
+- Flash Mode: "QIO 80 MHz"
+- Flash Size: "4Mb"
+- Arduino runs on: "Core 1"
+- Flash Size: "4Mb"
+- USB Firmware MSC on Boot: "Disabled"
+- Partition Scheme: "Default 4Mb with spiffs"
+- PSRAM: "OPI-PSRAM"
+- Upload mode: "UART0 / Hardware CDC"
+- Upload speed" "91600"
+- USB mode: "Hardware CDC and JTAG"
+- Zigbee mode: "Disabled"
 
 **Sparkfun ESP32 C WROOM**
 
